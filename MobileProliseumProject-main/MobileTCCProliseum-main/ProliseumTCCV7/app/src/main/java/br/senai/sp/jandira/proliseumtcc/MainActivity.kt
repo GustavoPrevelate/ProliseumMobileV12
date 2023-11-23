@@ -83,6 +83,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioJogadorScree
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroDadosPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroGeneroEDataNascimentoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.FinalizarCadastroUsuarioPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesMinhaPublicacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.criar.CriarTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.deletar.DeletarOrganizacaoScreen
@@ -97,10 +98,15 @@ import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilJogadorDoMeuTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.postagem.MinhaPostagemScreen
 import br.senai.sp.jandira.proliseumtcc.gui.postagem.PostagemJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagens
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagem
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemPostProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUserPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelListaPublicacaoJogadores
 
 
@@ -215,6 +221,13 @@ fun MainScreen() {
         val sharedGetListaPostagens = remember { SharedGetListaPostagens() }
         val sharedGetListaPostagensPublicacao = remember { SharedGetListaPostagensPublicacao() }
         val sharedGetListaPostagensPublicacaoDonoId = remember { SharedGetListaPostagensPublicacaoDonoId() }
+
+        // SharedViewModel GET MINHA POSTAGEM
+
+        val sharedGetMinhaPostagem = remember { SharedGetMinhaPostagem() }
+        val sharedGetMinhaPostagemUser = remember { SharedGetMinhaPostagemUser() }
+        val sharedGetMinhaPostagemUserPropostas = remember { SharedGetMinhaPostagemUserPropostas() }
+        val sharedGetMinhaPostagemPostProfile = remember { SharedGetMinhaPostagemPostProfile() }
 
 
         /**********************************************************************************************************************************/
@@ -1067,6 +1080,43 @@ fun MainScreen() {
             }
         }
 
+        // TELA DE PERFIL DE OUTRO TIME
+        val carregarInformacoesMinhaPublicacaoScreen: @Composable () -> Unit = {
+            CarregarInformacoesMinhaPublicacaoScreen(
+                sharedViewModelTokenEId,
+
+                //SharedViewModel GET MINHA POSTAGEM
+                sharedGetMinhaPostagem,
+                sharedGetMinhaPostagemUser,
+                sharedGetMinhaPostagemUserPropostas,
+                sharedGetMinhaPostagemPostProfile,
+            ) {
+                currentScreen = it
+            }
+        }
+
+        // TELA DE PERFIL DE OUTRO TIME
+        val minhaPostagemScreen: @Composable () -> Unit = {
+            MinhaPostagemScreen(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfil,
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+
+                //SharedViewModel GET MINHA POSTAGEM
+                sharedGetMinhaPostagem,
+                sharedGetMinhaPostagemUser,
+                sharedGetMinhaPostagemUserPropostas,
+                sharedGetMinhaPostagemPostProfile,
+            ) {
+                currentScreen = it
+            }
+        }
+
+
+
+
+
         // NAVEGAÇÃO DO PROJETO
         AnimatedContent(
             targetState = currentScreen,
@@ -1115,6 +1165,8 @@ fun MainScreen() {
                     "carregar_informacoes_perfil_outro_jogador_lista_jogadores" -> carregarInformacoesPerfilOutroJogadorListaTimesScreen()
                     "perfil_outro_jogador_lista_times" -> perfilDeOutroJogadorListaTimesScreen()
                     "postagem_jogador_screen" -> postagemJogadorScreen()
+                    "carregar_informacoes_minha_publicacao" -> carregarInformacoesMinhaPublicacaoScreen()
+                    "minha_postagem" -> minhaPostagemScreen()
                     else -> startScreen()
                 }
             }

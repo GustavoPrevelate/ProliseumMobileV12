@@ -113,6 +113,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(GetPostagemListService::class.java)
     }
 
+    fun getMinhaPostagemService(): GetMinhaPostagemService {
+        return retrofitFactoryCadastro.create(GetMinhaPostagemService::class.java)
+    }
+
 
 
 }

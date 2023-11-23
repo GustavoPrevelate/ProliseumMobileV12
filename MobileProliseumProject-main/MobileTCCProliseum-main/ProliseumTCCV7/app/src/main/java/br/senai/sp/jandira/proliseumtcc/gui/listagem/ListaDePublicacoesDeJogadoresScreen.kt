@@ -443,7 +443,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                text = "JOGADORES",
+                text = "PUBLICAÇÃO DE JOGADORES",
                 fontFamily = customFontFamilyText,
                 fontSize = 25.sp,
                 fontWeight = FontWeight(900),
@@ -453,19 +453,51 @@ fun ListaDePublicacoesDeJogadoresScreen(
 
         Spacer(modifier = Modifier.height(100.dp))
 
+
+
         val listaIdsPerfisJogadores = remember { mutableListOf<Int>() }
 
         Column(
             modifier = Modifier
-                .padding(top = 20.dp)
+                .padding(top = 80.dp)
             ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Column(
+
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(
+                    onClick = {
+                        onNavigate("carregar_informacoes_minha_publicacao")
+                    },
+                    modifier = Modifier
+                        .width(250.dp)
+                        .height(70.dp)
+                        .padding(start = 0.dp, top = 0.dp),
+                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                    colors = ButtonDefaults.buttonColors(RedProliseum),
+                ) {
+                    Text(
+                        text = "MINHA POSTAGEM",
+                        color = Color.White,
+                        modifier = Modifier.padding(5.dp),
+                        fontWeight = FontWeight(600),
+                        fontFamily = customFontFamilyText,
+                        fontSize = 16.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 50.dp),
+                    .padding(top = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
                 content = {
                     items(publicacoesJogadores.size){ index ->
                         val infoPublicacao = publicacoesJogadores[index]
@@ -542,7 +574,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .height(450.dp)
-                                .padding(start = 20.dp, top = 20.dp),
+                                .padding(top = 20.dp),
                         ) {
                             Button(
                                 onClick = {
@@ -568,13 +600,15 @@ fun ListaDePublicacoesDeJogadoresScreen(
 
                                 Column(
                                     modifier = Modifier
-                                        .fillMaxSize()
+                                        .fillMaxSize(),
+
+
                                 ) {
                                     Column(
                                         modifier = Modifier
-                                            .padding(top = 20.dp, start = 80.dp),
+                                            .fillMaxWidth()
+                                            .padding(top = 20.dp),
                                         horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.Center
                                     ) {
                                         Box(contentAlignment = Alignment.BottomEnd) {
                                             Card(
@@ -604,28 +638,17 @@ fun ListaDePublicacoesDeJogadoresScreen(
                                     }
 
 
-                                    Row {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxSize(),
+                                    ) {
+
                                         Row(
                                             modifier = Modifier
-                                            .height(250.dp)
-                                            .width(200.dp)
-                                            .padding(top = 20.dp)
-                                        ) {
-                                            Text(
-                                                text = "${infoPublicacao.descricao}",
-                                                color = Color.White,
-                                                modifier = Modifier.padding(5.dp),
-                                                fontWeight = FontWeight(600),
-                                                fontFamily = customFontFamilyText,
-                                                fontSize = 14.sp
-                                            )
-                                        }
-
-                                        Column(
-                                            modifier = Modifier
-                                                .height(250.dp)
-                                                .width(200.dp)
-                                                .padding(top = 20.dp, start = 50.dp)
+                                                .fillMaxWidth()
+                                                .height(70.dp),
+                                            horizontalArrangement = Arrangement.Center,
+                                            verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Card(
                                                 modifier = Modifier
@@ -652,7 +675,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
                                                 )
                                             }
 
-                                            Spacer(modifier = Modifier.height(5.dp))
+                                            Spacer(modifier = Modifier.width(25.dp))
 
                                             Card(
                                                 modifier = Modifier
@@ -677,30 +700,56 @@ fun ListaDePublicacoesDeJogadoresScreen(
                                             }
 
 
-                                            Spacer(modifier = Modifier.height(5.dp))
+                                            Spacer(modifier = Modifier.width(25.dp))
 
+                                            Column(
+                                                horizontalAlignment = Alignment.CenterHorizontally,
+                                                verticalArrangement = Arrangement.Center
+                                            ){
+                                                Text(
+                                                    text = "${infoPublicacao.hora}",
+                                                    color = Color.White,
+                                                    modifier = Modifier.padding(5.dp),
+                                                    fontWeight = FontWeight(600),
+                                                    fontFamily = customFontFamilyText,
+                                                    fontSize = 16.sp
+                                                )
+                                            }
+
+
+
+                                        }
+                                        Spacer(modifier = Modifier.height(15.dp))
+
+                                        Row(
+                                            modifier = Modifier
+                                                .height(70.dp)
+                                        ) {
                                             Text(
-                                                text = "${infoPublicacao.hora}",
+                                                text = "${infoPublicacao.descricao}",
                                                 color = Color.White,
                                                 modifier = Modifier.padding(5.dp),
                                                 fontWeight = FontWeight(600),
                                                 fontFamily = customFontFamilyText,
-                                                fontSize = 16.sp
+                                                fontSize = 14.sp
                                             )
+                                        }
 
+                                        Spacer(modifier = Modifier.height(5.dp))
+
+                                        Row(){
+                                            Spacer(modifier = Modifier.height(5.dp))
+
+                                            Text(
+                                                text = "${infoPublicacao.pros}",
+                                                color = Color.White,
+                                                modifier = Modifier.padding(5.dp),
+                                                fontWeight = FontWeight(600),
+                                                fontFamily = customFontFamilyText,
+                                                fontSize = 14.sp
+                                            )
                                         }
                                     }
-
-                                    Spacer(modifier = Modifier.height(5.dp))
-
-                                    Text(
-                                        text = "${infoPublicacao.pros}",
-                                        color = Color.White,
-                                        modifier = Modifier.padding(5.dp),
-                                        fontWeight = FontWeight(600),
-                                        fontFamily = customFontFamilyText,
-                                        fontSize = 12.sp
-                                    )
                                 }
                             }
                         }
