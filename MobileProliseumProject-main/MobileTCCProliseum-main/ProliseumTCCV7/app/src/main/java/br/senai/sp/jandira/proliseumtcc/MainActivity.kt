@@ -91,6 +91,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesJogad
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesMeuPerfilPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesTimeScreen
+import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarMinhaPublicacaoJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroJogadorListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroTimeScreen
@@ -1113,6 +1114,24 @@ fun MainScreen() {
             }
         }
 
+        // TELA DE PERFIL DE OUTRO TIME
+        val editarMinhaPublicacaoJogadorScreen: @Composable () -> Unit = {
+            EditarMinhaPublicacaoJogadorScreen(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfil,
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+
+                //SharedViewModel GET MINHA POSTAGEM
+                sharedGetMinhaPostagem,
+                sharedGetMinhaPostagemUser,
+                sharedGetMinhaPostagemUserPropostas,
+                sharedGetMinhaPostagemPostProfile,
+            ) {
+                currentScreen = it
+            }
+        }
+
 
 
 
@@ -1167,6 +1186,7 @@ fun MainScreen() {
                     "postagem_jogador_screen" -> postagemJogadorScreen()
                     "carregar_informacoes_minha_publicacao" -> carregarInformacoesMinhaPublicacaoScreen()
                     "minha_postagem" -> minhaPostagemScreen()
+                    "editar_minha_publicacao_jogador" -> editarMinhaPublicacaoJogadorScreen()
                     else -> startScreen()
                 }
             }

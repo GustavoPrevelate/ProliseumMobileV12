@@ -413,7 +413,7 @@ fun MinhaPostagemScreen(
                     ){
                         Button(
                             onClick = {
-//                    onNavigate("carregar_informacoes_minha_publicacao")
+                                onNavigate("editar_minha_publicacao_jogador")
                             },
                             modifier = Modifier
                                 .width(170.dp)

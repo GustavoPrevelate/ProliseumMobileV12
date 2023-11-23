@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.proliseumtcc.gui.postagem
+package br.senai.sp.jandira.proliseumtcc.gui.editar_perfil
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
@@ -54,14 +54,23 @@ import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.EloLol
 import br.senai.sp.jandira.proliseumtcc.components.FuncaoLol
+import br.senai.sp.jandira.proliseumtcc.components.Genero
 import br.senai.sp.jandira.proliseumtcc.components.Jogo
 import br.senai.sp.jandira.proliseumtcc.components.TimePickerComponent
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonEloLol
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonFuncaoLolUI
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonJogoUI
-import br.senai.sp.jandira.proliseumtcc.model.PostagemJogador
-import br.senai.sp.jandira.proliseumtcc.model.PostagemJogadorResponse
+import br.senai.sp.jandira.proliseumtcc.gui.postagem.getTimeString
+import br.senai.sp.jandira.proliseumtcc.model.PutAtualizarMinhaPostagem
+import br.senai.sp.jandira.proliseumtcc.model.ResponsePutAtualizarMinhaPostagem
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagem
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemPostProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUserPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilJogador
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganizador
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
@@ -70,14 +79,22 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PostagemJogadorScreen(
+fun EditarMinhaPublicacaoJogadorScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
+    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+    sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
+    sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
+
+    //SharedViewModel GET MINHA POSTAGEM
+    sharedGetMinhaPostagem: SharedGetMinhaPostagem,
+    sharedGetMinhaPostagemUser: SharedGetMinhaPostagemUser,
+    sharedGetMinhaPostagemUserPropostas: SharedGetMinhaPostagemUserPropostas,
+    sharedGetMinhaPostagemPostProfile: SharedGetMinhaPostagemPostProfile,
     onNavigate: (String) -> Unit
-){
+) {
 
     val token = sharedViewModelTokenEId.token
 
@@ -116,6 +133,32 @@ fun PostagemJogadorScreen(
         mutableStateOf(getTimeString(selectedStartTime))
     }
 
+    var idMinhaPublicacaoState by remember { mutableStateOf(sharedGetMinhaPostagemPostProfile.id) }
+    var descricaoMinhaPublicacaoState by remember { mutableStateOf(sharedGetMinhaPostagemPostProfile.descricao) }
+    var jogoMinhaPublicacaoState by remember { mutableStateOf(sharedGetMinhaPostagemPostProfile.jogo) }
+    var funcaoMinhaPublicacaoState by remember { mutableStateOf(sharedGetMinhaPostagemPostProfile.funcao) }
+    var eloMinhaPublicacaoState by remember { mutableStateOf<Int?>(sharedGetMinhaPostagemPostProfile.elo) }
+    var horaMinhaPublicacaoState by remember { mutableStateOf(sharedGetMinhaPostagemPostProfile.hora) }
+    var tipoMinhaPublicacaoState by remember { mutableStateOf(sharedGetMinhaPostagemPostProfile.tipo) }
+    var prosMinhaPublicacaoState by remember { mutableStateOf(sharedGetMinhaPostagemPostProfile.pros) }
+
+    var selectedGeneroUser by remember { mutableStateOf<Genero?>(null) }
+
+
+    LaunchedEffect(sharedGetMinhaPostagemPostProfile) {
+
+        // Esta parte só será executada quando o composable for inicializado
+        idMinhaPublicacaoState = sharedGetMinhaPostagemPostProfile.id
+        descricaoMinhaPublicacaoState = sharedGetMinhaPostagemPostProfile.descricao
+        jogoMinhaPublicacaoState = sharedGetMinhaPostagemPostProfile.jogo
+        funcaoMinhaPublicacaoState = sharedGetMinhaPostagemPostProfile.funcao
+        eloMinhaPublicacaoState = sharedGetMinhaPostagemPostProfile.elo
+        horaMinhaPublicacaoState = sharedGetMinhaPostagemPostProfile.hora
+        tipoMinhaPublicacaoState = sharedGetMinhaPostagemPostProfile.tipo
+        prosMinhaPublicacaoState = sharedGetMinhaPostagemPostProfile.pros
+        // Atribua outras variáveis de estado para outros campos da mesma maneira
+    }
+
 
     //DESIGN DA TELA
     Box(
@@ -143,7 +186,7 @@ fun PostagemJogadorScreen(
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        onNavigate("login")
+                        onNavigate("home")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
@@ -235,29 +278,31 @@ fun PostagemJogadorScreen(
 
 
 
-                    OutlinedTextField(
-                        value = descricaoPublicacao,
-                        onValueChange = { descricaoPublicacao = it },
-                        modifier = Modifier
-                            .height(200.dp)
-                            .width(320.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        label = {
-                            Text(
-                                text = "DESCRICAO PUBLICACAO",
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(600),
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            unfocusedBorderColor = Color(255, 255, 255, 255),
-                            focusedBorderColor = Color(255, 255, 255, 255),
-                            cursorColor = Color.White
-                        ),
-                        textStyle = TextStyle(color = Color.White)
-                    )
+                    descricaoMinhaPublicacaoState?.let {
+                        OutlinedTextField(
+                            value = it,
+                            onValueChange = { descricaoMinhaPublicacaoState = it },
+                            modifier = Modifier
+                                .height(200.dp)
+                                .width(320.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            label = {
+                                Text(
+                                    text = "DESCRICAO PUBLICACAO",
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(600),
+                                )
+                            },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                unfocusedBorderColor = Color(255, 255, 255, 255),
+                                focusedBorderColor = Color(255, 255, 255, 255),
+                                cursorColor = Color.White
+                            ),
+                            textStyle = TextStyle(color = Color.White)
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(20.dp))
 
@@ -330,86 +375,61 @@ fun PostagemJogadorScreen(
 
 
 
-//                    Spacer(modifier = Modifier.height(20.dp))
-//
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(start = 32.dp),
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//
-//                        Checkbox(
-//                            checked = jogadorRemunerado.value,
-//                            onCheckedChange = { jogadorRemunerado.value = it },
-//                            modifier = Modifier
-//                                .scale(scale = 1.6f)
-//                                .size(40.dp)
-//                                .padding(16.dp),
-//                            colors = CheckboxDefaults.colors(checkedColor = Color(0, 255, 165, 255)),
-//                        )
-//                        Spacer(modifier = Modifier.width(10.dp))
-//                        Text(
-//                            text = "Remuneração?",
-//                            color = Color.White,
-//                            fontFamily = customFontFamilyText,
-//                            fontWeight = FontWeight(600),
-//                            fontSize = 22.sp
-//                        )
-//                    }
-
                     Spacer(modifier = Modifier.height(20.dp))
 
-
-
-
-                    OutlinedTextField(
-                        value = prosJogador,
-                        onValueChange = {  prosJogador = it },
-                        modifier = Modifier
-                            .height(200.dp)
-                            .width(320.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        label = {
-                            Text(
-                                text = "PROS:",
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(600),
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            unfocusedBorderColor = Color(255, 255, 255, 255),
-                            focusedBorderColor = Color(255, 255, 255, 255),
-                            cursorColor = Color.White
-                        ),
-                        textStyle = TextStyle(color = Color.White)
-                    )
+                    prosMinhaPublicacaoState?.let {
+                        OutlinedTextField(
+                            value = it,
+                            onValueChange = {  prosMinhaPublicacaoState = it },
+                            modifier = Modifier
+                                .height(200.dp)
+                                .width(320.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            label = {
+                                Text(
+                                    text = "PROS:",
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(600),
+                                )
+                            },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                unfocusedBorderColor = Color(255, 255, 255, 255),
+                                focusedBorderColor = Color(255, 255, 255, 255),
+                                cursorColor = Color.White
+                            ),
+                            textStyle = TextStyle(color = Color.White)
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(20.dp))
 
                     Button(onClick = {
 
-                        atualizarPostagem(
-                            sharedViewModelTokenEId = sharedViewModelTokenEId,
-                            descricaoJogador = descricaoPublicacao,
-                            jogoJogador = selectedJogo?.toRepresentationStringJogo(),
-                            funcaoJogador =  selectedFuncaoLol?.toRepresentationStrinFuncao(),
-                            eloJogador = selectedEloLol?.toRepresentationStringEloLol(),
-                            horaJogador = selectedStartTimeString,
-                            tipoPublicacao = jogadorRemunerado.value,
-                            prosJogador = prosJogador
-                        )
+                        for (i in 1..2) {
+                            atualizarPostagem(
+                                sharedViewModelTokenEId = sharedViewModelTokenEId,
+                                descricaoJogador = descricaoMinhaPublicacaoState,
+                                jogoJogador = selectedJogo?.toRepresentationStringJogo(),
+                                funcaoJogador =  selectedFuncaoLol?.toRepresentationStrinFuncao(),
+                                eloJogador = selectedEloLol?.toRepresentationStringEloLol(),
+                                horaJogador = selectedStartTimeString,
+                                tipoPublicacao = jogadorRemunerado.value,
+                                prosJogador = prosMinhaPublicacaoState
+                            )
 
-                        Log.e("DEFINITIVO HORARIO","Horario que foi selecionado ao clicar no botao ${selectedStartTimeString}")
-                        Log.e("DESCRICAO 10","Descricao: ${descricaoPublicacao}")
-                        Log.e("FUNCAO 10","Funcao: ${selectedFuncaoLol?.toRepresentationStrinFuncao()}")
-                        Log.e("JOGO 10","Jogo: ${selectedJogo?.toRepresentationStringJogo()}")
-                        Log.e("ELO 10","Elo: ${selectedEloLol?.toRepresentationStringEloLol()}")
-                        Log.e("REMUNERACAO 10","Remuneração: ${jogadorRemunerado.value}")
-                        Log.e("PROS 10","Pros: ${prosJogador}")
+                            Log.e("DEFINITIVO HORARIO","Horario que foi selecionado ao clicar no botao ${selectedStartTimeString}")
+                            Log.e("DESCRICAO 10","Descricao: ${descricaoPublicacao}")
+                            Log.e("FUNCAO 10","Funcao: ${selectedFuncaoLol?.toRepresentationStrinFuncao()}")
+                            Log.e("JOGO 10","Jogo: ${selectedJogo?.toRepresentationStringJogo()}")
+                            Log.e("ELO 10","Elo: ${selectedEloLol?.toRepresentationStringEloLol()}")
+                            Log.e("REMUNERACAO 10","Remuneração: ${jogadorRemunerado.value}")
+                            Log.e("PROS 10","Pros: ${prosJogador}")
 
+                            onNavigate("carregar_informacoes_minha_publicacao")
+                        }
+//
 
 
                     }) {
@@ -422,11 +442,6 @@ fun PostagemJogadorScreen(
 
         }
     }
-}
-
-fun getTimeString(time: LocalTime): String {
-    val formatter = DateTimeFormatter.ofPattern("HH:mm")
-    return time.format(formatter)
 }
 
 fun atualizarPostagem(
@@ -442,7 +457,7 @@ fun atualizarPostagem(
 
     val token = sharedViewModelTokenEId.token
 
-    val newPostagemJogador = PostagemJogador(
+    val newPostagemJogador = PutAtualizarMinhaPostagem(
         descricao = descricaoJogador,
         jogo = jogoJogador,
         funcao = funcaoJogador,
@@ -453,17 +468,19 @@ fun atualizarPostagem(
     )
 
 
-    val postagemService = RetrofitFactoryCadastro().postagemJogadorService()
+    val atualizarPostagemService = RetrofitFactoryCadastro().putMinhaPostagemService()
 
-    postagemService.postagemJogadorService("Bearer " + token, newPostagemJogador)
-        .enqueue(object : Callback<PostagemJogadorResponse> {
-            override fun onResponse(call: Call<PostagemJogadorResponse>, response: Response<PostagemJogadorResponse>) {
+    atualizarPostagemService.putMyPost("Bearer " + token, newPostagemJogador)
+        .enqueue(object : Callback<ResponsePutAtualizarMinhaPostagem> {
+            override fun onResponse(call: Call<ResponsePutAtualizarMinhaPostagem>, response: Response<ResponsePutAtualizarMinhaPostagem>) {
                 if (response.isSuccessful) {
 
                     Log.d(
                         "SUCESSO RAPAZ",
                         "Perfil de usuário atualizado com sucesso: ${response.code()}"
                     )
+
+
 
                 } else {
 
@@ -479,10 +496,9 @@ fun atualizarPostagem(
                 }
             }
 
-            override fun onFailure(call: Call<PostagemJogadorResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponsePutAtualizarMinhaPostagem>, t: Throwable) {
 
             }
         })
 
 }
-
