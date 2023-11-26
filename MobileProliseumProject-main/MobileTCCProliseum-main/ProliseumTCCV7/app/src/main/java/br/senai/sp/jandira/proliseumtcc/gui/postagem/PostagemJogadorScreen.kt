@@ -410,7 +410,7 @@ fun PostagemJogadorScreen(
                         Log.e("REMUNERACAO 10","Remuneração: ${jogadorRemunerado.value}")
                         Log.e("PROS 10","Pros: ${prosJogador}")
 
-
+                        onNavigate("lista_de_publicacoes_jogadores")
 
                     }) {
 

@@ -459,7 +459,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
 
         Column(
             modifier = Modifier
-                .padding(top = 80.dp)
+                .padding(top = 120.dp)
             ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -474,7 +474,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
                     },
                     modifier = Modifier
                         .width(250.dp)
-                        .height(70.dp)
+                        .height(50.dp)
                         .padding(start = 0.dp, top = 0.dp),
                     shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
                     colors = ButtonDefaults.buttonColors(RedProliseum),
@@ -485,9 +485,33 @@ fun ListaDePublicacoesDeJogadoresScreen(
                         modifier = Modifier.padding(5.dp),
                         fontWeight = FontWeight(600),
                         fontFamily = customFontFamilyText,
-                        fontSize = 16.sp
+                        fontSize = 12.sp
                     )
                 }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Button(
+                    onClick = {
+                        onNavigate("postagem_jogador_screen")
+                    },
+                    modifier = Modifier
+                        .width(250.dp)
+                        .height(50.dp)
+                        .padding(start = 0.dp, top = 0.dp),
+                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                    colors = ButtonDefaults.buttonColors(RedProliseum),
+                ) {
+                    Text(
+                        text = "CRIAR POSTAGEM",
+                        color = Color.White,
+                        modifier = Modifier.padding(5.dp),
+                        fontWeight = FontWeight(600),
+                        fontFamily = customFontFamilyText,
+                        fontSize = 12.sp
+                    )
+                }
+
             }
 
             Spacer(modifier = Modifier.height(20.dp))

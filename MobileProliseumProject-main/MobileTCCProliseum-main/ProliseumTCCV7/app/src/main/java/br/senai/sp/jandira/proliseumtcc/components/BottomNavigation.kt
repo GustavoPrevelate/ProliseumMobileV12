@@ -83,16 +83,16 @@ fun BottomNavigationScreeen(onNavigate: (String) -> Unit, onGenderSelected: (Int
                                 onNavigate("home")
                             } else if(button.id == 1){
                                 //navController.navigate("login")
-                                onNavigate("lista_times")
+                                //onNavigate("lista_times")
                             }else if(button.id == 2){
                                 //navController.navigate("login")
-                                onNavigate("lista_de_publicacoes_times")
+                                //onNavigate("lista_de_publicacoes_times")
                             }else if(button.id == 3){
                                 //navController.navigate("login")
-                                onNavigate("campeonatos")
+                                //onNavigate("campeonatos")
                             }else if(button.id == 4){
                                 //navController.navigate("login")
-                                onNavigate("postagem_jogador_screen")
+                                //onNavigate("postagem_jogador_screen")
                             }
                             // Chame a função de retorno para notificar a seleção
                             onGenderSelected(selectedButtonGenero.value)

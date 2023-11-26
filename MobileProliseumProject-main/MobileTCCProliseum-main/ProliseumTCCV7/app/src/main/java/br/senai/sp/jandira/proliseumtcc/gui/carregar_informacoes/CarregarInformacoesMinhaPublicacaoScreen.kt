@@ -195,7 +195,13 @@ fun CarregarInformacoesMinhaPublicacaoScreen(
                                     sharedGetMinhaPostagemPostProfile.pros = postProfileMinhaPostagem.pros
                                 }
 
-                                onNavigate("minha_postagem")
+                                if(postProfileMinhaPostagem == null){
+                                    onNavigate("lista_de_publicacoes_jogadores")
+                                }else{
+                                    onNavigate("minha_postagem")
+                                }
+
+
 
                             } else {
                                 // Trate a resposta não bem-sucedida
