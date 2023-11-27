@@ -164,7 +164,7 @@ fun NavigationPrincipalScreen(
                     tint = Color.White
                 )
 
-                Spacer(modifier = Modifier.padding(15.dp))
+                Spacer(modifier = Modifier.padding(5.dp))
 
                 Button(
                     onClick = {
@@ -203,6 +203,26 @@ fun NavigationPrincipalScreen(
                         fontWeight = FontWeight(600),
                         color = Color.White
                     )
+                }
+
+                Spacer(modifier = Modifier.padding(5.dp))
+
+
+                Button(
+                    onClick = {
+                        onNavigate("notificacao")
+                    },
+                    modifier = Modifier
+                        .height(70.dp)
+                        .width(70.dp),
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(Color.Red)
+                ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.notificacao),
+                            contentDescription = stringResource(id = R.string.button_sair),
+                            tint = Color.White
+                        )
                 }
 
             }

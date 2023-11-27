@@ -72,6 +72,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDePublicacoesDeJogador
 import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDePublicacoesDeTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDeTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.LoginScreen
+import br.senai.sp.jandira.proliseumtcc.gui.NotificacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavegacaoConfiguracoesMeuTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavegacaoConfiguracoesPerfilScreen
 import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavigationPrincipalScreen
@@ -109,6 +110,8 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemPostPro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUserPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelListaPublicacaoJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacao
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacaoProposta
 
 
 class MainActivity : ComponentActivity() {
@@ -230,6 +233,10 @@ fun MainScreen() {
         val sharedGetMinhaPostagemUserPropostas = remember { SharedGetMinhaPostagemUserPropostas() }
         val sharedGetMinhaPostagemPostProfile = remember { SharedGetMinhaPostagemPostProfile() }
 
+        // SharedViewModel GET NOTIFICACAO
+
+        val sharedViewNotificacao = remember { SharedViewNotificacao() }
+        val sharedViewNotificacaoProposta = remember { SharedViewNotificacaoProposta() }
 
         /**********************************************************************************************************************************/
 
@@ -1132,6 +1139,18 @@ fun MainScreen() {
             }
         }
 
+        // TELA DE PERFIL DE OUTRO TIME
+        val notificacaoScreen: @Composable () -> Unit = {
+            NotificacaoScreen(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfil,
+                sharedViewNotificacao,
+                sharedViewNotificacaoProposta,
+            ) {
+                currentScreen = it
+            }
+        }
+
 
 
 
@@ -1187,6 +1206,7 @@ fun MainScreen() {
                     "carregar_informacoes_minha_publicacao" -> carregarInformacoesMinhaPublicacaoScreen()
                     "minha_postagem" -> minhaPostagemScreen()
                     "editar_minha_publicacao_jogador" -> editarMinhaPublicacaoJogadorScreen()
+                    "notificacao" -> notificacaoScreen()
                     else -> startScreen()
                 }
             }

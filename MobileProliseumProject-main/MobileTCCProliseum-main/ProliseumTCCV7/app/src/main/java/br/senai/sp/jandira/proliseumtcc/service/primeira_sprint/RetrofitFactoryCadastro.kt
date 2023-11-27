@@ -121,6 +121,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(PutMinhaPostagemService::class.java)
     }
 
+    fun notificacaoService(): NotificacaoService {
+        return retrofitFactoryCadastro.create(NotificacaoService::class.java)
+    }
+
 
 
 }
