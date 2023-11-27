@@ -179,7 +179,7 @@ fun CriarTimeScreen(
                 contentDescription = ""
             )
             Text(
-                text = stringResource(id = R.string.label_editar_jogador),
+                text = "CRIAR TIME",
                 fontFamily = customFontFamily,
                 fontSize = 40.sp,
                 textAlign = TextAlign.Center,
@@ -230,7 +230,7 @@ fun CriarTimeScreen(
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                             label = {
                                 Text(
-                                    text = stringResource(id = R.string.label_user),
+                                    text = "Nome do time:",
                                     color = Color.White,
                                     fontFamily = customFontFamilyText,
                                     fontWeight = FontWeight(600),
@@ -337,22 +337,6 @@ fun CriarTimeScreen(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        Column(
-                            modifier = Modifier
-                                .padding(start = 30.dp),
-                            horizontalAlignment = Alignment.Start
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.label_biografia),
-                                fontFamily = customFontFamilyText,
-                                fontSize = 22.sp,
-                                fontWeight = FontWeight(900),
-                                color = Color.White
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(20.dp))
-
                         OutlinedTextField(
                             value = biografiaTime,
                             onValueChange = { newBiografiaTime -> biografiaTime = newBiografiaTime },
@@ -363,7 +347,7 @@ fun CriarTimeScreen(
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                             label = {
                                 Text(
-                                    text = stringResource(id = R.string.label_nome),
+                                    text = "Biografia Time:",
                                     color = Color.White,
                                     fontFamily = customFontFamilyText,
                                     fontWeight = FontWeight(600),
@@ -508,7 +492,6 @@ fun CriarTimeScreen(
                                 onNavigate("carregar_informacoes_perfil_usuario")
                             },
                             modifier = Modifier
-                                .padding(top = 20.dp)
                                 .width(300.dp)
                                 .height(48.dp),
                             shape = RoundedCornerShape(73.dp),
@@ -521,7 +504,7 @@ fun CriarTimeScreen(
                                 tint = Color(255, 255, 255, 255)
                             )
                             Text(
-                                text = stringResource(id = R.string.button_salvar),
+                                text = "CRIAR TIME",
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
                                 color = Color.White,
@@ -529,6 +512,7 @@ fun CriarTimeScreen(
                                 fontWeight = FontWeight(900),
                             )
                         }
+                        Spacer(modifier = Modifier.height(20.dp))
                     }
                 }
             }

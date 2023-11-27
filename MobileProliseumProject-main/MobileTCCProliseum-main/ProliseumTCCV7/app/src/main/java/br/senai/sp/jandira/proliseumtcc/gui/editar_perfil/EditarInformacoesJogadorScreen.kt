@@ -198,7 +198,7 @@ fun EditarInformacoesJogadorScreen(
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                             label = {
                                 Text(
-                                    text = stringResource(id = R.string.label_user),
+                                    text = "Nome do time:",
                                     color = Color.White,
                                     fontFamily = customFontFamilyText,
                                     fontWeight = FontWeight(600),
@@ -214,6 +214,29 @@ fun EditarInformacoesJogadorScreen(
 
                         Spacer(modifier = Modifier.height(10.dp))
 
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 40.dp)
+                        ) {
+                            Text(
+                                text = "JOGO ESCOLHIDO:",
+                                fontFamily = customFontFamilyText,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight(900),
+                                color = Color.White
+                            )
+//                        Text(
+//                            text = "*",
+//                            fontFamily = customFontFamilyText,
+//                            fontSize = 25.sp,
+//                            fontWeight = FontWeight(900),
+//                            color = RedProliseum
+//                        )
+                        }
+
+                        Spacer(modifier = Modifier.height(5.dp))
+
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -227,6 +250,29 @@ fun EditarInformacoesJogadorScreen(
 
                         Spacer(modifier = Modifier.height(10.dp))
 
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 40.dp)
+                        ) {
+                            Text(
+                                text = "FUNÇÃO ESCOLHIDA:",
+                                fontFamily = customFontFamilyText,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight(900),
+                                color = Color.White
+                            )
+//                        Text(
+//                            text = "*",
+//                            fontFamily = customFontFamilyText,
+//                            fontSize = 25.sp,
+//                            fontWeight = FontWeight(900),
+//                            color = RedProliseum
+//                        )
+                        }
+
+                        Spacer(modifier = Modifier.height(5.dp))
+
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -239,6 +285,29 @@ fun EditarInformacoesJogadorScreen(
                         }
 
                         Spacer(modifier = Modifier.height(10.dp))
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 40.dp)
+                        ) {
+                            Text(
+                                text = "ELO ESCOLHIDO:",
+                                fontFamily = customFontFamilyText,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight(900),
+                                color = Color.White
+                            )
+//                        Text(
+//                            text = "*",
+//                            fontFamily = customFontFamilyText,
+//                            fontSize = 25.sp,
+//                            fontWeight = FontWeight(900),
+//                            color = RedProliseum
+//                        )
+                        }
+
+                        Spacer(modifier = Modifier.height(5.dp))
 
                         Column(
                             modifier = Modifier
@@ -297,6 +366,8 @@ fun EditarInformacoesJogadorScreen(
                             )
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
             }
         }

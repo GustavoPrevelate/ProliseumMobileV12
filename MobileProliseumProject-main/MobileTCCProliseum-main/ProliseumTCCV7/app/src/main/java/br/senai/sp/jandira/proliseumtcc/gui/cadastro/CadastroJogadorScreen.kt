@@ -127,7 +127,7 @@ fun CadastroUsuarioJogadorScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
             Text(
-                text = "CADASTRO",
+                text = "JOGADOR",
                 fontFamily = customFontFamilyTitle,
                 fontSize = 48.sp,
                 textAlign = TextAlign.Center,
@@ -162,7 +162,26 @@ fun CadastroUsuarioJogadorScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
+                    OutlinedTextField(
+                        value = createNickNameJogador,
+                        onValueChange = { newNickNameJogador -> createNickNameJogador = newNickNameJogador },
+                        modifier = Modifier
 
+                            .width(320.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                        label = {
+                            Text(
+                                text = "Nome de Jogador:",
+                                color = Color.White,
+                                fontFamily = customFontFamilyText,
+                                fontWeight = FontWeight(600),
+                            )
+                        },
+                        textStyle = TextStyle(color = Color.White)
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
 
                     Row(
                         modifier = Modifier
@@ -175,37 +194,16 @@ fun CadastroUsuarioJogadorScreen(
                             fontWeight = FontWeight(900),
                             color = Color.White
                         )
-                        Text(
-                            text = "*",
-                            fontFamily = customFontFamilyText,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight(900),
-                            color = RedProliseum
-                        )
+//                        Text(
+//                            text = "*",
+//                            fontFamily = customFontFamilyText,
+//                            fontSize = 25.sp,
+//                            fontWeight = FontWeight(900),
+//                            color = RedProliseum
+//                        )
                     }
 
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    OutlinedTextField(
-                        value = createNickNameJogador,
-                        onValueChange = { newNickNameJogador -> createNickNameJogador = newNickNameJogador },
-                        modifier = Modifier
-
-                            .width(320.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        label = {
-                            Text(
-                                text = stringResource(id = R.string.label_user),
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(600),
-                            )
-                        },
-                        textStyle = TextStyle(color = Color.White)
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(5.dp))
 
                     Column {
                         ToggleButtonJogoUI{ jogo ->
@@ -229,6 +227,7 @@ fun CadastroUsuarioJogadorScreen(
                         )
                     }
 
+                    Spacer(modifier = Modifier.height(5.dp))
 
                     Column {
                         ToggleButtonFuncaoLolUI{ funcao ->
@@ -252,6 +251,7 @@ fun CadastroUsuarioJogadorScreen(
                         )
                     }
 
+                    Spacer(modifier = Modifier.height(5.dp))
 
                     Column {
                         ToggleButtonEloLol{ eloLol ->
@@ -331,7 +331,7 @@ fun CadastroUsuarioJogadorScreen(
                             tint = Color(255, 255, 255, 255)
                         )
                         Text(
-                            text = "FINALIZAR CADASTRO",
+                            text = "TORNAR-SE JOGADOR",
                             fontSize = 16.sp,
                             textAlign = TextAlign.Center,
                             color = Color.White,

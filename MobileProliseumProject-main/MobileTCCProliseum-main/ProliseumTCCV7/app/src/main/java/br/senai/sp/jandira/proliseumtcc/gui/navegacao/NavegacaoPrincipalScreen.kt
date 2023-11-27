@@ -21,8 +21,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -175,8 +177,8 @@ fun NavigationPrincipalScreen(
                 {
                     Card(
                         modifier = Modifier
-                            .height(50.dp)
-                            .width(50.dp),
+                            .height(60.dp)
+                            .width(60.dp),
 
                         shape = CircleShape
                     ) {
@@ -208,20 +210,26 @@ fun NavigationPrincipalScreen(
                 Spacer(modifier = Modifier.padding(5.dp))
 
 
-                Button(
-                    onClick = {
-                        onNavigate("notificacao")
-                    },
+                Card(
                     modifier = Modifier
-                        .height(70.dp)
-                        .width(70.dp),
-                    shape = CircleShape,
-                    colors = ButtonDefaults.buttonColors(Color.Red)
+                        .clickable {
+                            onNavigate("notificacao")
+                        }
+                        .size(50.dp),
+                    shape = RoundedCornerShape(50.dp, 50.dp, 50.dp, 50.dp),
+                    colors = CardColors(
+                        contentColor = Color.Red,
+                        containerColor = Color.Red,
+                        disabledContentColor = Color.Black,
+                        disabledContainerColor = Color.Black
+                    )
                 ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.notificacao),
+                        Image(
+                            painter = painterResource(id = R.drawable.sino),
                             contentDescription = stringResource(id = R.string.button_sair),
-                            tint = Color.White
+                            modifier = Modifier
+                                .size(40.dp)
+                                .padding(top = 10.dp, start = 10.dp),
                         )
                 }
 
@@ -330,37 +338,6 @@ fun NavigationPrincipalScreen(
                         fontFamily = customFontFamilyText,
                         fontWeight = FontWeight(900),
                     )
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Button(
-                    onClick = {
-                              onNavigate("propostas")
-                    },
-                    modifier = Modifier
-                        .padding(top = 20.dp)
-                        .height(48.dp),
-                    shape = RoundedCornerShape(73.dp),
-                    colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
-
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.propostas_icon),
-                        contentDescription = stringResource(id = R.string.button_proximo),
-                        modifier = Modifier.size(30.dp),
-                        tint = Color(255, 255, 255, 255)
-                    )
-                    Spacer(modifier = Modifier.padding(start = 20.dp))
-                    Text(
-                        text = "PROPOSTAS",
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                        color = Color.White,
-                        fontFamily = customFontFamilyText,
-                        fontWeight = FontWeight(900),
-
-                        )
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))

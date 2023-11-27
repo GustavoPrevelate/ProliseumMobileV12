@@ -109,16 +109,16 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
                                     sharedViewModelPerfilJogador.elo = playerProfile.elo!!
                                 }
 
-                                if (profileResponseData.orgProfile == null) {
-
-                                    Log.e("NENHUMA ORGANIZACAO","Nenhuma organização para retornar dados")
-
-                                } else if (profileResponseData.orgProfile != null){
-                                    val orgProfile = profileResponseData.orgProfile
-                                    sharedViewModelPerfilOrganizador.orgProfile = orgProfile
-                                    sharedViewModelPerfilOrganizador.nome_organizacao = orgProfile.nome_organizacao
-                                    sharedViewModelPerfilOrganizador.biografia = orgProfile.biografia
-                                }
+//                                if (profileResponseData.orgProfile == null) {
+//
+//                                    Log.e("NENHUMA ORGANIZACAO","Nenhuma organização para retornar dados")
+//
+//                                } else if (profileResponseData.orgProfile != null){
+//                                    val orgProfile = profileResponseData.orgProfile
+//                                    sharedViewModelPerfilOrganizador.orgProfile = orgProfile
+//                                    sharedViewModelPerfilOrganizador.nome_organizacao = orgProfile.nome_organizacao
+//                                    sharedViewModelPerfilOrganizador.biografia = orgProfile.biografia
+//                                }
 
 
                                 Log.d("INFORMAÇOES DE USUARIO 01", "Token: $token, Id: ${sharedViewModelPerfilEditar.id}, Nome de usuario: ${sharedViewModelPerfilEditar.nome_usuario}")
