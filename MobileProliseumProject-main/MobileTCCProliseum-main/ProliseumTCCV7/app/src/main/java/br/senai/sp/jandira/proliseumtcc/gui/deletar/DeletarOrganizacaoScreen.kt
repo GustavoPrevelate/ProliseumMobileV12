@@ -54,6 +54,15 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganiza
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilOrganizacao
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import kotlinx.coroutines.delay
@@ -64,7 +73,9 @@ import retrofit2.Response
 @Composable
 fun DeletarOrganizacaoScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+
+    sharedViewModelUser: SharedViewModelUser,
+
     sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
     onNavigate: (String) -> Unit
 ) {
@@ -81,8 +92,8 @@ fun DeletarOrganizacaoScreen(
         Font(R.font.font_poppins)
     )
 
-    val idUser = sharedViewModelPerfilEditar.id
-    val nomeUser = sharedViewModelPerfilEditar.nome_usuario
+    val idUser = sharedViewModelUser.id
+    val nomeUser = sharedViewModelUser.nome_usuario
     val nomeOrganizacao = sharedViewModelPerfilOrganizador.nome_organizacao
     val biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
 

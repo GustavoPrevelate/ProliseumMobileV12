@@ -67,6 +67,15 @@ import br.senai.sp.jandira.proliseumtcc.firebase.StorageUtil
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonGeneroUI
 import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilUsuario
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
@@ -86,6 +95,19 @@ import java.util.Locale
 fun EditarInformacoesMeuPerfilPadraoScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
     sharedViewModelPerfilEditar: SharedViewModelPerfil,
+
+    sharedViewModelPerfil: SharedViewModelPerfil,
+    sharedViewModelUser: SharedViewModelUser,
+    sharedViewModelPerfilPropostas: SharedViewModelPerfilPropostas,
+    sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
+    sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
+    sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+
+    sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
+    sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
+    sharedViewModelPlayerProfileTimeAtualJogadores: SharedViewModelPlayerProfileTimeAtualJogadores,
+    sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
+
     sharedViewModelImageUri: SharedViewModelImageUri,
     onNavigate: (String) -> Unit
 ) {
@@ -132,27 +154,27 @@ fun EditarInformacoesMeuPerfilPadraoScreen(
     val context = LocalContext.current
 
 
-    var idUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.id) }
-    var userNameUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.nome_usuario) }
-    var fullNameSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.nome_completo) }
-    var dataNascimentoSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.data_nascimento) }
-    var generoUserSharedState by remember { mutableStateOf<Int?>(sharedViewModelPerfilEditar.genero) }
-    var nickNameUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.nickname) }
-    var biografiaUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.biografia) }
+    var idUserSharedState by remember { mutableStateOf(sharedViewModelUser.id) }
+    var userNameUserSharedState by remember { mutableStateOf(sharedViewModelUser.nome_usuario) }
+    var fullNameSharedState by remember { mutableStateOf(sharedViewModelUser.nome_completo) }
+    var dataNascimentoSharedState by remember { mutableStateOf(sharedViewModelUser.data_nascimento) }
+    var generoUserSharedState by remember { mutableStateOf<Int?>(sharedViewModelUser.genero) }
+    var nickNameUserSharedState by remember { mutableStateOf(sharedViewModelUser.nickname) }
+    var biografiaUserSharedState by remember { mutableStateOf(sharedViewModelUser.biografia) }
 
     var selectedGeneroUser by remember { mutableStateOf<Genero?>(null) }
 
 
-    LaunchedEffect(sharedViewModelPerfilEditar) {
+    LaunchedEffect(sharedViewModelUser) {
 
         // Esta parte só será executada quando o composable for inicializado
-        idUserSharedState = sharedViewModelPerfilEditar.id
-        userNameUserSharedState = sharedViewModelPerfilEditar.nome_usuario
-        fullNameSharedState = sharedViewModelPerfilEditar.nome_completo
-        dataNascimentoSharedState = sharedViewModelPerfilEditar.data_nascimento
-        generoUserSharedState = sharedViewModelPerfilEditar.genero
-        nickNameUserSharedState = sharedViewModelPerfilEditar.nickname
-        biografiaUserSharedState = sharedViewModelPerfilEditar.biografia
+        idUserSharedState = sharedViewModelUser.id
+        userNameUserSharedState = sharedViewModelUser.nome_usuario
+        fullNameSharedState = sharedViewModelUser.nome_completo
+        dataNascimentoSharedState = sharedViewModelUser.data_nascimento
+        generoUserSharedState = sharedViewModelUser.genero
+        nickNameUserSharedState = sharedViewModelUser.nickname
+        biografiaUserSharedState = sharedViewModelUser.biografia
         // Atribua outras variáveis de estado para outros campos da mesma maneira
     }
 
@@ -345,7 +367,7 @@ fun EditarInformacoesMeuPerfilPadraoScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             DateInputSamplePerfilUser(
-                                sharedViewModelPerfilEditar,
+                                sharedViewModelUser,
                                 context = context
                             ) { date ->
                                 dataNascimentoSharedState = date
@@ -808,7 +830,7 @@ fun AtualizarDadosPerfilUsuario(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateInputSamplePerfilUser(
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+    sharedViewModelUser: SharedViewModelUser,
     context: Context,
     onDateSelected: (String) -> Unit
 ) {
@@ -817,7 +839,7 @@ fun DateInputSamplePerfilUser(
 
     val calendar = Calendar.getInstance()
 
-    var dataNascimentoSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.data_nascimento) }
+    var dataNascimentoSharedState by remember { mutableStateOf(sharedViewModelUser.data_nascimento) }
     var dataNascimentoDate: Date? by remember { mutableStateOf(null) }
     val dateOfDatePickerDialog = remember { mutableStateOf(calendar.time) }
     var isInitialDateDisplayed by remember { mutableStateOf(true) } // Controla se a data inicial já foi exibida
@@ -833,9 +855,9 @@ fun DateInputSamplePerfilUser(
 
     // Declare outras variáveis de estado para outros campos da mesma maneira
 
-    LaunchedEffect(sharedViewModelPerfilEditar) {
+    LaunchedEffect(sharedViewModelUser) {
         // Esta parte só será executada quando o composable for inicializado
-        dataNascimentoSharedState = sharedViewModelPerfilEditar.data_nascimento
+        dataNascimentoSharedState = sharedViewModelUser.data_nascimento
         // Atribua outras variáveis de estado para outros campos da mesma maneira
     }
 

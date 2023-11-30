@@ -87,6 +87,15 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.model.getTime
 import br.senai.sp.jandira.proliseumtcc.model.getTimeTeams
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.AsyncImage
@@ -105,7 +114,19 @@ import retrofit2.Response
 @Composable
 fun ListaDeTimesScreen (
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+
+    sharedViewModelPerfil: SharedViewModelPerfil,
+    sharedViewModelUser: SharedViewModelUser,
+    sharedViewModelPerfilPropostas: SharedViewModelPerfilPropostas,
+    sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
+    sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
+    sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+
+    sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
+    sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
+    sharedViewModelPlayerProfileTimeAtualJogadores: SharedViewModelPlayerProfileTimeAtualJogadores,
+    sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
+
     sharedViewModelPerfilEditarOutro: SharedViewModelPerfilOutro,
     sharedViewModelPerfilJogadorOutro: SharedViewModelPerfilJogadorOutro,
     sharedViewModelPerfilOrganizadorOutro: SharedViewModelPerfilOrganizadorOutro,
@@ -149,7 +170,7 @@ fun ListaDeTimesScreen (
 
     var loading by remember { mutableStateOf(true) }
 
-    val idUser = sharedViewModelPerfilEditar.id
+    val idUser = sharedViewModelUser.id
 
     var photoUri by remember {
         mutableStateOf<Uri?>(null)

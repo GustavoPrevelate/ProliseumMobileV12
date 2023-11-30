@@ -1,6 +1,6 @@
 package br.senai.sp.jandira.proliseumtcc.model
 
 data class ProfileResponse(
-    val user: User?,
+    val user: User,
     val playerProfile: PlayerProfileResponse?,
 )

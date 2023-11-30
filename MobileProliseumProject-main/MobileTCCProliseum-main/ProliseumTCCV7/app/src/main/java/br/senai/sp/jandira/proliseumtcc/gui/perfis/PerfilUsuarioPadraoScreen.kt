@@ -54,8 +54,10 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganizador
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeHighlights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
@@ -83,6 +85,8 @@ fun PerfilUsuarioPadraoScreen(
     sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
     sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
     sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+    sharedViewModelPerfilPropostasDeRedeSocial: SharedViewModelPerfilPropostasDeRedeSocial,
+    sharedViewModelPerfilPropostasDeHighlights: SharedViewModelPerfilPropostasDeHighlights,
 
     sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
     sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
@@ -110,11 +114,11 @@ fun PerfilUsuarioPadraoScreen(
     val biografiaUser = sharedViewModelUser.biografia
     val generoPerfilUser = sharedViewModelUser.genero
 
-    val idUsuarioJogadorPerfilUser = sharedViewModelPerfilJogador.id
-    val nickNamejogadorPerfilUser = sharedViewModelPerfilJogador.nickname
-    val jogoJogadorPerfilUser = sharedViewModelPerfilJogador.jogo
-    val funcaoJogadorPerfilUser = sharedViewModelPerfilJogador.funcao
-    val eloJogadorPerfilUser = sharedViewModelPerfilJogador.elo
+    val idUsuarioJogadorPerfilUser = sharedViewModelPlayerProfile.id
+    val nickNamejogadorPerfilUser = sharedViewModelPlayerProfile.nickname
+    val jogoJogadorPerfilUser = sharedViewModelPlayerProfile.jogo
+    val funcaoJogadorPerfilUser = sharedViewModelPlayerProfile.funcao
+    val eloJogadorPerfilUser = sharedViewModelPlayerProfile.elo
 
 
     val orgProfile = sharedViewModelPerfilOrganizador.orgProfile
@@ -409,9 +413,7 @@ fun PerfilUsuarioPadraoScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    if(dadosJogador == null){
-                        Log.e("SEM PERFIL JOGADOR", "Sem dados de perfil de jogador ${dadosJogador}")
-                    } else if(dadosJogador != null){
+                    if(dadosJogador != null){
                         //jogos
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -462,6 +464,8 @@ fun PerfilUsuarioPadraoScreen(
                                 )
                             }
                         }
+                    } else if(dadosJogador == null){
+                        Log.e("SEM PERFIL JOGADOR", "Sem dados de perfil de jogador ${dadosJogador}")
                     }
 
 
@@ -634,9 +638,7 @@ fun PerfilUsuarioPadraoScreen(
                             )
                         }
 
-                        if(dadosJogador == null){
-                            Log.e("SEM DADOS JOGADOR", "Sem dados do perfil de jogador para exibir Elo ${dadosJogador}")
-                        } else if(dadosJogador != null){
+                        if(dadosJogador != null){
                             Column(
                                 modifier = Modifier
 
@@ -665,6 +667,8 @@ fun PerfilUsuarioPadraoScreen(
                                     modifier = Modifier.size(100.dp)
                                 )
                             }
+                        } else if(dadosJogador == null){
+                            Log.e("SEM DADOS JOGADOR", "Sem dados do perfil de jogador para exibir Elo ${dadosJogador}")
                         }
 
                         Column(

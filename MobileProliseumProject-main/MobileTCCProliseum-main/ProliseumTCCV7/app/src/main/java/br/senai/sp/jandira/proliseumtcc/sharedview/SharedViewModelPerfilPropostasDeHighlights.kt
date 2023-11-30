@@ -8,13 +8,7 @@ import br.senai.sp.jandira.proliseumtcc.model.ProfileResponsePropostasDeProposta
 import br.senai.sp.jandira.proliseumtcc.model.ProfileResponsePropostasDeRedeSocial
 import br.senai.sp.jandira.proliseumtcc.model.User
 
-class SharedViewModelPerfilPropostasDe: ViewModel() {
+class SharedViewModelPerfilPropostasDeHighlights: ViewModel() {
     var id: Int? = 0
-    var nome_time: String? = ""
-    var jogo: Int? = 0
-    var biografia: String? = ""
-    var jogadores: List<ProfileResponsePropostasDeJogadores>? = null
-    var propostas: List<ProfileResponsePropostasDePropostas>? = null
-    var redeSocial: List<ProfileResponsePropostasDeRedeSocial>? = null
-    var highlights: List<ProfileResponsePropostasDeHighlights>? = null
+    var titulo: String? = ""
 }

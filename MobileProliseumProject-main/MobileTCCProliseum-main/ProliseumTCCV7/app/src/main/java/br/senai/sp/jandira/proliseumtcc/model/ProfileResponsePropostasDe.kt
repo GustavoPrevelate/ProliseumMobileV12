@@ -7,5 +7,7 @@ data class ProfileResponsePropostasDe(
     val biografia: String?,
     val jogadores: List<ProfileResponsePropostasDeJogadores>?,
     val propostas: List<ProfileResponsePropostasDePropostas>?,
+    val redeSocial: List<ProfileResponsePropostasDeRedeSocial>?,
+    val highlights: List<ProfileResponsePropostasDeHighlights>?,
 
 )

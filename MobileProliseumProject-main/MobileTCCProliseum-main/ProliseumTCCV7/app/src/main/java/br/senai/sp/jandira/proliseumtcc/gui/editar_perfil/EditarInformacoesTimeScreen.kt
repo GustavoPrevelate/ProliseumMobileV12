@@ -63,6 +63,15 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.firebase.StorageTeamUtil
 import br.senai.sp.jandira.proliseumtcc.model.infoAtualizarTime
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
@@ -77,7 +86,20 @@ import retrofit2.Response
 @Composable
 fun EditarInformacoesTimeScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+
+    sharedViewModelPerfil: SharedViewModelPerfil,
+    sharedViewModelUser: SharedViewModelUser,
+    sharedViewModelPerfilPropostas: SharedViewModelPerfilPropostas,
+    sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
+    sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
+    sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+
+    sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
+    sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
+    sharedViewModelPlayerProfileTimeAtualJogadores: SharedViewModelPlayerProfileTimeAtualJogadores,
+    sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
+
+
     sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
     sharedViewModelGetMyTeamsTime: SharedViewModelGetMyTeamsTime,
     sharedViewModelImageUri: SharedViewModelImageUri,
@@ -99,7 +121,7 @@ fun EditarInformacoesTimeScreen(
     Log.e("ID DO TIME ESCOLHIDO 02","o id do time da tela EditarPerfilTime ${team}")
 
     // OUTRAS INFORMAÇÕES
-    val idUsuarioOrganizador = sharedViewModelPerfilEditar.id
+    val idUsuarioOrganizador = sharedViewModelUser.id
 
     var nomeTime by remember { mutableStateOf(team?.nome_time ?: "Nome do Time não encontrado") }
     var biografiaTime by remember { mutableStateOf(team?.biografia ?: "Biografia do Time não encontrado") }

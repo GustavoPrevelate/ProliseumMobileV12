@@ -56,6 +56,15 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPe
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsOrganizacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
@@ -68,7 +77,19 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun NavigationPrincipalScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+
+    sharedViewModelPerfil: SharedViewModelPerfil,
+    sharedViewModelUser: SharedViewModelUser,
+    sharedViewModelPerfilPropostas: SharedViewModelPerfilPropostas,
+    sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
+    sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
+    sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+
+    sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
+    sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
+    sharedViewModelPlayerProfileTimeAtualJogadores: SharedViewModelPlayerProfileTimeAtualJogadores,
+    sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
+
     sharedGetTime: SharedGetTime,
     sharedGetTimeTeams: SharedGetTimeTeams,
     sharedGetTimeTeamsJogadores: SharedGetTimeTeamsJogadores,
@@ -81,11 +102,11 @@ fun NavigationPrincipalScreen(
     val token = sharedViewModelTokenEId.token
     Log.d("PerfilUsuarioJogadorScreen", "Token: $token")
 
-    val idUser = sharedViewModelPerfilEditar.id
+    val idUser = sharedViewModelUser.id
 
     val imageRef = remember { mutableStateOf<StorageReference?>(null) }
 
-    val nickNameUser = sharedViewModelPerfilEditar.nickname
+    val nickNameUser = sharedViewModelUser.nickname
 
     // Define a família da fonte personalizada
     val customFontFamily = FontFamily(

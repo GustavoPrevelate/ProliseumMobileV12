@@ -22,8 +22,10 @@ import br.senai.sp.jandira.proliseumtcc.model.ProfileResponse
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeHighlights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
@@ -46,6 +48,8 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
     sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
     sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
     sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+    sharedViewModelPerfilPropostasDeRedeSocial: SharedViewModelPerfilPropostasDeRedeSocial,
+    sharedViewModelPerfilPropostasDeHighlights: SharedViewModelPerfilPropostasDeHighlights,
 
     sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
     sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
@@ -167,6 +171,29 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
                                                         sharedViewModelPerfilPropostasDePropostas.menssagem = userPropostaDePropostas.menssagem
                                                     }
                                                 }
+
+                                                sharedViewModelPerfilPropostasDe.redeSocial = userPropostaDe.redeSocial
+
+                                                if(userPropostaDe.redeSocial != null){
+                                                    for(userPropostaDeRedeSocial in userPropostaDe.redeSocial){
+                                                        sharedViewModelPerfilPropostasDeRedeSocial.id = userPropostaDeRedeSocial.id
+                                                        sharedViewModelPerfilPropostasDeRedeSocial.tipo = userPropostaDeRedeSocial.tipo
+                                                        sharedViewModelPerfilPropostasDeRedeSocial.link = userPropostaDeRedeSocial.link
+
+
+                                                    }
+                                                }
+
+                                                sharedViewModelPerfilPropostasDe.highlights = userPropostaDe.highlights
+
+                                                if(userPropostaDe.highlights != null){
+                                                    for(userPropostaDeHighLights in userPropostaDe.highlights){
+
+                                                        sharedViewModelPerfilPropostasDeHighlights.id = userPropostaDeHighLights.id
+                                                        sharedViewModelPerfilPropostasDeHighlights.titulo = userPropostaDeHighLights.titulo
+
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -244,7 +271,7 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
 
                         override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
                             // Trate o erro de falha na rede.
-                            Log.d("PerfilUsuarioJogadorScreen", "Erro de rede: ${t.message}")
+                            Log.d("CAR INFO PERFIL PADRAO", "Erro de rede da tela de carregar informacoes perfil usuario padrao: ${t.message}")
                         }
 
                     })

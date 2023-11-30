@@ -63,6 +63,15 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.firebase.StorageUtil
 import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilOrganizacao
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
@@ -77,7 +86,19 @@ import retrofit2.Response
 @Composable
 fun EditarInformacoesOrganizacaoScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+
+    sharedViewModelPerfil: SharedViewModelPerfil,
+    sharedViewModelUser: SharedViewModelUser,
+    sharedViewModelPerfilPropostas: SharedViewModelPerfilPropostas,
+    sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
+    sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
+    sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+
+    sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
+    sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
+    sharedViewModelPlayerProfileTimeAtualJogadores: SharedViewModelPlayerProfileTimeAtualJogadores,
+    sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
+
     sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
     sharedViewModelImageUri: SharedViewModelImageUri,
     onNavigate: (String) -> Unit
@@ -91,14 +112,14 @@ fun EditarInformacoesOrganizacaoScreen(
         Font(R.font.font_poppins)
     )
 
-    var idUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.id) }
+    var idUserSharedState by remember { mutableStateOf(sharedViewModelUser.id) }
     var userNameUserOrganizadorSharedState by remember { mutableStateOf(sharedViewModelPerfilOrganizador.nome_organizacao) }
     var biografiaUserOrganizadorSharedState by remember { mutableStateOf(sharedViewModelPerfilOrganizador.biografia) }
 
 
-    LaunchedEffect(sharedViewModelPerfilEditar, sharedViewModelPerfilOrganizador) {
+    LaunchedEffect(sharedViewModelUser, sharedViewModelPerfilOrganizador) {
 
-        idUserSharedState = sharedViewModelPerfilEditar.id
+        idUserSharedState = sharedViewModelUser.id
         userNameUserOrganizadorSharedState = sharedViewModelPerfilOrganizador.nome_organizacao
         biografiaUserOrganizadorSharedState = sharedViewModelPerfilOrganizador.biografia
 

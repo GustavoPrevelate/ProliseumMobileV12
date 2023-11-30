@@ -57,6 +57,15 @@ import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonFuncaoLolUI
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonJogoUI
 import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
@@ -68,7 +77,9 @@ import retrofit2.Response
 @Composable
 fun EditarInformacoesJogadorScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+
+    sharedViewModelUser: SharedViewModelUser,
+
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
     onNavigate: (String) -> Unit
 ) {
@@ -81,7 +92,7 @@ fun EditarInformacoesJogadorScreen(
         Font(R.font.font_poppins)
     )
 
-    var idUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.id) }
+    var idUserSharedState by remember { mutableStateOf(sharedViewModelUser.id) }
     var nickNameUserSharedState by remember { mutableStateOf(sharedViewModelPerfilJogador.nickname) }
     var jogoUserSharedState by remember { mutableStateOf(sharedViewModelPerfilJogador.jogo) }
     var funcaoUserSharedState by remember { mutableStateOf(sharedViewModelPerfilJogador.funcao) }
@@ -91,9 +102,9 @@ fun EditarInformacoesJogadorScreen(
     var selectedFuncao by remember { mutableStateOf<FuncaoLol?>(null) }
     var selectedElo by remember { mutableStateOf<EloLol?>(null) }
 
-    LaunchedEffect(sharedViewModelPerfilEditar) {
+    LaunchedEffect(sharedViewModelUser) {
 
-        idUserSharedState = sharedViewModelPerfilEditar.id
+        idUserSharedState = sharedViewModelUser.id
         nickNameUserSharedState = sharedViewModelPerfilJogador.nickname
         jogoUserSharedState = sharedViewModelPerfilJogador.jogo
         funcaoUserSharedState = sharedViewModelPerfilJogador.funcao

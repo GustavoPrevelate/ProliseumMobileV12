@@ -10,7 +10,7 @@ class SharedViewModelPlayerProfileTimeAtual: ViewModel() {
     var id: Int? = 0
     var nome_time: String? = ""
     var jogo: Int? = 0
-    var biografia: Int? = 0
+    var biografia: String? = ""
     var jogadores: List<PlayerProfileResponseTimeAtualJogadores>? = null
     var propostas: List<PlayerProfileResponseTimeAtualPropostas>? = null
 }

@@ -77,6 +77,15 @@ import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryC
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagens
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.AsyncImage
@@ -93,7 +102,19 @@ import retrofit2.Response
 @Composable
 fun ListaDeJogadoresScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+
+    sharedViewModelPerfil: SharedViewModelPerfil,
+    sharedViewModelUser: SharedViewModelUser,
+    sharedViewModelPerfilPropostas: SharedViewModelPerfilPropostas,
+    sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
+    sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
+    sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+
+    sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
+    sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
+    sharedViewModelPlayerProfileTimeAtualJogadores: SharedViewModelPlayerProfileTimeAtualJogadores,
+    sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
+
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
     sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
 
@@ -132,14 +153,14 @@ fun ListaDeJogadoresScreen(
     val imageOrgRef = remember { mutableStateOf<StorageReference?>(null) }
     val imageOrgCapaRef = remember { mutableStateOf<StorageReference?>(null) }
 
-    val idUser = sharedViewModelPerfilEditar.id
-    val nomeUser = sharedViewModelPerfilEditar.nome_usuario
-    val fullNomeUser = sharedViewModelPerfilEditar.nome_completo
-    val dataNascimentoUser = sharedViewModelPerfilEditar.data_nascimento
-    val emailUser = sharedViewModelPerfilEditar.email
-    val nickNameUser = sharedViewModelPerfilEditar.nickname
-    val biografiaUser = sharedViewModelPerfilEditar.biografia
-    val generoPerfilUser = sharedViewModelPerfilEditar.genero
+    val idUser = sharedViewModelUser.id
+    val nomeUser = sharedViewModelUser.nome_usuario
+    val fullNomeUser = sharedViewModelUser.nome_completo
+    val dataNascimentoUser = sharedViewModelUser.data_nascimento
+    val emailUser = sharedViewModelUser.email
+    val nickNameUser = sharedViewModelUser.nickname
+    val biografiaUser = sharedViewModelUser.biografia
+    val generoPerfilUser = sharedViewModelUser.genero
 
     val idUsuarioJogadorPerfilUser = sharedViewModelPerfilJogador.id
     val nickNamejogadorPerfilUser = sharedViewModelPerfilJogador.nickname
@@ -401,7 +422,7 @@ fun ListaDeJogadoresScreen(
 
 
 
-                    Log.d("INFORMAÇOES DE USUARIO 01", "Token: $token, Id: ${sharedViewModelPerfilEditar.id}, Nome de usuario: ${sharedViewModelPerfilEditar.nome_usuario}")
+                    Log.d("INFORMAÇOES DE USUARIO 01", "Token: $token, Id: ${sharedViewModelUser.id}, Nome de usuario: ${sharedViewModelUser.nome_usuario}")
                     Log.d("CarregarPerfilUsuarioScreen", "Resposta corpo bem-sucedida: ${response.code()}")
 
 

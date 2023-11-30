@@ -82,6 +82,15 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelNomeJogadorLis
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganizador
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
@@ -99,7 +108,20 @@ fun PerfilTimeScreen(
 //    sharedViewModelPerfilEditarOutro: SharedViewModelPerfilOutro,
 //    sharedViewModelPerfilJogadorOutro: SharedViewModelPerfilJogadorOutro,
 //    sharedViewModelPerfilOrganizadorOutro: SharedViewModelPerfilOrganizadorOutro,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+
+    sharedViewModelPerfil: SharedViewModelPerfil,
+    sharedViewModelUser: SharedViewModelUser,
+    sharedViewModelPerfilPropostas: SharedViewModelPerfilPropostas,
+    sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
+    sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
+    sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+
+    sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
+    sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
+    sharedViewModelPlayerProfileTimeAtualJogadores: SharedViewModelPlayerProfileTimeAtualJogadores,
+    sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
+
+
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
     sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
 
@@ -149,14 +171,14 @@ fun PerfilTimeScreen(
     val imageTimeRef = remember { mutableStateOf<StorageReference?>(null) }
     val imageTimeCapaRef = remember { mutableStateOf<StorageReference?>(null) }
 
-    val idUser = sharedViewModelPerfilEditar.id
-    val nomeUser = sharedViewModelPerfilEditar.nome_usuario
-    val fullNomeUser = sharedViewModelPerfilEditar.nome_completo
-    val dataNascimentoUser = sharedViewModelPerfilEditar.data_nascimento
-    val emailUser = sharedViewModelPerfilEditar.email
-    val nickNameUser = sharedViewModelPerfilEditar.nickname
-    val biografiaUser = sharedViewModelPerfilEditar.biografia
-    val generoPerfilUser = sharedViewModelPerfilEditar.genero
+    val idUser = sharedViewModelUser.id
+    val nomeUser = sharedViewModelUser.nome_usuario
+    val fullNomeUser = sharedViewModelUser.nome_completo
+    val dataNascimentoUser = sharedViewModelUser.data_nascimento
+    val emailUser = sharedViewModelUser.email
+    val nickNameUser = sharedViewModelUser.nickname
+    val biografiaUser = sharedViewModelUser.biografia
+    val generoPerfilUser = sharedViewModelUser.genero
 
     val idUsuarioJogadorPerfilUser = sharedViewModelPerfilJogador.id
     val nickNamejogadorPerfilUser = sharedViewModelPerfilJogador.nickname
