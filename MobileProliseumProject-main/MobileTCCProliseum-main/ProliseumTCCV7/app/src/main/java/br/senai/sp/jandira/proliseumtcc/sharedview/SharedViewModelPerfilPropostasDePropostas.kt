@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import br.senai.sp.jandira.proliseumtcc.model.PlayerProfileResponse
 import br.senai.sp.jandira.proliseumtcc.model.User
 
-class SharedViewModelPerfil: ViewModel() {
-    var user: User? = null
-    var playerProfile: PlayerProfileResponse? = null
+class SharedViewModelPerfilPropostasDePropostas: ViewModel() {
+    var id: Int? = 0
+    var menssagem: String? = ""
 }

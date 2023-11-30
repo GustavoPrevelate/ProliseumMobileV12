@@ -1,10 +1,9 @@
 package br.senai.sp.jandira.proliseumtcc.model
 
-data class PlayerProfileResponse(
+data class PlayerProfileResponseTimeAtualJogadores(
     val id: Int?,
     val nickname: String?,
     val jogo: Int?,
     val funcao: Int?,
-    val elo: Int?,
-    val time_atual: PlayerProfileResponseTimeAtual?
+    val elo: Int?
 )

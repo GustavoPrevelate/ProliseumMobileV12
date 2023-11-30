@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitFactoryCadastro {
 
-    private val URL_BASE = "https://alive-dog-parka.cyclic.app/"
+    private val URL_BASE = "https://proliseum-back.cyclic.app"
 
     //Guarda a conexão com o servidor, devolve a conexão
     private val retrofitFactoryCadastro = Retrofit

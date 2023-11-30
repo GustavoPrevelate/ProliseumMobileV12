@@ -20,6 +20,15 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganiza
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.model.ProfileResponse
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import kotlinx.coroutines.delay
@@ -30,7 +39,19 @@ import retrofit2.Response
 @Composable
 fun CarregarInformacoesPerfilUsuarioPadraoScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+
+    sharedViewModelPerfil: SharedViewModelPerfil,
+    sharedViewModelUser: SharedViewModelUser,
+    sharedViewModelPerfilPropostas: SharedViewModelPerfilPropostas,
+    sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
+    sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
+    sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+
+    sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
+    sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
+    sharedViewModelPlayerProfileTimeAtualJogadores: SharedViewModelPlayerProfileTimeAtualJogadores,
+    sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
+
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
     sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
     onNavigate: (String) -> Unit
@@ -89,44 +110,123 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
                                 Log.d("PerfilUsuarioJogadorScreen", "Resposta bem-sucedida: ${response.code()}")
                                 val profileResponseData = response.body()
 
-                                val user = profileResponseData!!.user
+                                val user = profileResponseData?.user
+                                val playerProfile = profileResponseData?.playerProfile
 
-                                sharedViewModelPerfilEditar.id = user.id
-                                sharedViewModelPerfilEditar.nome_usuario = user.nome_usuario
-                                sharedViewModelPerfilEditar.nome_completo = user.nome_completo.toString()
-                                sharedViewModelPerfilEditar.email = user.email
-                                sharedViewModelPerfilEditar.data_nascimento = user.data_nascimento
-                                sharedViewModelPerfilEditar.genero = user.genero
-                                sharedViewModelPerfilEditar.nickname = user.nickname
-                                sharedViewModelPerfilEditar.biografia = user.biografia
+                                sharedViewModelPerfil.user = profileResponseData?.user
+                                sharedViewModelPerfil.playerProfile = profileResponseData?.playerProfile
 
-                                if (profileResponseData.playerProfile != null) {
-                                    val playerProfile = profileResponseData.playerProfile
-                                    sharedViewModelPerfilJogador.id = playerProfile.id
-                                    sharedViewModelPerfilJogador.nickname = playerProfile.nickname
-                                    sharedViewModelPerfilJogador.jogo = playerProfile.jogo!!
-                                    sharedViewModelPerfilJogador.funcao = playerProfile.funcao!!
-                                    sharedViewModelPerfilJogador.elo = playerProfile.elo!!
+
+                                if(user != null){
+                                    sharedViewModelUser.id = user.id
+                                    sharedViewModelUser.nome_usuario = user.nome_usuario
+                                    sharedViewModelUser.nome_completo = user.nome_completo
+                                    sharedViewModelUser.email = user.email
+                                    sharedViewModelUser.data_nascimento = user.data_nascimento
+                                    sharedViewModelUser.genero = user.genero
+                                    sharedViewModelUser.nickname = user.nickname
+                                    sharedViewModelUser.biografia = user.biografia
+
+                                    sharedViewModelUser.propostas = user.propostas
+
+                                    val userPropostas = user.propostas
+
+                                    if(userPropostas != null){
+                                        for (userProposta in userPropostas){
+                                            sharedViewModelPerfilPropostas.id = userProposta.id
+                                            sharedViewModelPerfilPropostas.menssagem = userProposta.menssagem
+
+                                            sharedViewModelPerfilPropostas.de = userProposta.de
+
+                                            val userPropostaDe = userProposta.de
+
+                                            if(userPropostaDe != null){
+                                                sharedViewModelPerfilPropostasDe.id = userPropostaDe.id
+                                                sharedViewModelPerfilPropostasDe.nome_time = userPropostaDe.nome_time
+                                                sharedViewModelPerfilPropostasDe.jogo = userPropostaDe.jogo
+                                                sharedViewModelPerfilPropostasDe.biografia = userPropostaDe.biografia
+
+
+                                                sharedViewModelPerfilPropostasDe.jogadores = userPropostaDe.jogadores
+
+                                                if(userPropostaDe.jogadores != null){
+                                                    for(userPropostaDeJogadores in userPropostaDe.jogadores){
+                                                        sharedViewModelPerfilPropostasDeJogadores.id = userPropostaDeJogadores.id
+                                                        sharedViewModelPerfilPropostasDeJogadores.nickname = userPropostaDeJogadores.nickname
+                                                        sharedViewModelPerfilPropostasDeJogadores.jogo = userPropostaDeJogadores.jogo
+                                                        sharedViewModelPerfilPropostasDeJogadores.funcao = userPropostaDeJogadores.funcao
+                                                        sharedViewModelPerfilPropostasDeJogadores.elo = userPropostaDeJogadores.elo
+                                                    }
+                                                }
+
+                                                sharedViewModelPerfilPropostasDe.propostas = userPropostaDe.propostas
+
+                                                if(userPropostaDe.propostas != null){
+                                                    for(userPropostaDePropostas in userPropostaDe.propostas) {
+                                                        sharedViewModelPerfilPropostasDePropostas.id = userPropostaDePropostas.id
+                                                        sharedViewModelPerfilPropostasDePropostas.menssagem = userPropostaDePropostas.menssagem
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
 
-//                                if (profileResponseData.orgProfile == null) {
-//
-//                                    Log.e("NENHUMA ORGANIZACAO","Nenhuma organização para retornar dados")
-//
-//                                } else if (profileResponseData.orgProfile != null){
-//                                    val orgProfile = profileResponseData.orgProfile
-//                                    sharedViewModelPerfilOrganizador.orgProfile = orgProfile
-//                                    sharedViewModelPerfilOrganizador.nome_organizacao = orgProfile.nome_organizacao
-//                                    sharedViewModelPerfilOrganizador.biografia = orgProfile.biografia
-//                                }
+                                if(playerProfile != null){
+                                    sharedViewModelPlayerProfile.id = playerProfile.id
+                                    sharedViewModelPlayerProfile.nickname = playerProfile.nickname
+                                    sharedViewModelPlayerProfile.jogo = playerProfile.jogo
+                                    sharedViewModelPlayerProfile.funcao = playerProfile.funcao
+                                    sharedViewModelPlayerProfile.elo = playerProfile.elo
+
+                                    sharedViewModelPlayerProfile.time_atual = playerProfile.time_atual
+
+                                    val playerProfileTimeAtual = playerProfile.time_atual
+
+                                    if(playerProfileTimeAtual != null){
+                                        sharedViewModelPlayerProfileTimeAtual.id = playerProfileTimeAtual.id
+                                        sharedViewModelPlayerProfileTimeAtual.nome_time = playerProfileTimeAtual.nome_time
+                                        sharedViewModelPlayerProfileTimeAtual.jogo = playerProfileTimeAtual.jogo
+                                        sharedViewModelPlayerProfileTimeAtual.biografia = playerProfileTimeAtual.biografia
+
+                                        sharedViewModelPlayerProfileTimeAtual.jogadores = playerProfileTimeAtual.jogadores
+
+                                        sharedViewModelPlayerProfileTimeAtual.propostas = playerProfileTimeAtual.propostas
+
+                                        val playerProfileTimeAtualJogadores = playerProfileTimeAtual.jogadores
+
+                                        if(playerProfileTimeAtualJogadores != null){
+                                            for(playerProfileTimeAtualJogadoresList in playerProfileTimeAtualJogadores){
+                                                sharedViewModelPlayerProfileTimeAtualJogadores.id = playerProfileTimeAtualJogadoresList.id
+                                                sharedViewModelPlayerProfileTimeAtualJogadores.nickname = playerProfileTimeAtualJogadoresList.nickname
+                                                sharedViewModelPlayerProfileTimeAtualJogadores.jogo = playerProfileTimeAtualJogadoresList.jogo
+                                                sharedViewModelPlayerProfileTimeAtualJogadores.funcao = playerProfileTimeAtualJogadoresList.funcao
+                                                sharedViewModelPlayerProfileTimeAtualJogadores.elo = playerProfileTimeAtualJogadoresList.elo
+                                            }
+                                        }
+                                        val playerProfileTimeAtualPropostas = playerProfileTimeAtual.propostas
+
+                                        if(playerProfileTimeAtualPropostas != null){
+                                            for(playerProfileTimeAtualPropostasList in playerProfileTimeAtualPropostas){
+                                                sharedViewModelPlayerProfileTimeAtualPropostas.id = playerProfileTimeAtualPropostasList.id
+                                                sharedViewModelPlayerProfileTimeAtualPropostas.menssagem = playerProfileTimeAtualPropostasList.menssagem
+                                            }
+                                        }
+
+                                    }
+
+                                }
 
 
-                                Log.d("INFORMAÇOES DE USUARIO 01", "Token: $token, Id: ${sharedViewModelPerfilEditar.id}, Nome de usuario: ${sharedViewModelPerfilEditar.nome_usuario}")
+
+
+
+                                Log.d("INFORMAÇOES DE USUARIO 01", "Token: $token, Id: ${sharedViewModelUser.id}, Nome de usuario: ${sharedViewModelUser.nome_usuario}")
                                 Log.d("CarregarPerfilUsuarioScreen", "Resposta corpo bem-sucedida: ${response.code()}")
 
-                                if( sharedViewModelPerfilEditar.id != 0){
+                                if( sharedViewModelUser.id != 0){
 
-                                    Log.d("INFORMAÇOES DE USUARIO 02", "Token: $token, Id: ${sharedViewModelPerfilEditar.id}, Nome de usuario: ${sharedViewModelPerfilEditar.nome_usuario}")
+                                    Log.d("INFORMAÇOES DE USUARIO 02", "Token: $token, Id: ${sharedViewModelUser.id}, Nome de usuario: ${sharedViewModelUser.nome_usuario}")
 
                                     onNavigate("home")
                                 }
