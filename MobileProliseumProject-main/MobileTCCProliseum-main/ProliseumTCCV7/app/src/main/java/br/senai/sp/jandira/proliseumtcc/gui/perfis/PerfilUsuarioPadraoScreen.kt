@@ -105,6 +105,8 @@ fun PerfilUsuarioPadraoScreen(
     val imageOrgRef = remember { mutableStateOf<StorageReference?>(null) }
     val imageCapaRef = remember { mutableStateOf<StorageReference?>(null) }
 
+
+
     val idUser = sharedViewModelUser.id
     val nomeUser = sharedViewModelUser.nome_usuario
     val fullNomeUser = sharedViewModelUser.nome_completo
@@ -119,6 +121,11 @@ fun PerfilUsuarioPadraoScreen(
     val jogoJogadorPerfilUser = sharedViewModelPlayerProfile.jogo
     val funcaoJogadorPerfilUser = sharedViewModelPlayerProfile.funcao
     val eloJogadorPerfilUser = sharedViewModelPlayerProfile.elo
+
+    val timeAtualPerfilUser = sharedViewModelPlayerProfile.time_atual
+
+
+    val nomeTimeAtualUserPadrao = sharedViewModelPlayerProfileTimeAtual.nome_time
 
 
     val orgProfile = sharedViewModelPerfilOrganizador.orgProfile
@@ -152,8 +159,12 @@ fun PerfilUsuarioPadraoScreen(
     //    FIREBASE
 
     var imageUri by remember { mutableStateOf<Uri?>(null) }
+
     var imageOrgUri by remember { mutableStateOf<Uri?>(null) }
     var imageCapaUri by remember { mutableStateOf<Uri?>(null) }
+
+
+
 
 
     if (imageOrgRef.value != null) { // Verifique a referência do Firebase
@@ -200,6 +211,7 @@ fun PerfilUsuarioPadraoScreen(
             }
         }
     }
+
 
     // FIREBASE
     Log.e("URL IMAGEM DO USUARIO 03", "Id do URL da imagem do usuario ${idUser}")
@@ -289,13 +301,13 @@ fun PerfilUsuarioPadraoScreen(
             Button(
                 onClick = {
                     //rememberNavController.navigate("editar_perfil_jogador_part_1")
-                    onNavigate("editar_perfil_usuario_padrao_1")
+                    onNavigate("navegacao_configuracoes_meu_perfil_principal")
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
 
                 Text(
-                    text = stringResource(id = R.string.button_editar),
+                    text = "GERENCIAR PERFIL",
                     color = Color.White,
                     fontFamily = customFontFamilyText,
                     fontWeight = FontWeight(600),
@@ -304,8 +316,9 @@ fun PerfilUsuarioPadraoScreen(
                 Spacer(modifier = Modifier.width(3.dp))
 
                 Icon(
-                    painter = painterResource(id = R.drawable.escrever),
-                    contentDescription = "Editar"
+                    painter = painterResource(id = R.drawable.editar_perfis_icon),
+                    contentDescription = "Gerenciar",
+                    modifier = Modifier.size(20.dp)
                 )
             }
         }
@@ -612,30 +625,121 @@ fun PerfilUsuarioPadraoScreen(
 
                         )
                     {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .padding(10.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.label_atualmente),
-                                fontSize = 15.sp,
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(900),
-                            )
-                            Image(
-                                painter = painterResource(id = R.drawable.brasao),
-                                contentDescription = ""
-                            )
-                            Text(
-                                text = stringResource(id = R.string.label_fa),
-                                fontSize = 15.sp,
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(400),
-                            )
+                        if(timeAtualPerfilUser != null){
+
+                            val imageTimeRef = remember { mutableStateOf<StorageReference?>(null) }
+
+                            if(idUser != null && idUser != 0){
+
+
+                                val storage = Firebase.storage
+
+                                if (idUser != null && idUser != 0) {
+                                    imageTimeRef.value = storage.reference.child("team/${idUser}/profile")
+                                }
+
+                            } else{
+                                Log.e("TOKEN NULO", "Token do usuario esta nulo")
+                                Log.e("ERRO", "As informaçoes do usuario nao foram carregadas")
+                            }
+
+                            var imageTimeUri by remember { mutableStateOf<Uri?>(null) }
+
+                            if (imageTimeRef.value != null) { // Verifique a referência do Firebase
+                                LaunchedEffect(Unit) {
+                                    try {
+                                        val uriTime = imageTimeRef.value!!.downloadUrl.await()
+                                        imageTimeUri = uriTime
+
+                                        Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriTime}")
+
+                                    } catch (e: Exception) {
+                                        // Trate os erros, se houver algum
+                                        Log.e("DEBUG", "Erro ao buscar imagem: $e")
+                                    }
+                                }
+                            }
+
+
+                                Column() {
+
+                                    Column(
+                                        modifier = Modifier
+                                            .padding(top = 5.dp, start = 30.dp)
+                                    ) {
+                                        Text(
+                                            text = "${nomeTimeAtualUserPadrao}",
+                                            fontSize = 15.sp,
+                                            color = Color.White,
+                                            fontFamily = customFontFamilyText,
+                                            fontWeight = FontWeight(900),
+                                        )
+
+                                        Spacer(modifier = Modifier.height( 5.dp))
+                                    }
+
+
+                                    Box(
+                                        contentAlignment = Alignment.BottomEnd
+                                    ) {
+
+
+
+                                        Card(
+                                            modifier = Modifier
+                                                .clickable {
+                                                    onNavigate("home")
+                                                }
+                                                .height(100.dp)
+                                                .width(100.dp),
+
+                                            shape = CircleShape
+                                        ) {
+
+                                            if (idUser != null && idUser != 0) {
+                                                // Exiba a imagem se a URI estiver definida
+                                                AsyncImage(
+                                                    model = imageTimeUri,
+                                                    contentDescription = null,
+                                                    modifier = Modifier.fillMaxSize(),
+                                                    contentScale = ContentScale.Crop
+                                                )
+                                            } else {
+                                                // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                                                Text("Carregando imagem...")
+                                            }
+                                        }
+                                    }
+                                }
+
+
+
+                        } else if(timeAtualPerfilUser == null){
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .padding(10.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.label_atualmente),
+                                    fontSize = 15.sp,
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(900),
+                                )
+                                Image(
+                                    painter = painterResource(id = R.drawable.brasao),
+                                    contentDescription = ""
+                                )
+                                Text(
+                                    text = stringResource(id = R.string.label_fa),
+                                    fontSize = 15.sp,
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(400),
+                                )
+                            }
                         }
 
                         if(dadosJogador != null){
@@ -671,24 +775,24 @@ fun PerfilUsuarioPadraoScreen(
                             Log.e("SEM DADOS JOGADOR", "Sem dados do perfil de jogador para exibir Elo ${dadosJogador}")
                         }
 
-                        Column(
-                            modifier = Modifier
-                                .padding(10.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.label_trofeu),
-                                fontSize = 15.sp,
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(900),
-                            )
-                            Image(
-                                painter = painterResource(id = R.drawable.trofeu_padrao),
-                                contentDescription = "",
-                                modifier = Modifier.size(80.dp)
-                            )
-                        }
+//                        Column(
+//                            modifier = Modifier
+//                                .padding(10.dp),
+//                            horizontalAlignment = Alignment.CenterHorizontally
+//                        ) {
+//                            Text(
+//                                text = stringResource(id = R.string.label_trofeu),
+//                                fontSize = 15.sp,
+//                                color = Color.White,
+//                                fontFamily = customFontFamilyText,
+//                                fontWeight = FontWeight(900),
+//                            )
+//                            Image(
+//                                painter = painterResource(id = R.drawable.trofeu_padrao),
+//                                contentDescription = "",
+//                                modifier = Modifier.size(80.dp)
+//                            )
+//                        }
                     }
                     Box(
                         modifier = Modifier

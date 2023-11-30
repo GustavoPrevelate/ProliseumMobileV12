@@ -94,6 +94,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesMeuPe
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarMinhaPublicacaoJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavegacaoConfiguracoesMeuPerfilPrincipal
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroJogadorListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroTimeScreen
@@ -131,8 +132,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+
 
         setContent {
 
@@ -382,7 +385,6 @@ fun MainScreen() {
         val editarInformacoesMeuPerfilPadraoScreen: @Composable () -> Unit = {
             EditarInformacoesMeuPerfilPadraoScreen(
                 sharedViewModelTokenEId,
-                sharedViewModelPerfil,
                 sharedViewModelPerfil,
                 sharedViewModelUser,
                 sharedViewModelPerfilPropostas,
@@ -1397,6 +1399,29 @@ fun MainScreen() {
             }
         }
 
+        // TELA DE PERFIL DE OUTRO TIME
+        val navegacaoConfiguracoesMeuPerfilPrincipal: @Composable () -> Unit = {
+            NavegacaoConfiguracoesMeuPerfilPrincipal(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+                sharedViewModelImageUri,
+            ) {
+                currentScreen = it
+            }
+        }
+
 
 
 
@@ -1453,6 +1478,7 @@ fun MainScreen() {
                     "minha_postagem" -> minhaPostagemScreen()
                     "editar_minha_publicacao_jogador" -> editarMinhaPublicacaoJogadorScreen()
                     "notificacao" -> notificacaoScreen()
+                    "navegacao_configuracoes_meu_perfil_principal" -> navegacaoConfiguracoesMeuPerfilPrincipal()
                     else -> startScreen()
                 }
             }

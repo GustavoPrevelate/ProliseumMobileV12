@@ -94,7 +94,6 @@ import java.util.Locale
 @Composable
 fun EditarInformacoesMeuPerfilPadraoScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
 
     sharedViewModelPerfil: SharedViewModelPerfil,
     sharedViewModelUser: SharedViewModelUser,
@@ -248,7 +247,7 @@ fun EditarInformacoesMeuPerfilPadraoScreen(
                 Icon(
                     modifier = Modifier.clickable {
                         //rememberNavController.navigate("perfil_usuario_jogador")
-                        onNavigate("perfil_usuario_jogador")
+                        onNavigate("navegacao_configuracoes_meu_perfil_principal")
                                                   },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
