@@ -52,6 +52,15 @@ import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganizador
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
@@ -67,7 +76,19 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun PerfilUsuarioPadraoScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+
+    sharedViewModelPerfil: SharedViewModelPerfil,
+    sharedViewModelUser: SharedViewModelUser,
+    sharedViewModelPerfilPropostas: SharedViewModelPerfilPropostas,
+    sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
+    sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
+    sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+
+    sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
+    sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
+    sharedViewModelPlayerProfileTimeAtualJogadores: SharedViewModelPlayerProfileTimeAtualJogadores,
+    sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
+
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
     sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
     onNavigate: (String) -> Unit
@@ -80,14 +101,14 @@ fun PerfilUsuarioPadraoScreen(
     val imageOrgRef = remember { mutableStateOf<StorageReference?>(null) }
     val imageCapaRef = remember { mutableStateOf<StorageReference?>(null) }
 
-    val idUser = sharedViewModelPerfilEditar.id
-    val nomeUser = sharedViewModelPerfilEditar.nome_usuario
-    val fullNomeUser = sharedViewModelPerfilEditar.nome_completo
-    val dataNascimentoUser = sharedViewModelPerfilEditar.data_nascimento
-    val emailUser = sharedViewModelPerfilEditar.email
-    val nickNameUser = sharedViewModelPerfilEditar.nickname
-    val biografiaUser = sharedViewModelPerfilEditar.biografia
-    val generoPerfilUser = sharedViewModelPerfilEditar.genero
+    val idUser = sharedViewModelUser.id
+    val nomeUser = sharedViewModelUser.nome_usuario
+    val fullNomeUser = sharedViewModelUser.nome_completo
+    val dataNascimentoUser = sharedViewModelUser.data_nascimento
+    val emailUser = sharedViewModelUser.email
+    val nickNameUser = sharedViewModelUser.nickname
+    val biografiaUser = sharedViewModelUser.biografia
+    val generoPerfilUser = sharedViewModelUser.genero
 
     val idUsuarioJogadorPerfilUser = sharedViewModelPerfilJogador.id
     val nickNamejogadorPerfilUser = sharedViewModelPerfilJogador.nickname
@@ -99,6 +120,8 @@ fun PerfilUsuarioPadraoScreen(
     val orgProfile = sharedViewModelPerfilOrganizador.orgProfile
     val nomeOrganizacao = sharedViewModelPerfilOrganizador.nome_organizacao
     val biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
+
+    val dadosJogador = sharedViewModelPerfil.playerProfile
 
     if(idUser != null && idUser != 0){
 
@@ -386,56 +409,61 @@ fun PerfilUsuarioPadraoScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    //jogos
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Card(
-                            modifier = Modifier
-                                .height(85.dp)
-                                .width(85.dp),
-                            colors = CardDefaults.cardColors(RedProliseum)
+                    if(dadosJogador == null){
+                        Log.e("SEM PERFIL JOGADOR", "Sem dados de perfil de jogador ${dadosJogador}")
+                    } else if(dadosJogador != null){
+                        //jogos
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
                         ) {
-                            Image(
-                                painter =
-                                if ("${jogoJogadorPerfilUser}" == "0") painterResource(
-                                    id = R.drawable.iconlol
+                            Card(
+                                modifier = Modifier
+                                    .height(85.dp)
+                                    .width(85.dp),
+                                colors = CardDefaults.cardColors(RedProliseum)
+                            ) {
+                                Image(
+                                    painter =
+                                    if ("${jogoJogadorPerfilUser}" == "0") painterResource(
+                                        id = R.drawable.iconlol
+                                    )
+                                    else if ("${jogoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconlol)
+                                    else if ("${jogoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconlol)
+                                    else painter,
+                                    contentDescription = "",
+                                    modifier = Modifier.fillMaxSize(),
+                                    alignment = Alignment.Center,
+                                    colorFilter = ColorFilter.tint(AzulEscuroProliseum)
                                 )
-                                else if ("${jogoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconlol)
-                                else if ("${jogoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconlol)
-                                else painter,
-                                contentDescription = "",
-                                modifier = Modifier.fillMaxSize(),
-                                alignment = Alignment.Center,
-                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                            )
-                        }
+                            }
 
-                        Spacer(modifier = Modifier.width(24.dp))
+                            Spacer(modifier = Modifier.width(24.dp))
 
-                        Card(
-                            modifier = Modifier
-                                .height(85.dp)
-                                .width(85.dp),
-                            colors = CardDefaults.cardColors(RedProliseum)
-                        ) {
-                            Image(
-                                painter = if ("${funcaoJogadorPerfilUser}" == "0") painterResource(
-                                    id = R.drawable.icontoplane
+                            Card(
+                                modifier = Modifier
+                                    .height(85.dp)
+                                    .width(85.dp),
+                                colors = CardDefaults.cardColors(RedProliseum)
+                            ) {
+                                Image(
+                                    painter = if ("${funcaoJogadorPerfilUser}" == "0") painterResource(
+                                        id = R.drawable.icontoplane
+                                    )
+                                    else if ("${funcaoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconjungle)
+                                    else if ("${funcaoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconmidlane)
+                                    else if ("${funcaoJogadorPerfilUser}" == "3") painterResource(id = R.drawable.iconsupport)
+                                    else if ("${funcaoJogadorPerfilUser}" == "4") painterResource(id = R.drawable.iconadc)
+                                    else painter,
+                                    contentDescription = "",
+                                    modifier = Modifier.fillMaxSize(),
+                                    alignment = Alignment.Center,
+                                    colorFilter = ColorFilter.tint(AzulEscuroProliseum)
                                 )
-                                else if ("${funcaoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconjungle)
-                                else if ("${funcaoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconmidlane)
-                                else if ("${funcaoJogadorPerfilUser}" == "3") painterResource(id = R.drawable.iconsupport)
-                                else if ("${funcaoJogadorPerfilUser}" == "4") painterResource(id = R.drawable.iconadc)
-                                else painter,
-                                contentDescription = "",
-                                modifier = Modifier.fillMaxSize(),
-                                alignment = Alignment.Center,
-                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                            )
+                            }
                         }
                     }
+
 
                     //Social
                     Row(
@@ -606,33 +634,37 @@ fun PerfilUsuarioPadraoScreen(
                             )
                         }
 
-                        Column(
-                            modifier = Modifier
+                        if(dadosJogador == null){
+                            Log.e("SEM DADOS JOGADOR", "Sem dados do perfil de jogador para exibir Elo ${dadosJogador}")
+                        } else if(dadosJogador != null){
+                            Column(
+                                modifier = Modifier
 
-                                .padding(10.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.elo),
-                                fontSize = 15.sp,
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(900),
-                            )
-                            Image(
-                                painter = if ("${eloJogadorPerfilUser}" == "0") painterResource(id = R.drawable.icone_iron)
-                                else if ("${eloJogadorPerfilUser}" == "1") painterResource(id = R.drawable.icone_bronze)
-                                else if ("${eloJogadorPerfilUser}" == "2") painterResource(id = R.drawable.icone_silver)
-                                else if ("${eloJogadorPerfilUser}" == "3") painterResource(id = R.drawable.icone_gold)
-                                else if ("${eloJogadorPerfilUser}" == "4") painterResource(id = R.drawable.icone_platinum)
-                                else if ("${eloJogadorPerfilUser}" == "5") painterResource(id = R.drawable.icone_diamond)
-                                else if ("${eloJogadorPerfilUser}" == "6") painterResource(id = R.drawable.icone_master)
-                                else if ("${eloJogadorPerfilUser}" == "7") painterResource(id = R.drawable.icone_grandmaster)
-                                else if ("${eloJogadorPerfilUser}" == "8") painterResource(id = R.drawable.icone_challenger)
-                                else painter,
-                                contentDescription = "",
-                                modifier = Modifier.size(100.dp)
-                            )
+                                    .padding(10.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.elo),
+                                    fontSize = 15.sp,
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(900),
+                                )
+                                Image(
+                                    painter = if ("${eloJogadorPerfilUser}" == "0") painterResource(id = R.drawable.icone_iron)
+                                    else if ("${eloJogadorPerfilUser}" == "1") painterResource(id = R.drawable.icone_bronze)
+                                    else if ("${eloJogadorPerfilUser}" == "2") painterResource(id = R.drawable.icone_silver)
+                                    else if ("${eloJogadorPerfilUser}" == "3") painterResource(id = R.drawable.icone_gold)
+                                    else if ("${eloJogadorPerfilUser}" == "4") painterResource(id = R.drawable.icone_platinum)
+                                    else if ("${eloJogadorPerfilUser}" == "5") painterResource(id = R.drawable.icone_diamond)
+                                    else if ("${eloJogadorPerfilUser}" == "6") painterResource(id = R.drawable.icone_master)
+                                    else if ("${eloJogadorPerfilUser}" == "7") painterResource(id = R.drawable.icone_grandmaster)
+                                    else if ("${eloJogadorPerfilUser}" == "8") painterResource(id = R.drawable.icone_challenger)
+                                    else painter,
+                                    contentDescription = "",
+                                    modifier = Modifier.size(100.dp)
+                                )
+                            }
                         }
 
                         Column(

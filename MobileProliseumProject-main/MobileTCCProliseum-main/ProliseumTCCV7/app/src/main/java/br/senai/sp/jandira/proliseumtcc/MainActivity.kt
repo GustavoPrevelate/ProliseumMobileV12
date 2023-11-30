@@ -110,6 +110,15 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemPostPro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUserPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelListaPublicacaoJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacaoProposta
 
@@ -156,6 +165,19 @@ fun MainScreen() {
         // SharedViewModel DADOS DE PERFIS
 
         val sharedViewModelPerfil = remember { SharedViewModelPerfil() }
+
+        val sharedViewModelUser = remember { SharedViewModelUser() }
+        val sharedViewModelPerfilPropostas = remember { SharedViewModelPerfilPropostas() }
+        val sharedViewModelPerfilPropostasDe = remember { SharedViewModelPerfilPropostasDe() }
+        val sharedViewModelPerfilPropostasDeJogadores = remember { SharedViewModelPerfilPropostasDeJogadores() }
+        val sharedViewModelPerfilPropostasDePropostas = remember { SharedViewModelPerfilPropostasDePropostas() }
+
+
+        val sharedViewModelPlayerProfile = remember { SharedViewModelPlayerProfile() }
+        val sharedViewModelPlayerProfileTimeAtual = remember { SharedViewModelPlayerProfileTimeAtual() }
+        val sharedViewModelPlayerProfileTimeAtualJogadores = remember { SharedViewModelPlayerProfileTimeAtualJogadores() }
+        val sharedViewModelPlayerProfileTimeAtualPropostas = remember { SharedViewModelPlayerProfileTimeAtualPropostas() }
+
         val sharedViewModelPerfilJogador = remember { SharedViewModelPerfilJogador() }
         val sharedViewModelPerfilOrganizador = remember { SharedViewModelPerfilOrganizador() }
 
@@ -296,14 +318,48 @@ fun MainScreen() {
 
         // TELA DE CARREGAR INFORMAÇÕES DE PERFIL DE USUÁRIO PADRÃO
         val carregarInformacoesPerfilUsuarioPadraoScreen: @Composable () -> Unit = {
-            CarregarInformacoesPerfilUsuarioPadraoScreen(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelPerfilJogador, sharedViewModelPerfilOrganizador) {
+            CarregarInformacoesPerfilUsuarioPadraoScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+            ) {
                 currentScreen = it
             }
         }
 
         // TELA PERFIL DE USUÁRIO PADRÃO
         val perfilUsuarioPadraoScreen: @Composable () -> Unit = {
-            PerfilUsuarioPadraoScreen(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelPerfilJogador, sharedViewModelPerfilOrganizador) {
+            PerfilUsuarioPadraoScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+            ) {
                 currentScreen = it
             }
         }
@@ -398,7 +454,20 @@ fun MainScreen() {
 
         // TELA DE CARREGAR INFORMAÇÕES PARA DELETAR A ORGANIZAÇÃO
         val carregarInformacoesDeletarOrganizacaoScreen: @Composable () -> Unit = {
-            CarregarInformacoesDeletarOrganizacaoScreen(sharedViewModelTokenEId, sharedViewModelPerfil) {
+            CarregarInformacoesDeletarOrganizacaoScreen(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+            ) {
                 currentScreen = it
             }
         }
@@ -1144,6 +1213,16 @@ fun MainScreen() {
             NotificacaoScreen(
                 sharedViewModelTokenEId,
                 sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
                 sharedViewNotificacao,
                 sharedViewNotificacaoProposta,
             ) {

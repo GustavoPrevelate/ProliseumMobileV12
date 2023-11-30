@@ -160,7 +160,7 @@ fun CarregarInformacoesPerfilJogadorMeuTimeScreen(
                                 Log.d("PerfilUsuarioJogadorScreen", "Resposta bem-sucedida: ${response.code()}")
                                 val profileResponseData = response.body()
 
-                                val user = profileResponseData!!.user
+                                val user = profileResponseData?.user
 
                                 sharedViewModelPerfilEditarOutro.id = user.id
                                 sharedViewModelPerfilEditarOutro.nome_usuario = user.nome_usuario
