@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.EloLol
+import br.senai.sp.jandira.proliseumtcc.components.RedeSocial
 import br.senai.sp.jandira.proliseumtcc.components.FuncaoLol
 import br.senai.sp.jandira.proliseumtcc.components.Jogo
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
@@ -55,6 +56,7 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonEloLol
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonFuncaoLolUI
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonJogoUI
+import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonRedeSocial
 import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
@@ -115,6 +117,7 @@ fun EditarInformacoesJogadorScreen(
     var selectedJogo by remember { mutableStateOf<Jogo?>(null) }
     var selectedFuncao by remember { mutableStateOf<FuncaoLol?>(null) }
     var selectedElo by remember { mutableStateOf<EloLol?>(null) }
+    var selectedRedeSocial by remember { mutableStateOf<RedeSocial?>(null) }
 
     LaunchedEffect(sharedViewModelUser, sharedViewModelPlayerProfile) {
 
@@ -344,6 +347,19 @@ fun EditarInformacoesJogadorScreen(
                             ToggleButtonEloLol(
                             ) { elo ->
                                 selectedElo = elo
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(5.dp))
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            ToggleButtonRedeSocial(
+                            ) { rede_social ->
+                                selectedRedeSocial = rede_social
                             }
                         }
                     }

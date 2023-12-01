@@ -491,89 +491,89 @@ fun PerfilUsuarioPadraoScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        Card(
-                            modifier = Modifier
-                                .height(45.dp)
-                                .width(45.dp),
-                            colors = CardDefaults.cardColors(RedProliseum)
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.discord),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(8.dp),
-                                alignment = Alignment.Center,
-                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                            )
-                        }
+//                        Card(
+//                            modifier = Modifier
+//                                .height(45.dp)
+//                                .width(45.dp),
+//                            colors = CardDefaults.cardColors(RedProliseum)
+//                        ) {
+//                            Image(
+//                                painter = painterResource(id = R.drawable.discord),
+//                                contentDescription = "",
+//                                modifier = Modifier
+//                                    .fillMaxSize()
+//                                    .padding(8.dp),
+//                                alignment = Alignment.Center,
+//                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+//                            )
+//                        }
+//
+//                        Text(
+//                            text = stringResource(id = R.string.label_nome_jogador),
+//                            color = Color.White,
+//                            modifier = Modifier.padding(5.dp),
+//                            fontWeight = FontWeight(600),
+//                            fontFamily = customFontFamilyText,
+//                            fontSize = 14.sp
+//                        )
+//
+//                        Spacer(modifier = Modifier.width(5.dp))
+//
+//                        Card(
+//                            modifier = Modifier
+//                                .height(45.dp)
+//                                .width(45.dp),
+//                            colors = CardDefaults.cardColors(RedProliseum)
+//                        ) {
+//                            Image(
+//                                painter = painterResource(id = R.drawable.twitter),
+//                                contentDescription = "",
+//                                modifier = Modifier
+//                                    .fillMaxSize()
+//                                    .padding(8.dp),
+//                                alignment = Alignment.Center,
+//                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+//                            )
+//                        }
+//
+//                        Text(
+//                            text = stringResource(id = R.string.label_nome_jogador),
+//                            color = Color.White,
+//                            modifier = Modifier.padding(5.dp),
+//                            fontWeight = FontWeight(600),
+//                            fontFamily = customFontFamilyText,
+//                            fontSize = 14.sp
+//                        )
+//
+//                        Spacer(modifier = Modifier.width(5.dp))
 
-                        Text(
-                            text = stringResource(id = R.string.label_nome_jogador),
-                            color = Color.White,
-                            modifier = Modifier.padding(5.dp),
-                            fontWeight = FontWeight(600),
-                            fontFamily = customFontFamilyText,
-                            fontSize = 14.sp
-                        )
-
-                        Spacer(modifier = Modifier.width(5.dp))
-
-                        Card(
-                            modifier = Modifier
-                                .height(45.dp)
-                                .width(45.dp),
-                            colors = CardDefaults.cardColors(RedProliseum)
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.twitter),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(8.dp),
-                                alignment = Alignment.Center,
-                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                            )
-                        }
-
-                        Text(
-                            text = stringResource(id = R.string.label_nome_jogador),
-                            color = Color.White,
-                            modifier = Modifier.padding(5.dp),
-                            fontWeight = FontWeight(600),
-                            fontFamily = customFontFamilyText,
-                            fontSize = 14.sp
-                        )
-
-                        Spacer(modifier = Modifier.width(5.dp))
-
-                        Card(
-                            modifier = Modifier
-                                .height(45.dp)
-                                .width(45.dp),
-                            colors = CardDefaults.cardColors(RedProliseum)
-                        ) {
-                            Image(
-                                painter =
-                                if ("${generoPerfilUser}" == "0") painterResource(id = R.drawable.generomasculino)
-                                else if ("${generoPerfilUser}" == "1") painterResource(id = R.drawable.generofeminino)
-                                else if ("${generoPerfilUser}" == "2") painterResource(id = R.drawable.generoindefinido)
-                                else painter,
-                                contentDescription = "",
-                                modifier = Modifier.fillMaxSize(),
-                                alignment = Alignment.Center,
-                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                            )
-                        }
-
-                        Text(
-                            text = stringResource(id = R.string.label_genero),
-                            color = Color.White,
-                            modifier = Modifier.padding(5.dp),
-                            fontWeight = FontWeight(600),
-                            fontFamily = customFontFamilyText,
-                            fontSize = 14.sp
-                        )
+//                        Card(
+//                            modifier = Modifier
+//                                .height(45.dp)
+//                                .width(45.dp),
+//                            colors = CardDefaults.cardColors(RedProliseum)
+//                        ) {
+//                            Image(
+//                                painter =
+//                                if ("${generoPerfilUser}" == "0") painterResource(id = R.drawable.generomasculino)
+//                                else if ("${generoPerfilUser}" == "1") painterResource(id = R.drawable.generofeminino)
+//                                else if ("${generoPerfilUser}" == "2") painterResource(id = R.drawable.generoindefinido)
+//                                else painter,
+//                                contentDescription = "",
+//                                modifier = Modifier.fillMaxSize(),
+//                                alignment = Alignment.Center,
+//                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+//                            )
+//                        }
+//
+//                        Text(
+//                            text = stringResource(id = R.string.label_genero),
+//                            color = Color.White,
+//                            modifier = Modifier.padding(5.dp),
+//                            fontWeight = FontWeight(600),
+//                            fontFamily = customFontFamilyText,
+//                            fontSize = 14.sp
+//                        )
 
                     }
 

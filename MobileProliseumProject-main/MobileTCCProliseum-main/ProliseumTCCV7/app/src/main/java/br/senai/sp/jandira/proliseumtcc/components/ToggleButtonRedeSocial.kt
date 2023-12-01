@@ -23,46 +23,40 @@ import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.rememberImagePainter
 
-enum class EloLol(val imageRes: Int, val id: Int) {
-    IRON(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_iron, 0),
-    BRONZE(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_bronze, 1),
-    SILVER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_silver, 2),
-    GOLD(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_gold, 3),
-    PLATINUM(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_platinum, 4),
-    DIAMOND(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_diamond, 5),
-    MASTER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_master, 6),
-    GRANDMASTER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_grandmaster, 7),
-    CHALLENGER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_challenger, 8);
+enum class RedeSocial(val imageRes: Int, val id: Int) {
+    DISCORD(br.senai.sp.jandira.proliseumtcc.R.drawable.discord_icon, 0),
+    TWITTERX(br.senai.sp.jandira.proliseumtcc.R.drawable.twitterx_icon, 1),
+    FACEBOOK(br.senai.sp.jandira.proliseumtcc.R.drawable.facebook_icon, 2),
+    INSTAGRAM(br.senai.sp.jandira.proliseumtcc.R.drawable.instagram_icon, 3),
+    YOUTUBE(br.senai.sp.jandira.proliseumtcc.R.drawable.youtube_icon, 4),
+    TWITCH(br.senai.sp.jandira.proliseumtcc.R.drawable.twitch_icon, 5);
 
-    fun toRepresentationStringEloLol(): String {
+    fun toRepresentationStringRedeSocial(): String {
         return when (this) {
-            IRON -> "0"
-            BRONZE -> "1"
-            SILVER -> "2"
-            GOLD -> "3"
-            PLATINUM -> "4"
-            DIAMOND -> "5"
-            MASTER -> "6"
-            GRANDMASTER -> "7"
-            CHALLENGER -> "8"
+            DISCORD -> "0"
+            TWITTERX -> "1"
+            FACEBOOK -> "2"
+            INSTAGRAM -> "3"
+            YOUTUBE -> "4"
+            TWITCH -> "5"
         }
     }
 }
 
 @Composable
-fun ToggleButtonEloLol(onJogoSelected: (EloLol?) -> Unit) {
-    val selectedJogoButton = remember { mutableStateOf<EloLol?>(null) }
+fun ToggleButtonRedeSocial(onRedeSocialSelected: (RedeSocial?) -> Unit) {
+    val selectedRedeSocialButton = remember { mutableStateOf<RedeSocial?>(null) }
 
     // Divida a lista de EloLol em sublistas de tamanho 3
-    val elosPorLinha = EloLol.values().toList().chunked(3)
+    val RedesSociaisPorLinha = RedeSocial.values().toList().chunked(3)
 
     Column {
         // Para cada sublista (linha) de EloLol
-        elosPorLinha.forEach { linha ->
+        RedesSociaisPorLinha.forEach { linha ->
             Row {
                 // Para cada EloLol na linha
                 linha.forEach { elo ->
-                    val isEloLolSelected = elo == selectedJogoButton.value
+                    val isRedeSocialSelected = elo == selectedRedeSocialButton.value
 
                     val painterJogo = rememberImagePainter(data = elo.imageRes)
 
@@ -73,11 +67,11 @@ fun ToggleButtonEloLol(onJogoSelected: (EloLol?) -> Unit) {
                         Box(
                             modifier = Modifier
                                 .clickable {
-                                    selectedJogoButton.value = if (isEloLolSelected) null else elo
-                                    onJogoSelected(selectedJogoButton.value)
+                                    selectedRedeSocialButton.value = if (isRedeSocialSelected) null else elo
+                                    onRedeSocialSelected(selectedRedeSocialButton.value)
                                 }
                                 .background(
-                                    if (isEloLolSelected) RedProliseum else Color.White,
+                                    if (isRedeSocialSelected) RedProliseum else Color.White,
                                     shape = RoundedCornerShape(24.dp)
                                 ),
                             contentAlignment = Alignment.Center
@@ -89,7 +83,7 @@ fun ToggleButtonEloLol(onJogoSelected: (EloLol?) -> Unit) {
                                     .size(90.dp)
                                     .padding(10.dp)
                                     .background(
-                                        if (isEloLolSelected) RedProliseum else Color.White,
+                                        if (isRedeSocialSelected) RedProliseum else Color.White,
                                         shape = RoundedCornerShape(20.dp)
                                     ),
                                 alignment = Alignment.Center

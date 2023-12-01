@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.EloLol
+import br.senai.sp.jandira.proliseumtcc.components.RedeSocial
 import br.senai.sp.jandira.proliseumtcc.components.FuncaoLol
 import br.senai.sp.jandira.proliseumtcc.components.Jogo
 import br.senai.sp.jandira.proliseumtcc.components.TimePickerComponent
