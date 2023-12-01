@@ -86,6 +86,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroDadosPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroGeneroEDataNascimentoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.FinalizarCadastroUsuarioPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesMinhaPublicacaoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaNotificacoesScreen
 //import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.criar.CriarTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.deletar.DeletarOrganizacaoScreen
@@ -516,9 +517,21 @@ fun MainScreen() {
             EditarInformacoesJogadorScreen(
                 sharedViewModelTokenEId,
 
+                sharedViewModelPerfil,
                 sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+                sharedViewModelPerfilPropostasDeRedeSocial,
+                sharedViewModelPerfilPropostasDeHighlights,
 
-                sharedViewModelPerfilJogador
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+                sharedViewModelPerfilJogador,
             ) {
                 currentScreen = it
             }
@@ -1422,6 +1435,16 @@ fun MainScreen() {
             }
         }
 
+        // TELA DE PERFIL DE OUTRO TIME
+        val carregarTelaNotificacoesScreen: @Composable () -> Unit = {
+            CarregarTelaNotificacoesScreen(
+                sharedViewModelTokenEId,
+            ) {
+                currentScreen = it
+            }
+        }
+
+
 
 
 
@@ -1479,6 +1502,7 @@ fun MainScreen() {
                     "editar_minha_publicacao_jogador" -> editarMinhaPublicacaoJogadorScreen()
                     "notificacao" -> notificacaoScreen()
                     "navegacao_configuracoes_meu_perfil_principal" -> navegacaoConfiguracoesMeuPerfilPrincipal()
+                    "carregar_tela_notificacoes" -> carregarTelaNotificacoesScreen()
                     else -> startScreen()
                 }
             }

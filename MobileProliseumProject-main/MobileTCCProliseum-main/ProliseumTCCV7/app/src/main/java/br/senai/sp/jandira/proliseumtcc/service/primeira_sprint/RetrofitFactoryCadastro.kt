@@ -125,6 +125,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(NotificacaoService::class.java)
     }
 
+    fun deletarNotificacaoService(): DeletarNotificacaoService {
+        return retrofitFactoryCadastro.create(DeletarNotificacaoService::class.java)
+    }
+
 
 
 }

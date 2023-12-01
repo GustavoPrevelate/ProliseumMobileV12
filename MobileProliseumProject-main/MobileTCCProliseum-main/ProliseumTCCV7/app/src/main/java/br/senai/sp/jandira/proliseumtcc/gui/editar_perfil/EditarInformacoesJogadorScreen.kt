@@ -59,8 +59,10 @@ import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeHighlights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
@@ -78,7 +80,19 @@ import retrofit2.Response
 fun EditarInformacoesJogadorScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
 
+    sharedViewModelPerfil: SharedViewModelPerfil,
     sharedViewModelUser: SharedViewModelUser,
+    sharedViewModelPerfilPropostas: SharedViewModelPerfilPropostas,
+    sharedViewModelPerfilPropostasDe: SharedViewModelPerfilPropostasDe,
+    sharedViewModelPerfilPropostasDeJogadores: SharedViewModelPerfilPropostasDeJogadores,
+    sharedViewModelPerfilPropostasDePropostas: SharedViewModelPerfilPropostasDePropostas,
+    sharedViewModelPerfilPropostasDeRedeSocial: SharedViewModelPerfilPropostasDeRedeSocial,
+    sharedViewModelPerfilPropostasDeHighlights: SharedViewModelPerfilPropostasDeHighlights,
+
+    sharedViewModelPlayerProfile: SharedViewModelPlayerProfile,
+    sharedViewModelPlayerProfileTimeAtual: SharedViewModelPlayerProfileTimeAtual,
+    sharedViewModelPlayerProfileTimeAtualJogadores: SharedViewModelPlayerProfileTimeAtualJogadores,
+    sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
 
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
     onNavigate: (String) -> Unit
@@ -92,23 +106,23 @@ fun EditarInformacoesJogadorScreen(
         Font(R.font.font_poppins)
     )
 
-    var idUserSharedState by remember { mutableStateOf(sharedViewModelUser.id) }
-    var nickNameUserSharedState by remember { mutableStateOf(sharedViewModelPerfilJogador.nickname) }
-    var jogoUserSharedState by remember { mutableStateOf(sharedViewModelPerfilJogador.jogo) }
-    var funcaoUserSharedState by remember { mutableStateOf(sharedViewModelPerfilJogador.funcao) }
-    var eloUserSharedState by remember { mutableStateOf(sharedViewModelPerfilJogador.elo) }
+    var idUserSharedState by remember { mutableStateOf(sharedViewModelPlayerProfile.id) }
+    var nickNameUserSharedState by remember { mutableStateOf(sharedViewModelPlayerProfile.nickname) }
+    var jogoUserSharedState by remember { mutableStateOf(sharedViewModelPlayerProfile.jogo) }
+    var funcaoUserSharedState by remember { mutableStateOf(sharedViewModelPlayerProfile.funcao) }
+    var eloUserSharedState by remember { mutableStateOf(sharedViewModelPlayerProfile.elo) }
 
     var selectedJogo by remember { mutableStateOf<Jogo?>(null) }
     var selectedFuncao by remember { mutableStateOf<FuncaoLol?>(null) }
     var selectedElo by remember { mutableStateOf<EloLol?>(null) }
 
-    LaunchedEffect(sharedViewModelUser) {
+    LaunchedEffect(sharedViewModelUser, sharedViewModelPlayerProfile) {
 
         idUserSharedState = sharedViewModelUser.id
-        nickNameUserSharedState = sharedViewModelPerfilJogador.nickname
-        jogoUserSharedState = sharedViewModelPerfilJogador.jogo
-        funcaoUserSharedState = sharedViewModelPerfilJogador.funcao
-        eloUserSharedState = sharedViewModelPerfilJogador.elo
+        nickNameUserSharedState = sharedViewModelPlayerProfile.nickname
+        jogoUserSharedState = sharedViewModelPlayerProfile.jogo
+        funcaoUserSharedState = sharedViewModelPlayerProfile.funcao
+        eloUserSharedState = sharedViewModelPlayerProfile.elo
     }
 
     // DESIGN DA TELA
@@ -197,31 +211,33 @@ fun EditarInformacoesJogadorScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        OutlinedTextField(
-                            value = nickNameUserSharedState,
-                            onValueChange = { newUserNameJogador ->
-                                nickNameUserSharedState = newUserNameJogador
-                            },
-                            modifier = Modifier
+                        nickNameUserSharedState?.let {
+                            OutlinedTextField(
+                                value = it,
+                                onValueChange = { newUserNameJogador ->
+                                    nickNameUserSharedState = newUserNameJogador
+                                },
+                                modifier = Modifier
 
-                                .width(350.dp),
-                            shape = RoundedCornerShape(16.dp),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                            label = {
-                                Text(
-                                    text = "Nome do time:",
-                                    color = Color.White,
-                                    fontFamily = customFontFamilyText,
-                                    fontWeight = FontWeight(600),
-                                )
-                            },
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                unfocusedBorderColor = Color(255, 255, 255, 255),
-                                focusedBorderColor = Color(255, 255, 255, 255),
-                                cursorColor = Color.White
-                            ),
-                            textStyle = TextStyle(color = Color.White)
-                        )
+                                    .width(350.dp),
+                                shape = RoundedCornerShape(16.dp),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                                label = {
+                                    Text(
+                                        text = "Nome do time:",
+                                        color = Color.White,
+                                        fontFamily = customFontFamilyText,
+                                        fontWeight = FontWeight(600),
+                                    )
+                                },
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    unfocusedBorderColor = Color(255, 255, 255, 255),
+                                    focusedBorderColor = Color(255, 255, 255, 255),
+                                    cursorColor = Color.White
+                                ),
+                                textStyle = TextStyle(color = Color.White)
+                            )
+                        }
 
                         Spacer(modifier = Modifier.height(10.dp))
 
@@ -342,13 +358,15 @@ fun EditarInformacoesJogadorScreen(
 
                         Button(
                             onClick = {
-                                AtualizarDadosPerfilUsuarioJogador(
-                                    sharedViewModelTokenEId = sharedViewModelTokenEId,
-                                    nickNameUsuarioAtualizar = nickNameUserSharedState,
-                                    jogoUsuariojogadorAtualizar = selectedJogo?.toRepresentationStringJogo(),
-                                    funcaoUsuariojogadorAtualizar = selectedFuncao?.toRepresentationStrinFuncao(),
-                                    eloUsuariojogadorAtualizar = selectedElo?.toRepresentationStringEloLol()
-                                )
+                                nickNameUserSharedState?.let {
+                                    AtualizarDadosPerfilUsuarioJogador(
+                                        sharedViewModelTokenEId = sharedViewModelTokenEId,
+                                        nickNameUsuarioAtualizar = it,
+                                        jogoUsuariojogadorAtualizar = selectedJogo?.toRepresentationStringJogo(),
+                                        funcaoUsuariojogadorAtualizar = selectedFuncao?.toRepresentationStrinFuncao(),
+                                        eloUsuariojogadorAtualizar = selectedElo?.toRepresentationStringEloLol()
+                                    )
+                                }
 
                                 Log.i("JSON ACEITO", "Estrutura de JSON Correta!")
                                 onNavigate("carregar_informacoes_perfil_usuario")

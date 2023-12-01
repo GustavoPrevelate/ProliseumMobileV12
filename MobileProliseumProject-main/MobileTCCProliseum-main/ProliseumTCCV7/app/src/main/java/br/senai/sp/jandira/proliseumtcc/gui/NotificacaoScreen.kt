@@ -2,7 +2,6 @@ package br.senai.sp.jandira.proliseumtcc.gui
 
 import android.net.Uri
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,14 +16,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,21 +40,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
-import br.senai.sp.jandira.proliseumtcc.model.GetPostagemList
-import br.senai.sp.jandira.proliseumtcc.model.GetPostagemListPublicacao
+import br.senai.sp.jandira.proliseumtcc.model.GenericResponse
 import br.senai.sp.jandira.proliseumtcc.model.Notificacao
 import br.senai.sp.jandira.proliseumtcc.model.NotificacaoProposta
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTime
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeDono
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadores
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPerfilId
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
@@ -72,7 +61,6 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacaoProposta
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
-import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.AsyncImage
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -107,6 +95,10 @@ fun NotificacaoScreen(
     Log.d("PerfilUsuarioJogadorScreen", "Token: $token")
 
     val idUser = sharedViewModelUser.id
+
+    var contador by remember { mutableStateOf(0) }
+
+
 
     val imageRef = remember { mutableStateOf<StorageReference?>(null) }
 
@@ -161,7 +153,7 @@ fun NotificacaoScreen(
 
     val notificacaoService = RetrofitFactoryCadastro().notificacaoService()
 
-    notificacaoService.getNotificacao("bearer" + token).enqueue(object :
+    notificacaoService.getNotificacao("Bearer " + token).enqueue(object :
         Callback<Notificacao> {
         override fun onResponse(call: Call<Notificacao>, response: Response<Notificacao>) {
             if (response.isSuccessful) {
@@ -300,9 +292,9 @@ fun NotificacaoScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 20.dp),
+                    .padding(top = 10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Top,
                 content = {
                     items(notificacaoProposta.size){ index ->
                         val infoNotificacao = notificacaoProposta[index]
@@ -311,82 +303,152 @@ fun NotificacaoScreen(
                         val menssagemNotificacao = infoNotificacao?.menssagem ?: ""
                         val tituloNotificacao = infoNotificacao?.titulo ?: ""
 
+                        fun deletarNotificacao(
+                            sharedViewModelTokenEId: SharedViewTokenEId,
+                            sharedViewNotificacaoProposta: SharedViewNotificacaoProposta,
+                        ){
+
+                            val token = sharedViewModelTokenEId.token
+
+
+                            val deleteNotificacaoService = RetrofitFactoryCadastro().deletarNotificacaoService()
+
+                            deleteNotificacaoService.deleteNotificacao("Bearer " + token, infoNotificacao.id).enqueue(object :
+                                Callback<GenericResponse> {
+                                override fun onResponse(call: Call<GenericResponse>, response: Response<GenericResponse>) {
+                                    if (response.isSuccessful) {
+
+                                        val notificacaoDeletadaBody = response.body()
+
+                                        val notificacaoDeletada = notificacaoDeletadaBody?.response
+
+                                        Log.d("NOTIFICAÇÃO!", "Notificação deletada? ${notificacaoDeletada}")
+
+
+
+                                    } else {
+                                        // Trate a resposta não bem-sucedida
+                                        Log.d("NotificacaoScreen CODE", "Resposta não bem-sucedida: ${response.code()}")
+                                        // Log de corpo da resposta (se necessário)
+                                        Log.d(
+                                            "NotificacaoScreen BODY",
+                                            "Corpo da resposta: ${response.errorBody()?.string()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
+                                    // Trate o erro de falha na rede.
+                                    Log.d("NotificacaoScreen ERROR", "Erro de rede: ${t.message}")
+                                }
+
+                            })
+                        }
+
+
                         //jogos
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .height(450.dp)
+                                .height(150.dp)
                                 .padding(top = 20.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
                         ) {
-                            Button(
-                                onClick = {
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador = idInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeUsuarioInfoPerfilJogador = nomeUsuarioInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeCompletoInfoPerfilJogador = nomeCompletoInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.emailInfoPerfilJogador = emailInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.dataNascimentoInfoPerfilJogador = dataNascimentoInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.generoInfoPerfilJogador = generoInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.nickNameInfoPerfilJogador = nickNameInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.biografiaInfoPerfilJogador = biografiaInfoPerfilJogador
-//
-//                                    onNavigate("carregar_informacoes_perfil_outro_jogador")
-
-                                },
+                            Box(
+                                contentAlignment = Alignment.TopEnd
+                            ) {
+                            Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(550.dp)
+                                    .height(150.dp)
                                     .padding(start = 0.dp, top = 0.dp),
                                 shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                                colors = ButtonDefaults.buttonColors(RedProliseum),
+                                colors = CardColors(
+                                    containerColor = Color.Black,
+                                    contentColor = Color.Black,
+                                    disabledContainerColor = Color.White,
+                                    disabledContentColor = Color.White
+                                )
                             ) {
 
-                                Spacer(modifier = Modifier.height(5.dp))
+                                    // Conteúdo do seu Card aqui
 
-                                Row(
-                                    modifier = Modifier
-                                        .height(70.dp)
+                                    // Box para o ícone no canto superior direito
+
+
+
+
+
+                                Column(
+                                    modifier = Modifier.fillMaxSize()
                                 ) {
-                                    Text(
-                                        text = "${infoNotificacao.id}",
-                                        color = Color.White,
-                                        modifier = Modifier.padding(5.dp),
-                                        fontWeight = FontWeight(600),
-                                        fontFamily = customFontFamilyText,
-                                        fontSize = 14.sp
-                                    )
+                                    Spacer(modifier = Modifier.height(5.dp))
+
+//                                Row(
+//                                    modifier = Modifier
+//                                        .height(70.dp)
+//                                ) {
+//                                    Text(
+//                                        text = "${infoNotificacao.id}",
+//                                        color = Color.White,
+//                                        modifier = Modifier.padding(5.dp),
+//                                        fontWeight = FontWeight(600),
+//                                        fontFamily = customFontFamilyText,
+//                                        fontSize = 14.sp
+//                                    )
+//                                }
+
+                                    Spacer(modifier = Modifier.height(5.dp))
+
+                                    Row(
+                                        modifier = Modifier
+                                            .height(50.dp)
+                                    ) {
+                                        Text(
+                                            text = "${infoNotificacao.titulo}",
+                                            color = Color.White,
+                                            modifier = Modifier.padding(5.dp),
+                                            fontWeight = FontWeight(600),
+                                            fontFamily = customFontFamilyText,
+                                            fontSize = 22.sp
+                                        )
+                                    }
+
+                                    Row(
+                                        modifier = Modifier
+                                            .height(70.dp)
+                                    ) {
+                                        Text(
+                                            text = "${infoNotificacao.menssagem}",
+                                            color = Color.White,
+                                            modifier = Modifier.padding(5.dp),
+                                            fontWeight = FontWeight(600),
+                                            fontFamily = customFontFamilyText,
+                                            fontSize = 16.sp
+                                        )
+                                    }
+
+
                                 }
-
-                                Spacer(modifier = Modifier.height(5.dp))
-
-                                Row(
+                            }
+                                Icon(
+                                    painter = painterResource(id = R.drawable.close),
+                                    contentDescription = "Botão no canto superior direito",
                                     modifier = Modifier
-                                        .height(70.dp)
-                                ) {
-                                    Text(
-                                        text = "${infoNotificacao.menssagem}",
-                                        color = Color.White,
-                                        modifier = Modifier.padding(5.dp),
-                                        fontWeight = FontWeight(600),
-                                        fontFamily = customFontFamilyText,
-                                        fontSize = 14.sp
-                                    )
-                                }
+                                        .clickable {
+                                            deletarNotificacao(
+                                                sharedViewModelTokenEId,
+                                                sharedViewNotificacaoProposta
+                                            )
 
-                                Spacer(modifier = Modifier.height(5.dp))
+                                            onNavigate("carregar_tela_notificacoes")
 
-                                Row(
-                                    modifier = Modifier
-                                        .height(70.dp)
-                                ) {
-                                    Text(
-                                        text = "${infoNotificacao.titulo}",
-                                        color = Color.White,
-                                        modifier = Modifier.padding(5.dp),
-                                        fontWeight = FontWeight(600),
-                                        fontFamily = customFontFamilyText,
-                                        fontSize = 14.sp
-                                    )
-                                }
+
+                                        }
+                                        .size(30.dp),
+                                    tint = Color.White
+                                )
                             }
                         }
                     }
