@@ -112,6 +112,15 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagem
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemPostProfile
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUserPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoHighlights
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoHighlightsDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelListaPublicacaoJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
@@ -126,6 +135,9 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileT
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacaoProposta
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseFirstGetRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetRedeSocialDono
 
 
 class MainActivity : ComponentActivity() {
@@ -274,6 +286,24 @@ fun MainScreen() {
         val sharedViewNotificacao = remember { SharedViewNotificacao() }
         val sharedViewNotificacaoProposta = remember { SharedViewNotificacaoProposta() }
 
+        // SharedViewModel POST REDE SOCIAL
+
+        val sharedResponsePostRedeSocial = remember { SharedResponsePostRedeSocial() }
+        val sharedResponsePostRedeSocialDono = remember { SharedResponsePostRedeSocialDono() }
+        val sharedResponsePostRedeSocialDonoHighlights = remember { SharedResponsePostRedeSocialDonoHighlights() }
+        val sharedResponsePostRedeSocialDonoHighlightsDono = remember { SharedResponsePostRedeSocialDonoHighlightsDono() }
+        val sharedResponsePostRedeSocialDonoPropostas = remember { SharedResponsePostRedeSocialDonoPropostas() }
+        val sharedResponsePostRedeSocialDonoPropostasDe = remember { SharedResponsePostRedeSocialDonoPropostasDe() }
+        val sharedResponsePostRedeSocialDonoPropostasDeJogadores = remember { SharedResponsePostRedeSocialDonoPropostasDeJogadores() }
+        val sharedResponsePostRedeSocialDonoPropostasDePropostas = remember { SharedResponsePostRedeSocialDonoPropostasDePropostas() }
+        val sharedResponsePostRedeSocialDonoRedeSocial = remember { SharedResponsePostRedeSocialDonoRedeSocial() }
+
+        // SharedViewModel GET REDE SOCIAL
+        val sharedViewResponseFirstGetRedeSocial = remember { SharedViewResponseFirstGetRedeSocial() }
+        val sharedViewResponseGetRedeSocial = remember { SharedViewResponseGetRedeSocial() }
+        val sharedViewResponseGetRedeSocialDono = remember { SharedViewResponseGetRedeSocialDono() }
+
+
         /**********************************************************************************************************************************/
 
         // TELAS DO PROJETO
@@ -377,6 +407,20 @@ fun MainScreen() {
 
                 sharedViewModelPerfilJogador,
                 sharedViewModelPerfilOrganizador,
+
+                sharedResponsePostRedeSocial,
+                sharedResponsePostRedeSocialDono,
+                sharedResponsePostRedeSocialDonoHighlights,
+                sharedResponsePostRedeSocialDonoHighlightsDono,
+                sharedResponsePostRedeSocialDonoPropostas,
+                sharedResponsePostRedeSocialDonoPropostasDe,
+                sharedResponsePostRedeSocialDonoPropostasDeJogadores,
+                sharedResponsePostRedeSocialDonoPropostasDePropostas,
+                sharedResponsePostRedeSocialDonoRedeSocial,
+
+                sharedViewResponseFirstGetRedeSocial,
+                sharedViewResponseGetRedeSocial,
+                sharedViewResponseGetRedeSocialDono,
             ) {
                 currentScreen = it
             }

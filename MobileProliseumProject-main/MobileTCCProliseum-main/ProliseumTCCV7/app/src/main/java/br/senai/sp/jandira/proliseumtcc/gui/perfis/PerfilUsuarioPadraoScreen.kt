@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -49,6 +50,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.model.GenericResponse
+import br.senai.sp.jandira.proliseumtcc.model.Notificacao
+import br.senai.sp.jandira.proliseumtcc.model.NotificacaoProposta
+import br.senai.sp.jandira.proliseumtcc.model.ResponseFirstGetRedeSocial
+import br.senai.sp.jandira.proliseumtcc.model.ResponseGetRedeSocial
+import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoHighlights
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoHighlightsDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganizador
@@ -63,6 +79,10 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileT
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacaoProposta
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseFirstGetRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetRedeSocialDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
@@ -74,6 +94,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
 fun PerfilUsuarioPadraoScreen(
@@ -95,6 +118,20 @@ fun PerfilUsuarioPadraoScreen(
 
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
     sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
+
+    sharedResponsePostRedeSocial: SharedResponsePostRedeSocial,
+    sharedResponsePostRedeSocialDono: SharedResponsePostRedeSocialDono,
+    sharedResponsePostRedeSocialDonoHighlights: SharedResponsePostRedeSocialDonoHighlights,
+    sharedResponsePostRedeSocialDonoHighlightsDono: SharedResponsePostRedeSocialDonoHighlightsDono,
+    sharedResponsePostRedeSocialDonoPropostas: SharedResponsePostRedeSocialDonoPropostas,
+    sharedResponsePostRedeSocialDonoPropostasDe: SharedResponsePostRedeSocialDonoPropostasDe,
+    sharedResponsePostRedeSocialDonoPropostasDeJogadores: SharedResponsePostRedeSocialDonoPropostasDeJogadores,
+    sharedResponsePostRedeSocialDonoPropostasDePropostas: SharedResponsePostRedeSocialDonoPropostasDePropostas,
+    sharedResponsePostRedeSocialDonoRedeSocial: SharedResponsePostRedeSocialDonoRedeSocial,
+
+    sharedViewResponseFirstGetRedeSocial: SharedViewResponseFirstGetRedeSocial,
+    sharedViewResponseGetRedeSocial: SharedViewResponseGetRedeSocial,
+    sharedViewResponseGetRedeSocialDono: SharedViewResponseGetRedeSocialDono,
     onNavigate: (String) -> Unit
 ) {
 
@@ -133,6 +170,80 @@ fun PerfilUsuarioPadraoScreen(
     val biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
 
     val dadosJogador = sharedViewModelPerfil.playerProfile
+
+
+    var redesSociaisList by remember {
+        mutableStateOf(listOf<ResponseGetRedeSocial>())
+    }
+
+    val redeSocialService = RetrofitFactoryCadastro().getRedeSocialService()
+
+    redeSocialService.getRedeSocial("Bearer " + token).enqueue(object :
+        Callback<ResponseFirstGetRedeSocial> {
+        override fun onResponse(call: Call<ResponseFirstGetRedeSocial>, response: Response<ResponseFirstGetRedeSocial>) {
+            if (response.isSuccessful) {
+
+                val listaRedesSociais = response.body()
+
+                val RedesSociaisList = listaRedesSociais?.redeSocial
+
+
+                sharedViewResponseFirstGetRedeSocial.redeSocial = RedesSociaisList
+
+
+
+                if (RedesSociaisList != null) {
+                    redesSociaisList = RedesSociaisList
+                }
+
+                if(RedesSociaisList != null){
+                    for(redesSociais in RedesSociaisList){
+                        val idRedeSocial = redesSociais.id
+                        val linkRedeSocial = redesSociais.link
+                        val tipoRedeSocial = redesSociais.tipo
+
+                        sharedViewResponseGetRedeSocial.id = redesSociais.id
+                        sharedViewResponseGetRedeSocial.link = redesSociais.link
+                        sharedViewResponseGetRedeSocial.tipo = redesSociais.tipo
+
+
+                        val donoRedeSocial = redesSociais.dono
+
+                        sharedViewResponseGetRedeSocial.dono = redesSociais.dono
+
+
+                        if(donoRedeSocial != null){
+                            donoRedeSocial.id
+                            sharedViewResponseGetRedeSocialDono.id = donoRedeSocial.id
+                            sharedViewResponseGetRedeSocialDono.nome_usuario = donoRedeSocial.nome_usuario
+                            sharedViewResponseGetRedeSocialDono.nome_completo = donoRedeSocial.nome_completo
+                            sharedViewResponseGetRedeSocialDono.email = donoRedeSocial.email
+                            sharedViewResponseGetRedeSocialDono.data_nascimento = donoRedeSocial.data_nascimento
+                            sharedViewResponseGetRedeSocialDono.genero = donoRedeSocial.genero
+                            sharedViewResponseGetRedeSocialDono.nickname = donoRedeSocial.nickname
+                            sharedViewResponseGetRedeSocialDono.biografia = donoRedeSocial.biografia
+                        }
+
+                    }
+                }
+
+            } else {
+                // Trate a resposta não bem-sucedida
+                Log.d("LISTA REDE SOCIAIS CODE", "Resposta não bem-sucedida: ${response.code()}")
+                // Log de corpo da resposta (se necessário)
+                Log.d(
+                    "BODY Lista Rede Sociais",
+                    "Corpo da resposta: ${response.errorBody()?.string()}"
+                )
+            }
+        }
+
+        override fun onFailure(call: Call<ResponseFirstGetRedeSocial>, t: Throwable) {
+            // Trate o erro de falha na rede.
+            Log.d("NotificacaoScreen ERROR", "Erro de rede: ${t.message}")
+        }
+
+    })
 
     if(idUser != null && idUser != 0){
 
@@ -576,6 +687,157 @@ fun PerfilUsuarioPadraoScreen(
 //                        )
 
                     }
+                    
+                    if(redesSociaisList != null){
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(top = 10.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Top,
+                            content = {
+                                items(redesSociaisList.size){ index ->
+                                    val redesSociais = redesSociaisList[index]
+
+                                    //jogos
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .height(80.dp)
+                                            .padding(top = 20.dp),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center
+                                    ) {
+                                        Box(
+                                            contentAlignment = Alignment.TopEnd
+                                        ) {
+                                            Card(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .height(80.dp)
+                                                    .padding(start = 0.dp, top = 0.dp),
+                                                shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                                                colors = CardColors(
+                                                    containerColor = Color.Black,
+                                                    contentColor = Color.Black,
+                                                    disabledContainerColor = Color.White,
+                                                    disabledContentColor = Color.White
+                                                )
+                                            ) {
+
+                                                // Conteúdo do seu Card aqui
+
+                                                // Box para o ícone no canto superior direito
+
+
+
+
+
+                                                Column(
+                                                    modifier = Modifier.fillMaxSize()
+                                                ) {
+
+
+                                                    Spacer(modifier = Modifier.height(5.dp))
+
+                                                    Card(
+                                                        modifier = Modifier
+                                                            .height(55.dp)
+                                                            .width(55.dp),
+                                                        colors = CardDefaults.cardColors(RedProliseum)
+                                                    ) {
+                                                        Image(
+                                                            painter =
+                                                            if ("${redesSociais.tipo}" == "0") painterResource(
+                                                                id = R.drawable.discord_logo_branco
+                                                            )
+                                                            else if ("${redesSociais.tipo}" == "1") painterResource(id = R.drawable.twitterx_logo_branco)
+                                                            else if ("${redesSociais.tipo}" == "2") painterResource(id = R.drawable.facebook_logo_branco)
+                                                            else if ("${redesSociais.tipo}" == "3") painterResource(id = R.drawable.instagram_logo_branco)
+                                                            else if ("${redesSociais.tipo}" == "4") painterResource(id = R.drawable.youtube_logo_branco)
+                                                            else if ("${redesSociais.tipo}" == "5") painterResource(id = R.drawable.twitch_lgoo_branco)
+                                                            else painter,
+                                                            contentDescription = "",
+                                                            modifier = Modifier.fillMaxSize(),
+
+                                                            )
+                                                    }
+
+                                                    Spacer(modifier = Modifier.height(5.dp))
+
+                                                    Row(
+                                                        modifier = Modifier
+                                                            .height(70.dp)
+                                                    ) {
+                                                        Text(
+                                                            text = "${redesSociais.link}",
+                                                            color = Color.White,
+                                                            modifier = Modifier.padding(5.dp),
+                                                            fontWeight = FontWeight(600),
+                                                            fontFamily = customFontFamilyText,
+                                                            fontSize = 16.sp
+                                                        )
+                                                    }
+
+
+                                                }
+                                            }
+//                                        Icon(
+//                                            painter = painterResource(id = R.drawable.close),
+//                                            contentDescription = "Botão no canto superior direito",
+//                                            modifier = Modifier
+//                                                .clickable {
+//                                                    deletarNotificacao(
+//                                                        sharedViewModelTokenEId,
+//                                                        sharedViewNotificacaoProposta
+//                                                    )
+//
+//                                                    onNavigate("carregar_tela_notificacoes")
+//
+//
+//                                                }
+//                                                .size(30.dp),
+//                                            tint = Color.White
+//                                        )
+                                        }
+                                    }
+                                }
+                            }
+                        )
+                    } else if(redesSociaisList == null){
+                        Button(
+                            onClick = {
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador = idInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeUsuarioInfoPerfilJogador = nomeUsuarioInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeCompletoInfoPerfilJogador = nomeCompletoInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.emailInfoPerfilJogador = emailInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.dataNascimentoInfoPerfilJogador = dataNascimentoInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.generoInfoPerfilJogador = generoInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.nickNameInfoPerfilJogador = nickNameInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.biografiaInfoPerfilJogador = biografiaInfoPerfilJogador
+//
+//                                    onNavigate("carregar_informacoes_perfil_outro_jogador")
+
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(100.dp)
+                                .padding(start = 0.dp, top = 0.dp),
+                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                            colors = ButtonDefaults.buttonColors(RedProliseum),
+                        ){
+                            Text(
+                                text = "Minha rede social",
+                                color = Color.White,
+                                modifier = Modifier.padding(5.dp),
+                                fontWeight = FontWeight(600),
+                                fontFamily = customFontFamilyText,
+                                fontSize = 16.sp
+                            )
+                        }
+                    }
+
+
 
                     //Biografia
                     Column(

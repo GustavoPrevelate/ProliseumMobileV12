@@ -141,7 +141,7 @@ fun CriarRedeSocialScreen(
                 contentDescription = ""
             )
             Text(
-                text = stringResource(id = R.string.label_editar_jogador),
+                text = "REDE SOCIAL",
                 fontFamily = customFontFamily,
                 fontSize = 40.sp,
                 textAlign = TextAlign.Center,
@@ -216,7 +216,7 @@ fun CriarRedeSocialScreen(
                                 .padding(start = 40.dp)
                         ) {
                             Text(
-                                text = "REDE SOCIAL ESCOLHIDO:",
+                                text = "REDE SOCIAL:",
                                 fontFamily = customFontFamilyText,
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight(900),
@@ -291,7 +291,7 @@ fun CriarRedeSocialScreen(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(120.dp))
                 }
             }
         }

@@ -133,6 +133,11 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(RedeSocialService::class.java)
     }
 
+    fun getRedeSocialService(): GetRedeSocialService {
+        return retrofitFactoryCadastro.create(GetRedeSocialService::class.java)
+    }
+
+
 
 
 }
