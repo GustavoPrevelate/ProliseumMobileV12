@@ -137,7 +137,9 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(GetRedeSocialService::class.java)
     }
 
-
+    fun deletarRedeSocialService(): DeletarRedeSocialService {
+        return retrofitFactoryCadastro.create(DeletarRedeSocialService::class.java)
+    }
 
 
 }

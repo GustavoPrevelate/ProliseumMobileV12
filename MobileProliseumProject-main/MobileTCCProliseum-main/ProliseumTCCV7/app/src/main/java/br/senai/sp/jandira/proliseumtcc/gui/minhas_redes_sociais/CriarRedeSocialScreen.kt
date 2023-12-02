@@ -120,7 +120,7 @@ fun CriarRedeSocialScreen(
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        onNavigate("home")
+                        onNavigate("navegacao_configuracoes_meu_perfil_principal")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),

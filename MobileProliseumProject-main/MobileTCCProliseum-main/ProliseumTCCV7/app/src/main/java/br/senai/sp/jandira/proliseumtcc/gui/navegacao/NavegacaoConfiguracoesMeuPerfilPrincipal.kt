@@ -18,6 +18,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -31,17 +35,34 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.model.ProfileResponsePropostasDeRedeSocial
+import br.senai.sp.jandira.proliseumtcc.model.ResponseGetRedeSocial
+import br.senai.sp.jandira.proliseumtcc.model.ResponsePostRedeSocialDonoRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoHighlights
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoHighlightsDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelImageUri
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeHighlights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseFirstGetRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetRedeSocialDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 
@@ -62,6 +83,20 @@ fun NavegacaoConfiguracoesMeuPerfilPrincipal(
     sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
 
     sharedViewModelImageUri: SharedViewModelImageUri,
+
+    sharedResponsePostRedeSocial: SharedResponsePostRedeSocial,
+    sharedResponsePostRedeSocialDono: SharedResponsePostRedeSocialDono,
+    sharedResponsePostRedeSocialDonoHighlights: SharedResponsePostRedeSocialDonoHighlights,
+    sharedResponsePostRedeSocialDonoHighlightsDono: SharedResponsePostRedeSocialDonoHighlightsDono,
+    sharedResponsePostRedeSocialDonoPropostas: SharedResponsePostRedeSocialDonoPropostas,
+    sharedResponsePostRedeSocialDonoPropostasDe: SharedResponsePostRedeSocialDonoPropostasDe,
+    sharedResponsePostRedeSocialDonoPropostasDeJogadores: SharedResponsePostRedeSocialDonoPropostasDeJogadores,
+    sharedResponsePostRedeSocialDonoPropostasDePropostas: SharedResponsePostRedeSocialDonoPropostasDePropostas,
+    sharedResponsePostRedeSocialDonoRedeSocial: SharedResponsePostRedeSocialDonoRedeSocial,
+
+    sharedViewResponseFirstGetRedeSocial: SharedViewResponseFirstGetRedeSocial,
+    sharedViewResponseGetRedeSocial: SharedViewResponseGetRedeSocial,
+    sharedViewResponseGetRedeSocialDono: SharedViewResponseGetRedeSocialDono,
     onNavigate: (String) -> Unit
 ) {
     // Define a família da fonte personalizada
@@ -73,6 +108,8 @@ fun NavegacaoConfiguracoesMeuPerfilPrincipal(
     )
 
     val informacoesUserPlayerProfile = sharedViewModelPerfil.playerProfile
+
+
 
     Box(
         modifier = Modifier
@@ -248,7 +285,6 @@ fun NavegacaoConfiguracoesMeuPerfilPrincipal(
                     .height(48.dp),
                 shape = RoundedCornerShape(73.dp),
                 colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
-
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.redes_sociais),
@@ -265,9 +301,36 @@ fun NavegacaoConfiguracoesMeuPerfilPrincipal(
                     fontWeight = FontWeight(900),
                 )
             }
+
             Spacer(modifier = Modifier.height(10.dp))
 
+            Button(
+                onClick = {
+                    onNavigate("deletar_rede_social")
+                },
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .height(48.dp),
+                shape = RoundedCornerShape(73.dp),
+                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.botao_deletar_icon),
+                    contentDescription = stringResource(id = R.string.button_proximo),
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.padding(start = 20.dp))
+                Text(
+                    text = "DELETAR REDE SOCIAL",
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = customFontFamilyText,
+                    fontWeight = FontWeight(900),
+                )
+            }
 
+            Spacer(modifier = Modifier.height(10.dp))
 
 
         }

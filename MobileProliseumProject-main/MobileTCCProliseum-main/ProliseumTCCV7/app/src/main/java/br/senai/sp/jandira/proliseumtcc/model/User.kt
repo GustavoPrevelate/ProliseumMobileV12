@@ -10,4 +10,6 @@ data class User(
     val nickname: String,
     val biografia: String,
     val propostas: List<ProfileResponsePropostas>?,
+    val highlights: List<ProfileResponsePropostasDeHighlights>?,
+    val redeSocial: List<ProfileResponsePropostasDeRedeSocial>?
 )

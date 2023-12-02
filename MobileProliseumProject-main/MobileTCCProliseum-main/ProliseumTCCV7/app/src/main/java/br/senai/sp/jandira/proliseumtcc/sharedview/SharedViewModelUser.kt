@@ -3,6 +3,8 @@ package br.senai.sp.jandira.proliseumtcc.sharedview
 import androidx.lifecycle.ViewModel
 import br.senai.sp.jandira.proliseumtcc.model.PlayerProfileResponse
 import br.senai.sp.jandira.proliseumtcc.model.ProfileResponsePropostas
+import br.senai.sp.jandira.proliseumtcc.model.ProfileResponsePropostasDeHighlights
+import br.senai.sp.jandira.proliseumtcc.model.ProfileResponsePropostasDeRedeSocial
 import br.senai.sp.jandira.proliseumtcc.model.User
 
 class SharedViewModelUser: ViewModel() {
@@ -15,4 +17,6 @@ class SharedViewModelUser: ViewModel() {
     var nickname: String = ""
     var biografia: String = ""
     var propostas: List<ProfileResponsePropostas>? = null
+    var highlights: List<ProfileResponsePropostasDeHighlights>? = null
+    var redeSocial: List<ProfileResponsePropostasDeRedeSocial>? = null
 }

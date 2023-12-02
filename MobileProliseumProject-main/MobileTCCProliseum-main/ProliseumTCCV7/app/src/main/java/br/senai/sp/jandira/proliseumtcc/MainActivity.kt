@@ -86,6 +86,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroGeneroEDataNascimen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.FinalizarCadastroUsuarioPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesMinhaPublicacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaNotificacoesScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaRedesSociaisScreen
 //import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.criar.CriarTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.deletar.DeletarOrganizacaoScreen
@@ -95,6 +96,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesMeuPe
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarMinhaPublicacaoJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.minhas_redes_sociais.DeletarRedeSocialScreen
 import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavegacaoConfiguracoesMeuPerfilPrincipal
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroJogadorListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroJogadorScreen
@@ -146,8 +148,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
 
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+//        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
 
         setContent {
@@ -1474,6 +1476,19 @@ fun MainScreen() {
                 sharedViewModelPlayerProfileTimeAtualPropostas,
 
                 sharedViewModelImageUri,
+                sharedResponsePostRedeSocial,
+                sharedResponsePostRedeSocialDono,
+                sharedResponsePostRedeSocialDonoHighlights,
+                sharedResponsePostRedeSocialDonoHighlightsDono,
+                sharedResponsePostRedeSocialDonoPropostas,
+                sharedResponsePostRedeSocialDonoPropostasDe,
+                sharedResponsePostRedeSocialDonoPropostasDeJogadores,
+                sharedResponsePostRedeSocialDonoPropostasDePropostas,
+                sharedResponsePostRedeSocialDonoRedeSocial,
+
+                sharedViewResponseFirstGetRedeSocial,
+                sharedViewResponseGetRedeSocial,
+                sharedViewResponseGetRedeSocialDono,
             ) {
                 currentScreen = it
             }
@@ -1496,6 +1511,56 @@ fun MainScreen() {
                 currentScreen = it
             }
         }
+
+        // TELA DE PERFIL DE OUTRO TIME
+        val deletarRedeSocialScreen: @Composable () -> Unit = {
+            DeletarRedeSocialScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+                sharedViewModelPerfilPropostasDeRedeSocial,
+                sharedViewModelPerfilPropostasDeHighlights,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+
+                sharedResponsePostRedeSocial,
+                sharedResponsePostRedeSocialDono,
+                sharedResponsePostRedeSocialDonoHighlights,
+                sharedResponsePostRedeSocialDonoHighlightsDono,
+                sharedResponsePostRedeSocialDonoPropostas,
+                sharedResponsePostRedeSocialDonoPropostasDe,
+                sharedResponsePostRedeSocialDonoPropostasDeJogadores,
+                sharedResponsePostRedeSocialDonoPropostasDePropostas,
+                sharedResponsePostRedeSocialDonoRedeSocial,
+
+                sharedViewResponseFirstGetRedeSocial,
+                sharedViewResponseGetRedeSocial,
+                sharedViewResponseGetRedeSocialDono,
+            ) {
+                currentScreen = it
+            }
+        }
+
+        // TELA DE PERFIL DE OUTRO TIME
+        val carregarTelaRedesSociaisScreen: @Composable () -> Unit = {
+            CarregarTelaRedesSociaisScreen(
+                sharedViewModelTokenEId,
+            ) {
+                currentScreen = it
+            }
+        }
+
 
 
 
@@ -1559,6 +1624,8 @@ fun MainScreen() {
                     "navegacao_configuracoes_meu_perfil_principal" -> navegacaoConfiguracoesMeuPerfilPrincipal()
                     "carregar_tela_notificacoes" -> carregarTelaNotificacoesScreen()
                     "criar_rede_social" -> criarRedeSocialScreen()
+                    "deletar_rede_social" -> deletarRedeSocialScreen()
+                    "carregar_tela_redes_sociais" -> carregarTelaRedesSociaisScreen()
                     else -> startScreen()
                 }
             }

@@ -20,8 +20,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -175,6 +178,8 @@ fun PerfilUsuarioPadraoScreen(
     var redesSociaisList by remember {
         mutableStateOf(listOf<ResponseGetRedeSocial>())
     }
+
+    val idDonoRedeSocial = sharedResponsePostRedeSocialDono.id
 
     val redeSocialService = RetrofitFactoryCadastro().getRedeSocialService()
 
@@ -472,241 +477,98 @@ fun PerfilUsuarioPadraoScreen(
         Column(
             modifier = Modifier.padding(top = 250.dp),
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                item {
-                    Text(
-                        text = "${nickNameUser}",
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight(600),
-                        color = Color.White
-                    )
 
-                    Spacer(modifier = Modifier.height(2.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(
+                    text = "${nickNameUser}",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight(600),
+                    color = Color.White
+                )
+            }
 
-//                    if(orgProfile == null) {
-//                        Spacer(modifier = Modifier.height(12.dp))
-//                    } else if (orgProfile != null){
-//                        Button(onClick = {
-//                            onNavigate("carregar_informacoes_perfil_organizacao")
-//                        },
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .height(70.dp)
-//                                .padding(start = 0.dp, top = 0.dp),
-//                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-//                            colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
-//                        ) {
-//                            Card(
-//                                modifier = Modifier
-//                                    .width(50.dp)
-//                                    .height(50.dp),
-//                                shape = CircleShape
-//                            ) {
-//                                if (idUser != null && idUser != 0) {
-//                                    // Exiba a imagem se a URI estiver definida
-//                                    AsyncImage(
-//                                        model = imageOrgUri,
-//                                        contentDescription = null,
-//                                        modifier = Modifier.fillMaxSize(),
-//                                        contentScale = ContentScale.Crop
-//                                    )
-//                                } else {
-//                                    // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
-//                                    Text("Carregando imagem...")
-//                                }
-//                            }
-//
-//                            Spacer(modifier = Modifier.width(12.dp))
-//
-//                            Text(
-//                                text = "${nomeOrganizacao}",
-//                                modifier = Modifier.clickable {
-//                                    onNavigate("carregar_informacoes_perfil_organizacao")
-//                                },
-//                                fontSize = 18.sp,
-//                                fontWeight = FontWeight(600),
-//                                color = Color.White
-//                            )
-//
-//                            Spacer(modifier = Modifier.height(12.dp))
-//                        }
-//                    }
+            Spacer(modifier = Modifier.height(20.dp))
 
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    if(dadosJogador != null){
-                        //jogos
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Card(
-                                modifier = Modifier
-                                    .height(85.dp)
-                                    .width(85.dp),
-                                colors = CardDefaults.cardColors(RedProliseum)
-                            ) {
-                                Image(
-                                    painter =
-                                    if ("${jogoJogadorPerfilUser}" == "0") painterResource(
-                                        id = R.drawable.iconlol
-                                    )
-                                    else if ("${jogoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconlol)
-                                    else if ("${jogoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconlol)
-                                    else painter,
-                                    contentDescription = "",
-                                    modifier = Modifier.fillMaxSize(),
-                                    alignment = Alignment.Center,
-                                    colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.width(24.dp))
-
-                            Card(
-                                modifier = Modifier
-                                    .height(85.dp)
-                                    .width(85.dp),
-                                colors = CardDefaults.cardColors(RedProliseum)
-                            ) {
-                                Image(
-                                    painter = if ("${funcaoJogadorPerfilUser}" == "0") painterResource(
-                                        id = R.drawable.icontoplane
-                                    )
-                                    else if ("${funcaoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconjungle)
-                                    else if ("${funcaoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconmidlane)
-                                    else if ("${funcaoJogadorPerfilUser}" == "3") painterResource(id = R.drawable.iconsupport)
-                                    else if ("${funcaoJogadorPerfilUser}" == "4") painterResource(id = R.drawable.iconadc)
-                                    else painter,
-                                    contentDescription = "",
-                                    modifier = Modifier.fillMaxSize(),
-                                    alignment = Alignment.Center,
-                                    colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                                )
-                            }
-                        }
-                    } else if(dadosJogador == null){
-                        Log.e("SEM PERFIL JOGADOR", "Sem dados de perfil de jogador ${dadosJogador}")
-                    }
-
-
-                    //Social
-                    Row(
+            if(dadosJogador != null){
+                //jogos
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Card(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(15.dp),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
+                            .height(85.dp)
+                            .width(85.dp),
+                        colors = CardDefaults.cardColors(RedProliseum)
                     ) {
-
-//                        Card(
-//                            modifier = Modifier
-//                                .height(45.dp)
-//                                .width(45.dp),
-//                            colors = CardDefaults.cardColors(RedProliseum)
-//                        ) {
-//                            Image(
-//                                painter = painterResource(id = R.drawable.discord),
-//                                contentDescription = "",
-//                                modifier = Modifier
-//                                    .fillMaxSize()
-//                                    .padding(8.dp),
-//                                alignment = Alignment.Center,
-//                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-//                            )
-//                        }
-//
-//                        Text(
-//                            text = stringResource(id = R.string.label_nome_jogador),
-//                            color = Color.White,
-//                            modifier = Modifier.padding(5.dp),
-//                            fontWeight = FontWeight(600),
-//                            fontFamily = customFontFamilyText,
-//                            fontSize = 14.sp
-//                        )
-//
-//                        Spacer(modifier = Modifier.width(5.dp))
-//
-//                        Card(
-//                            modifier = Modifier
-//                                .height(45.dp)
-//                                .width(45.dp),
-//                            colors = CardDefaults.cardColors(RedProliseum)
-//                        ) {
-//                            Image(
-//                                painter = painterResource(id = R.drawable.twitter),
-//                                contentDescription = "",
-//                                modifier = Modifier
-//                                    .fillMaxSize()
-//                                    .padding(8.dp),
-//                                alignment = Alignment.Center,
-//                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-//                            )
-//                        }
-//
-//                        Text(
-//                            text = stringResource(id = R.string.label_nome_jogador),
-//                            color = Color.White,
-//                            modifier = Modifier.padding(5.dp),
-//                            fontWeight = FontWeight(600),
-//                            fontFamily = customFontFamilyText,
-//                            fontSize = 14.sp
-//                        )
-//
-//                        Spacer(modifier = Modifier.width(5.dp))
-
-//                        Card(
-//                            modifier = Modifier
-//                                .height(45.dp)
-//                                .width(45.dp),
-//                            colors = CardDefaults.cardColors(RedProliseum)
-//                        ) {
-//                            Image(
-//                                painter =
-//                                if ("${generoPerfilUser}" == "0") painterResource(id = R.drawable.generomasculino)
-//                                else if ("${generoPerfilUser}" == "1") painterResource(id = R.drawable.generofeminino)
-//                                else if ("${generoPerfilUser}" == "2") painterResource(id = R.drawable.generoindefinido)
-//                                else painter,
-//                                contentDescription = "",
-//                                modifier = Modifier.fillMaxSize(),
-//                                alignment = Alignment.Center,
-//                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-//                            )
-//                        }
-//
-//                        Text(
-//                            text = stringResource(id = R.string.label_genero),
-//                            color = Color.White,
-//                            modifier = Modifier.padding(5.dp),
-//                            fontWeight = FontWeight(600),
-//                            fontFamily = customFontFamilyText,
-//                            fontSize = 14.sp
-//                        )
-
+                        Image(
+                            painter =
+                            if ("${jogoJogadorPerfilUser}" == "0") painterResource(
+                                id = R.drawable.iconlol
+                            )
+                            else if ("${jogoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconlol)
+                            else if ("${jogoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconlol)
+                            else painter,
+                            contentDescription = "",
+                            modifier = Modifier.fillMaxSize(),
+                            alignment = Alignment.Center,
+                            colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                        )
                     }
-                    
-                    if(redesSociaisList != null){
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(top = 10.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Top,
-                            content = {
-                                items(redesSociaisList.size){ index ->
-                                    val redesSociais = redesSociaisList[index]
 
-                                    //jogos
+                    Spacer(modifier = Modifier.width(24.dp))
+
+                    Card(
+                        modifier = Modifier
+                            .height(85.dp)
+                            .width(85.dp),
+                        colors = CardDefaults.cardColors(RedProliseum)
+                    ) {
+                        Image(
+                            painter = if ("${funcaoJogadorPerfilUser}" == "0") painterResource(
+                                id = R.drawable.icontoplane
+                            )
+                            else if ("${funcaoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconjungle)
+                            else if ("${funcaoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconmidlane)
+                            else if ("${funcaoJogadorPerfilUser}" == "3") painterResource(id = R.drawable.iconsupport)
+                            else if ("${funcaoJogadorPerfilUser}" == "4") painterResource(id = R.drawable.iconadc)
+                            else painter,
+                            contentDescription = "",
+                            modifier = Modifier.fillMaxSize(),
+                            alignment = Alignment.Center,
+                            colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                        )
+                    }
+                }
+            } else if(dadosJogador == null){
+                Log.e("SEM PERFIL JOGADOR", "Sem dados de perfil de jogador ${dadosJogador}")
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            if(redesSociaisList != null){
+
+                val matchingRedesSociais = redesSociaisList.filter { it.dono?.id == idUser }
+
+                if(matchingRedesSociais.isNotEmpty()){
+                    LazyRow(
+                        content = {
+                            items(redesSociaisList.size){ index ->
+                                val redesSociais = redesSociaisList[index]
+
+                                Spacer(modifier = Modifier.width(5.dp))
+
+                                if(
+                                    redesSociais.dono?.id == idUser
+                                ){
                                     Column(
                                         modifier = Modifier
                                             .fillMaxSize()
-                                            .height(80.dp)
-                                            .padding(top = 20.dp),
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.Center
+                                            .height(90.dp),
                                     ) {
                                         Box(
                                             contentAlignment = Alignment.TopEnd
@@ -714,36 +576,30 @@ fun PerfilUsuarioPadraoScreen(
                                             Card(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
-                                                    .height(80.dp)
+                                                    .height(60.dp)
                                                     .padding(start = 0.dp, top = 0.dp),
-                                                shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+
                                                 colors = CardColors(
-                                                    containerColor = Color.Black,
-                                                    contentColor = Color.Black,
-                                                    disabledContainerColor = Color.White,
-                                                    disabledContentColor = Color.White
+                                                    containerColor = Color.Transparent,
+                                                    contentColor = Color.Transparent,
+                                                    disabledContainerColor = Color.Transparent,
+                                                    disabledContentColor = Color.Transparent
                                                 )
                                             ) {
 
-                                                // Conteúdo do seu Card aqui
-
-                                                // Box para o ícone no canto superior direito
-
-
-
-
-
-                                                Column(
-                                                    modifier = Modifier.fillMaxSize()
+                                                Row(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth(),
+                                                    horizontalArrangement = Arrangement.Center,
+                                                    verticalAlignment = Alignment.CenterVertically
                                                 ) {
 
 
-                                                    Spacer(modifier = Modifier.height(5.dp))
-
                                                     Card(
                                                         modifier = Modifier
-                                                            .height(55.dp)
-                                                            .width(55.dp),
+                                                            .height(60.dp)
+                                                            .width(60.dp),
+                                                        shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
                                                         colors = CardDefaults.cardColors(RedProliseum)
                                                     ) {
                                                         Image(
@@ -763,21 +619,16 @@ fun PerfilUsuarioPadraoScreen(
                                                             )
                                                     }
 
-                                                    Spacer(modifier = Modifier.height(5.dp))
+                                                    Spacer(modifier = Modifier.width(5.dp))
 
-                                                    Row(
-                                                        modifier = Modifier
-                                                            .height(70.dp)
-                                                    ) {
-                                                        Text(
-                                                            text = "${redesSociais.link}",
-                                                            color = Color.White,
-                                                            modifier = Modifier.padding(5.dp),
-                                                            fontWeight = FontWeight(600),
-                                                            fontFamily = customFontFamilyText,
-                                                            fontSize = 16.sp
-                                                        )
-                                                    }
+                                                    Text(
+                                                        text = "${redesSociais.link}",
+                                                        color = Color.White,
+                                                        modifier = Modifier.padding(5.dp),
+                                                        fontWeight = FontWeight(600),
+                                                        fontFamily = customFontFamilyText,
+                                                        fontSize = 22.sp
+                                                    )
 
 
                                                 }
@@ -801,22 +652,21 @@ fun PerfilUsuarioPadraoScreen(
 //                                        )
                                         }
                                     }
+
+                                    Spacer(modifier = Modifier.width(20.dp))
                                 }
                             }
-                        )
-                    } else if(redesSociaisList == null){
+                        }
+                    )
+                } else {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(70.dp)
+                    ){
                         Button(
                             onClick = {
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador = idInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeUsuarioInfoPerfilJogador = nomeUsuarioInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeCompletoInfoPerfilJogador = nomeCompletoInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.emailInfoPerfilJogador = emailInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.dataNascimentoInfoPerfilJogador = dataNascimentoInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.generoInfoPerfilJogador = generoInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.nickNameInfoPerfilJogador = nickNameInfoPerfilJogador
-//                                    sharedViewModelGetListaJogadoresInfoPerfil.biografiaInfoPerfilJogador = biografiaInfoPerfilJogador
-//
-//                                    onNavigate("carregar_informacoes_perfil_outro_jogador")
+                                onNavigate("criar_rede_social")
 
                             },
                             modifier = Modifier
@@ -827,215 +677,225 @@ fun PerfilUsuarioPadraoScreen(
                             colors = ButtonDefaults.buttonColors(RedProliseum),
                         ){
                             Text(
-                                text = "Minha rede social",
+                                text = "Criar rede social",
                                 color = Color.White,
                                 modifier = Modifier.padding(5.dp),
                                 fontWeight = FontWeight(600),
                                 fontFamily = customFontFamilyText,
-                                fontSize = 16.sp
+                                fontSize = 18.sp
                             )
                         }
                     }
+                }
 
+            }
 
+        }
 
-                    //Biografia
-                    Column(
+        Column {
+
+            Column(
+                modifier = Modifier
+                    .padding(top = 500.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                //Biografia
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Box(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                            .background(
+                                Brush
+                                    .horizontalGradient(
+                                        listOf(
+                                            BlackTransparentProliseum,
+                                            BlackTransparentProliseum
+                                        )
+                                    ), shape = RoundedCornerShape(16.dp)
+                            )
+                            .padding(10.dp)
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    Brush
-                                        .horizontalGradient(
-                                            listOf(
-                                                BlackTransparentProliseum,
-                                                BlackTransparentProliseum
-                                            )
-                                        ), shape = RoundedCornerShape(16.dp)
+                        Text(
+                            text = "${biografiaUser}",
+                            fontSize = 16.sp,
+                            color = Color.White,
+                            fontFamily = customFontFamilyText,
+                            fontWeight = FontWeight(400),
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                }
+
+                // linha
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(0.5.dp)
+                        .background(Color.Red)
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(10.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+
+                    )
+                {
+                    if(timeAtualPerfilUser != null){
+
+                        val imageTimeRef = remember { mutableStateOf<StorageReference?>(null) }
+
+                        if(idUser != null && idUser != 0){
+
+
+                            val storage = Firebase.storage
+
+                            if (idUser != null && idUser != 0) {
+                                imageTimeRef.value = storage.reference.child("team/${idUser}/profile")
+                            }
+
+                        } else{
+                            Log.e("TOKEN NULO", "Token do usuario esta nulo")
+                            Log.e("ERRO", "As informaçoes do usuario nao foram carregadas")
+                        }
+
+                        var imageTimeUri by remember { mutableStateOf<Uri?>(null) }
+
+                        if (imageTimeRef.value != null) { // Verifique a referência do Firebase
+                            LaunchedEffect(Unit) {
+                                try {
+                                    val uriTime = imageTimeRef.value!!.downloadUrl.await()
+                                    imageTimeUri = uriTime
+
+                                    Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriTime}")
+
+                                } catch (e: Exception) {
+                                    // Trate os erros, se houver algum
+                                    Log.e("DEBUG", "Erro ao buscar imagem: $e")
+                                }
+                            }
+                        }
+
+
+                        Column() {
+
+                            Column(
+                                modifier = Modifier
+                                    .padding(top = 5.dp, start = 30.dp)
+                            ) {
+                                Text(
+                                    text = "${nomeTimeAtualUserPadrao}",
+                                    fontSize = 15.sp,
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(900),
                                 )
-                                .padding(10.dp)
+
+                                Spacer(modifier = Modifier.height( 5.dp))
+                            }
+
+
+                            Box(
+                                contentAlignment = Alignment.BottomEnd
+                            ) {
+
+
+
+                                Card(
+                                    modifier = Modifier
+                                        .clickable {
+                                            onNavigate("home")
+                                        }
+                                        .height(100.dp)
+                                        .width(100.dp),
+
+                                    shape = CircleShape
+                                ) {
+
+                                    if (idUser != null && idUser != 0) {
+                                        // Exiba a imagem se a URI estiver definida
+                                        AsyncImage(
+                                            model = imageTimeUri,
+                                            contentDescription = null,
+                                            modifier = Modifier.fillMaxSize(),
+                                            contentScale = ContentScale.Crop
+                                        )
+                                    } else {
+                                        // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                                        Text("Carregando imagem...")
+                                    }
+                                }
+                            }
+                        }
+
+
+
+                    } else if(timeAtualPerfilUser == null){
+                        Column(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(10.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "${biografiaUser}",
-                                fontSize = 16.sp,
+                                text = stringResource(id = R.string.label_atualmente),
+                                fontSize = 15.sp,
+                                color = Color.White,
+                                fontFamily = customFontFamilyText,
+                                fontWeight = FontWeight(900),
+                            )
+                            Image(
+                                painter = painterResource(id = R.drawable.brasao),
+                                contentDescription = ""
+                            )
+                            Text(
+                                text = stringResource(id = R.string.label_fa),
+                                fontSize = 15.sp,
                                 color = Color.White,
                                 fontFamily = customFontFamilyText,
                                 fontWeight = FontWeight(400),
-                                modifier = Modifier.padding(16.dp)
                             )
                         }
                     }
 
-                    // linha
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(0.5.dp)
-                            .background(Color.Red)
-                    )
+                    if(dadosJogador != null){
+                        Column(
+                            modifier = Modifier
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(10.dp),
-                        horizontalArrangement = Arrangement.SpaceAround,
-
-                        )
-                    {
-                        if(timeAtualPerfilUser != null){
-
-                            val imageTimeRef = remember { mutableStateOf<StorageReference?>(null) }
-
-                            if(idUser != null && idUser != 0){
-
-
-                                val storage = Firebase.storage
-
-                                if (idUser != null && idUser != 0) {
-                                    imageTimeRef.value = storage.reference.child("team/${idUser}/profile")
-                                }
-
-                            } else{
-                                Log.e("TOKEN NULO", "Token do usuario esta nulo")
-                                Log.e("ERRO", "As informaçoes do usuario nao foram carregadas")
-                            }
-
-                            var imageTimeUri by remember { mutableStateOf<Uri?>(null) }
-
-                            if (imageTimeRef.value != null) { // Verifique a referência do Firebase
-                                LaunchedEffect(Unit) {
-                                    try {
-                                        val uriTime = imageTimeRef.value!!.downloadUrl.await()
-                                        imageTimeUri = uriTime
-
-                                        Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriTime}")
-
-                                    } catch (e: Exception) {
-                                        // Trate os erros, se houver algum
-                                        Log.e("DEBUG", "Erro ao buscar imagem: $e")
-                                    }
-                                }
-                            }
-
-
-                                Column() {
-
-                                    Column(
-                                        modifier = Modifier
-                                            .padding(top = 5.dp, start = 30.dp)
-                                    ) {
-                                        Text(
-                                            text = "${nomeTimeAtualUserPadrao}",
-                                            fontSize = 15.sp,
-                                            color = Color.White,
-                                            fontFamily = customFontFamilyText,
-                                            fontWeight = FontWeight(900),
-                                        )
-
-                                        Spacer(modifier = Modifier.height( 5.dp))
-                                    }
-
-
-                                    Box(
-                                        contentAlignment = Alignment.BottomEnd
-                                    ) {
-
-
-
-                                        Card(
-                                            modifier = Modifier
-                                                .clickable {
-                                                    onNavigate("home")
-                                                }
-                                                .height(100.dp)
-                                                .width(100.dp),
-
-                                            shape = CircleShape
-                                        ) {
-
-                                            if (idUser != null && idUser != 0) {
-                                                // Exiba a imagem se a URI estiver definida
-                                                AsyncImage(
-                                                    model = imageTimeUri,
-                                                    contentDescription = null,
-                                                    modifier = Modifier.fillMaxSize(),
-                                                    contentScale = ContentScale.Crop
-                                                )
-                                            } else {
-                                                // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
-                                                Text("Carregando imagem...")
-                                            }
-                                        }
-                                    }
-                                }
-
-
-
-                        } else if(timeAtualPerfilUser == null){
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxHeight()
-                                    .padding(10.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.label_atualmente),
-                                    fontSize = 15.sp,
-                                    color = Color.White,
-                                    fontFamily = customFontFamilyText,
-                                    fontWeight = FontWeight(900),
-                                )
-                                Image(
-                                    painter = painterResource(id = R.drawable.brasao),
-                                    contentDescription = ""
-                                )
-                                Text(
-                                    text = stringResource(id = R.string.label_fa),
-                                    fontSize = 15.sp,
-                                    color = Color.White,
-                                    fontFamily = customFontFamilyText,
-                                    fontWeight = FontWeight(400),
-                                )
-                            }
+                                .padding(10.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.elo),
+                                fontSize = 15.sp,
+                                color = Color.White,
+                                fontFamily = customFontFamilyText,
+                                fontWeight = FontWeight(900),
+                            )
+                            Image(
+                                painter = if ("${eloJogadorPerfilUser}" == "0") painterResource(id = R.drawable.icone_iron)
+                                else if ("${eloJogadorPerfilUser}" == "1") painterResource(id = R.drawable.icone_bronze)
+                                else if ("${eloJogadorPerfilUser}" == "2") painterResource(id = R.drawable.icone_silver)
+                                else if ("${eloJogadorPerfilUser}" == "3") painterResource(id = R.drawable.icone_gold)
+                                else if ("${eloJogadorPerfilUser}" == "4") painterResource(id = R.drawable.icone_platinum)
+                                else if ("${eloJogadorPerfilUser}" == "5") painterResource(id = R.drawable.icone_diamond)
+                                else if ("${eloJogadorPerfilUser}" == "6") painterResource(id = R.drawable.icone_master)
+                                else if ("${eloJogadorPerfilUser}" == "7") painterResource(id = R.drawable.icone_grandmaster)
+                                else if ("${eloJogadorPerfilUser}" == "8") painterResource(id = R.drawable.icone_challenger)
+                                else painter,
+                                contentDescription = "",
+                                modifier = Modifier.size(100.dp)
+                            )
                         }
-
-                        if(dadosJogador != null){
-                            Column(
-                                modifier = Modifier
-
-                                    .padding(10.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.elo),
-                                    fontSize = 15.sp,
-                                    color = Color.White,
-                                    fontFamily = customFontFamilyText,
-                                    fontWeight = FontWeight(900),
-                                )
-                                Image(
-                                    painter = if ("${eloJogadorPerfilUser}" == "0") painterResource(id = R.drawable.icone_iron)
-                                    else if ("${eloJogadorPerfilUser}" == "1") painterResource(id = R.drawable.icone_bronze)
-                                    else if ("${eloJogadorPerfilUser}" == "2") painterResource(id = R.drawable.icone_silver)
-                                    else if ("${eloJogadorPerfilUser}" == "3") painterResource(id = R.drawable.icone_gold)
-                                    else if ("${eloJogadorPerfilUser}" == "4") painterResource(id = R.drawable.icone_platinum)
-                                    else if ("${eloJogadorPerfilUser}" == "5") painterResource(id = R.drawable.icone_diamond)
-                                    else if ("${eloJogadorPerfilUser}" == "6") painterResource(id = R.drawable.icone_master)
-                                    else if ("${eloJogadorPerfilUser}" == "7") painterResource(id = R.drawable.icone_grandmaster)
-                                    else if ("${eloJogadorPerfilUser}" == "8") painterResource(id = R.drawable.icone_challenger)
-                                    else painter,
-                                    contentDescription = "",
-                                    modifier = Modifier.size(100.dp)
-                                )
-                            }
-                        } else if(dadosJogador == null){
-                            Log.e("SEM DADOS JOGADOR", "Sem dados do perfil de jogador para exibir Elo ${dadosJogador}")
-                        }
+                    } else if(dadosJogador == null){
+                        Log.e("SEM DADOS JOGADOR", "Sem dados do perfil de jogador para exibir Elo ${dadosJogador}")
+                    }
 
 //                        Column(
 //                            modifier = Modifier
@@ -1055,16 +915,57 @@ fun PerfilUsuarioPadraoScreen(
 //                                modifier = Modifier.size(80.dp)
 //                            )
 //                        }
-                    }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(0.5.dp)
-                            .background(Color.Red)
-                    )
+
+
+
                 }
+
+                Spacer(modifier = Modifier.height(5.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(0.5.dp)
+                        .background(Color.Red)
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Button(
+                        onClick = {
+
+                            onNavigate("home")
+
+                        },
+                        modifier = Modifier
+                            .width(180.dp)
+                            .height(50.dp)
+                            .padding(start = 0.dp, top = 0.dp),
+                        shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                        colors = ButtonDefaults.buttonColors(RedProliseum),
+                    ){
+                        Text(
+                            text = "HIGHLIGHTS!",
+                            color = Color.White,
+                            modifier = Modifier.padding(5.dp),
+                            fontWeight = FontWeight(600),
+                            fontFamily = customFontFamilyText,
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
             }
         }
+
     }
 }
 
