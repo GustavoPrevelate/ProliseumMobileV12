@@ -23,3 +23,5 @@ val BlackTransparentProliseum = Color(0x33000000)
 
 // PRETO
 val blackProliseum = Color(0xFF1f1e31)
+
+val outroBlackTransparente = Color(0xDD1F1E31)

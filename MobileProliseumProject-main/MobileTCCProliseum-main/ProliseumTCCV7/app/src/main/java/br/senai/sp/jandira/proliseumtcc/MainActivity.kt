@@ -96,6 +96,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesMeuPe
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarMinhaPublicacaoJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.ListaMeusHighLightsScreen
 import br.senai.sp.jandira.proliseumtcc.gui.minhas_redes_sociais.DeletarRedeSocialScreen
 import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavegacaoConfiguracoesMeuPerfilPrincipal
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroJogadorListaTimesScreen
@@ -137,7 +138,10 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileT
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacaoProposta
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseFirstGetHighLights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseFirstGetRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetHighLights
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetHighLightsDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetRedeSocialDono
 
@@ -304,6 +308,13 @@ fun MainScreen() {
         val sharedViewResponseFirstGetRedeSocial = remember { SharedViewResponseFirstGetRedeSocial() }
         val sharedViewResponseGetRedeSocial = remember { SharedViewResponseGetRedeSocial() }
         val sharedViewResponseGetRedeSocialDono = remember { SharedViewResponseGetRedeSocialDono() }
+
+        // SharedViewModel GET HIGH LIGHTS
+
+        val sharedViewResponseFirstGetHighLights = remember { SharedViewResponseFirstGetHighLights() }
+        val sharedViewResponseGetHighLights = remember { SharedViewResponseGetHighLights() }
+        val sharedViewResponseGetHighLightsDono = remember { SharedViewResponseGetHighLightsDono() }
+
 
 
         /**********************************************************************************************************************************/
@@ -1561,6 +1572,70 @@ fun MainScreen() {
             }
         }
 
+        // TELA DE PERFIL DE OUTRO TIME
+        val listaMeusHighLightsScreen: @Composable () -> Unit = {
+            ListaMeusHighLightsScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+
+                // SharedViewModel GET MY TEAMS GERAL
+                sharedGetMyTeamsGeral,
+
+                // SharedViewModelGetMyTeams de USUARIO
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                // SharedViewModelGetMyTeams de TIME
+                sharedViewModelGetMyTeamsTime,
+                sharedViewModelGetMyTeamsTimeJogadores,
+                sharedViewModelGetMyTeamsTimeJogadoresAtivos,
+                sharedViewModelGetMyTeamsTimePropostas,
+
+                sharedViewModelNomeJogadorListaJogadores,
+                sharedViewModelGetListaJogadores,
+                sharedViewModelGetListaJogadoresList,
+                sharedViewModelGetListaJogadoresInfoPerfil,
+                sharedViewModelGetListaJogadoresTimeAtual,
+                sharedViewModelGetListaJogadoresDentroDeTime,
+                sharedViewModelGetListaJogadoresDentroDeTimeList,
+                sharedViewModelGetListaJogadoresPropostasList,
+                sharedViewModelGetListaJogadoresPropostasRecebidas,
+
+
+                sharedViewModelListaPublicacaoJogadores,
+
+                sharedGetListaPostagens,
+                sharedGetListaPostagensPublicacao,
+                sharedGetListaPostagensPublicacaoDonoId,
+
+                sharedViewResponseFirstGetHighLights,
+                sharedViewResponseGetHighLights,
+                sharedViewResponseGetHighLightsDono,
+            ) {
+                currentScreen = it
+            }
+        }
+
+
+
 
 
 
@@ -1626,6 +1701,7 @@ fun MainScreen() {
                     "criar_rede_social" -> criarRedeSocialScreen()
                     "deletar_rede_social" -> deletarRedeSocialScreen()
                     "carregar_tela_redes_sociais" -> carregarTelaRedesSociaisScreen()
+                    "lista_meus_high_lights" -> listaMeusHighLightsScreen()
                     else -> startScreen()
                 }
             }

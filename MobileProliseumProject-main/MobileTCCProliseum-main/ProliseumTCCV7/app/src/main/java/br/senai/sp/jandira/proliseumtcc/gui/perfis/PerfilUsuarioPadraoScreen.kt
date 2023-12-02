@@ -940,7 +940,7 @@ fun PerfilUsuarioPadraoScreen(
                     Button(
                         onClick = {
 
-                            onNavigate("home")
+                            onNavigate("lista_meus_high_lights")
 
                         },
                         modifier = Modifier
