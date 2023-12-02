@@ -239,6 +239,36 @@ fun NavegacaoConfiguracoesMeuPerfilPrincipal(
             }
             Spacer(modifier = Modifier.height(10.dp))
 
+            Button(
+                onClick = {
+                    onNavigate("criar_rede_social")
+                },
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .height(48.dp),
+                shape = RoundedCornerShape(73.dp),
+                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
+
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.redes_sociais),
+                    contentDescription = stringResource(id = R.string.button_proximo),
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.padding(start = 20.dp))
+                Text(
+                    text = "CRIAR REDE SOCIAL",
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = customFontFamilyText,
+                    fontWeight = FontWeight(900),
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+
+
+
 
         }
     }

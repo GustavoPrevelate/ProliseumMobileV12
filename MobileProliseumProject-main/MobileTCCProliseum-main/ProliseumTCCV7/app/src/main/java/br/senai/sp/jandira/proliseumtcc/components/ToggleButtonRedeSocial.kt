@@ -24,12 +24,12 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.rememberImagePainter
 
 enum class RedeSocial(val imageRes: Int, val id: Int) {
-    DISCORD(br.senai.sp.jandira.proliseumtcc.R.drawable.discord_icon, 0),
-    TWITTERX(br.senai.sp.jandira.proliseumtcc.R.drawable.twitterx_icon, 1),
-    FACEBOOK(br.senai.sp.jandira.proliseumtcc.R.drawable.facebook_icon, 2),
-    INSTAGRAM(br.senai.sp.jandira.proliseumtcc.R.drawable.instagram_icon, 3),
-    YOUTUBE(br.senai.sp.jandira.proliseumtcc.R.drawable.youtube_icon, 4),
-    TWITCH(br.senai.sp.jandira.proliseumtcc.R.drawable.twitch_icon, 5);
+    DISCORD(br.senai.sp.jandira.proliseumtcc.R.drawable.discord_logo_preto, 0),
+    TWITTERX(br.senai.sp.jandira.proliseumtcc.R.drawable.twitterx_logo_preto, 1),
+    FACEBOOK(br.senai.sp.jandira.proliseumtcc.R.drawable.facebook_logo_preto, 2),
+    INSTAGRAM(br.senai.sp.jandira.proliseumtcc.R.drawable.instagram_logo_preto, 3),
+    YOUTUBE(br.senai.sp.jandira.proliseumtcc.R.drawable.youtube_logo_preto, 4),
+    TWITCH(br.senai.sp.jandira.proliseumtcc.R.drawable.twitch_logo_preto ,5);
 
     fun toRepresentationStringRedeSocial(): String {
         return when (this) {

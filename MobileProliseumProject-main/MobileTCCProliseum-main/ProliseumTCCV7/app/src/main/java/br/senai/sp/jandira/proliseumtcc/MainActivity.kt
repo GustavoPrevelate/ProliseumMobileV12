@@ -45,7 +45,6 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPerfilId
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsOrganizacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresDentroDeTime
@@ -91,6 +90,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaNot
 import br.senai.sp.jandira.proliseumtcc.gui.criar.CriarTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.deletar.DeletarOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.minhas_redes_sociais.CriarRedeSocialScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesMeuPerfilPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesTimeScreen
@@ -1444,6 +1444,17 @@ fun MainScreen() {
             }
         }
 
+        // TELA DE PERFIL DE OUTRO TIME
+        val criarRedeSocialScreen: @Composable () -> Unit = {
+            CriarRedeSocialScreen(
+                sharedViewModelTokenEId,
+            ) {
+                currentScreen = it
+            }
+        }
+
+
+
 
 
 
@@ -1503,6 +1514,7 @@ fun MainScreen() {
                     "notificacao" -> notificacaoScreen()
                     "navegacao_configuracoes_meu_perfil_principal" -> navegacaoConfiguracoesMeuPerfilPrincipal()
                     "carregar_tela_notificacoes" -> carregarTelaNotificacoesScreen()
+                    "criar_rede_social" -> criarRedeSocialScreen()
                     else -> startScreen()
                 }
             }
