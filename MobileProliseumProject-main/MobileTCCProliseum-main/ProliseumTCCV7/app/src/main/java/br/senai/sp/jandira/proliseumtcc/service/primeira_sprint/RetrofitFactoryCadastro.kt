@@ -145,6 +145,11 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(GetHighLightsService::class.java)
     }
 
+    fun atualizarHighlightService(): AtualizarHighlightService {
+        return retrofitFactoryCadastro.create(AtualizarHighlightService::class.java)
+    }
+
+
 
 
 }

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -477,53 +478,7 @@ fun ListaMeusHighLightsScreen(
                         modifier = Modifier.padding(5.dp),
                         fontWeight = FontWeight(600),
                         fontFamily = customFontFamilyText,
-                        fontSize = 12.sp
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Button(
-                    onClick = {
-                        onNavigate("home")
-                    },
-                    modifier = Modifier
-                        .width(250.dp)
-                        .height(50.dp)
-                        .padding(start = 0.dp, top = 0.dp),
-                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                    colors = ButtonDefaults.buttonColors(RedProliseum),
-                ) {
-                    Text(
-                        text = "APAGAR HIGHLIGHT",
-                        color = Color.White,
-                        modifier = Modifier.padding(5.dp),
-                        fontWeight = FontWeight(600),
-                        fontFamily = customFontFamilyText,
-                        fontSize = 12.sp
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Button(
-                    onClick = {
-                        onNavigate("home")
-                    },
-                    modifier = Modifier
-                        .width(250.dp)
-                        .height(50.dp)
-                        .padding(start = 0.dp, top = 0.dp),
-                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                    colors = ButtonDefaults.buttonColors(RedProliseum),
-                ) {
-                    Text(
-                        text = "ATUALIZAR HIGHLIGHT",
-                        color = Color.White,
-                        modifier = Modifier.padding(5.dp),
-                        fontWeight = FontWeight(600),
-                        fontFamily = customFontFamilyText,
-                        fontSize = 12.sp
+                        fontSize = 22.sp
                     )
                 }
 
@@ -548,7 +503,7 @@ fun ListaMeusHighLightsScreen(
                                 val donoDaPublicacao = infoHighLights.dono
 
                                 val idInfoHighLights = infoHighLights?.id ?: 0
-                                val descricaoInfoHighLights = infoHighLights?.titulo ?: ""
+                                val tituloInfoHighLights = infoHighLights?.titulo ?: ""
 
 
                                 val idDonoHighLights = donoDaPublicacao?.id ?: 0
@@ -618,10 +573,10 @@ fun ListaMeusHighLightsScreen(
 
                                         Spacer(modifier = Modifier.height(20.dp))
 
-                                        Column(
+                                        Row(
                                             modifier = Modifier.fillMaxWidth(),
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                            verticalArrangement = Arrangement.Center
+                                            horizontalArrangement = Arrangement.Center,
+                                            verticalAlignment = Alignment.CenterVertically
                                         ){
                                             Text(
                                                 text = "${infoHighLights.titulo}",
@@ -631,25 +586,45 @@ fun ListaMeusHighLightsScreen(
                                                 fontFamily = customFontFamilyText,
                                                 fontSize = 22.sp
                                             )
+
+                                            Spacer(modifier = Modifier.width(20.dp))
+
+                                            Image(
+
+                                                painter = painterResource(id = R.drawable.pincel_edit),
+                                                contentDescription = stringResource(id = R.string.button_sair),
+                                                modifier = Modifier
+                                                    .clickable {
+                                                        sharedViewResponseGetHighLights.id = idInfoHighLights
+                                                        sharedViewResponseGetHighLights.titulo = tituloInfoHighLights
+
+                                                        onNavigate("editar_high_lights")
+                                                    }
+                                                    .size(30.dp)
+                                            )
+
+
                                         }
 
                                         Spacer(modifier = Modifier.height(5.dp))
 
 
-                                        Button(
-                                            onClick = {},
+                                        Box(
+
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .height(550.dp)
-                                                .padding(start = 0.dp, top = 0.dp),
-                                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                                            colors = ButtonDefaults.buttonColors(BlackTransparentProliseum),
+                                                .padding(start = 0.dp, top = 0.dp)
+                                                .background(
+                                                    BlackTransparentProliseum,
+                                                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp)
+                                                )
                                         ) {
 
                                             Column(
                                                 modifier = Modifier
                                                     .fillMaxSize()
-                                                    .padding(top = 20.dp, bottom = 20.dp),
+                                                    .padding(start = 20.dp ,top = 20.dp, end = 20.dp, bottom = 20.dp),
                                             ) {
 
 

@@ -96,6 +96,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesMeuPe
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarMinhaPublicacaoJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.EditarHighLightScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.ListaMeusHighLightsScreen
 import br.senai.sp.jandira.proliseumtcc.gui.minhas_redes_sociais.DeletarRedeSocialScreen
 import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavegacaoConfiguracoesMeuPerfilPrincipal
@@ -1634,6 +1635,33 @@ fun MainScreen() {
             }
         }
 
+        // TELA DE PERFIL DE OUTRO TIME
+        val editarHighLightScreen: @Composable () -> Unit = {
+            EditarHighLightScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+                sharedViewModelImageUri,
+
+                sharedViewResponseFirstGetHighLights,
+                sharedViewResponseGetHighLights,
+                sharedViewResponseGetHighLightsDono,
+            ) {
+                currentScreen = it
+            }
+        }
+
 
 
 
@@ -1702,6 +1730,7 @@ fun MainScreen() {
                     "deletar_rede_social" -> deletarRedeSocialScreen()
                     "carregar_tela_redes_sociais" -> carregarTelaRedesSociaisScreen()
                     "lista_meus_high_lights" -> listaMeusHighLightsScreen()
+                    "editar_high_lights" -> editarHighLightScreen()
                     else -> startScreen()
                 }
             }
