@@ -463,7 +463,7 @@ fun ListaMeusHighLightsScreen(
             ) {
                 Button(
                     onClick = {
-                        onNavigate("home")
+                        onNavigate("criar_high_light")
                     },
                     modifier = Modifier
                         .width(250.dp)

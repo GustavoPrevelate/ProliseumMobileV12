@@ -153,5 +153,9 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(DeletarHighLightService::class.java)
     }
 
+    fun postHighLightService(): PostHighLightService {
+        return retrofitFactoryCadastro.create(PostHighLightService::class.java)
+    }
+
 
 }
