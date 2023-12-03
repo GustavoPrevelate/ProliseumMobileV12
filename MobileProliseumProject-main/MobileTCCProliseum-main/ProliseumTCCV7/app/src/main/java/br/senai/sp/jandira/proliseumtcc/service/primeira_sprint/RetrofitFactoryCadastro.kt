@@ -149,7 +149,9 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(AtualizarHighlightService::class.java)
     }
 
-
+    fun deletarHighLightService(): DeletarHighLightService {
+        return retrofitFactoryCadastro.create(DeletarHighLightService::class.java)
+    }
 
 
 }

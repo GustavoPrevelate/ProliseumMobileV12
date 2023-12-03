@@ -62,6 +62,7 @@ import br.senai.sp.jandira.proliseumtcc.firebase.StorageUtil
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.DateInputSamplePerfilUser
 import br.senai.sp.jandira.proliseumtcc.model.BodyTituloHighLight
 import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilUsuario
+import br.senai.sp.jandira.proliseumtcc.model.GenericResponse
 import br.senai.sp.jandira.proliseumtcc.model.ResponseFirstGetHighLights
 import br.senai.sp.jandira.proliseumtcc.model.ResponseHighLight
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
@@ -76,6 +77,7 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileT
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewNotificacaoProposta
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseFirstGetHighLights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetHighLights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetHighLightsDono
@@ -422,16 +424,60 @@ fun EditarHighLightScreen(
 
                         Spacer(modifier = Modifier.width(10.dp))
 
+                        fun deletarHighlight(
+                            sharedViewModelTokenEId: SharedViewTokenEId,
+                        ){
+
+                            val token = sharedViewModelTokenEId.token
+
+
+                            val deletarHighLightService = RetrofitFactoryCadastro().deletarHighLightService()
+
+                            deletarHighLightService.deletarHighlight("Bearer " + token, idHighLightState).enqueue(object :
+                                Callback<GenericResponse> {
+                                override fun onResponse(call: Call<GenericResponse>, response: Response<GenericResponse>) {
+                                    if (response.isSuccessful) {
+
+                                        val highlightDeletadoBody = response.body()
+
+                                        val highLightDeletado = highlightDeletadoBody?.response
+
+                                        Log.d("HIGHLIGHT!", "HIGHLIGHT deletado? ${highLightDeletado}")
+
+
+
+                                    } else {
+                                        // Trate a resposta não bem-sucedida
+                                        Log.d("HighlightScreen CODE", "Resposta não bem-sucedida: ${response.code()}")
+                                        // Log de corpo da resposta (se necessário)
+                                        Log.d(
+                                            "HighlightScreen BODY",
+                                            "Corpo da resposta: ${response.errorBody()?.string()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
+                                    // Trate o erro de falha na rede.
+                                    Log.d("HighlightScreen ERROR", "Erro de rede: ${t.message}")
+                                }
+
+                            })
+                        }
+
                         Button(
                             onClick = {
 
                                 for (i in 1..2) {
                                     tituloHighLight?.let {
-                                        AtualizarHighLight(
-                                            sharedViewModelTokenEId = sharedViewModelTokenEId,
-                                            sharedViewResponseGetHighLights = sharedViewResponseGetHighLights,
-                                            tituloHighlight = it
-                                        )
+                                        idHighLightState?.let { it1 ->
+                                            AtualizarHighLight(
+                                                sharedViewModelTokenEId = sharedViewModelTokenEId,
+                                                sharedViewResponseGetHighLights = sharedViewResponseGetHighLights,
+                                                tituloHighlight = it,
+                                                id = it1
+                                            )
+                                        }
                                     }
 
 
@@ -498,54 +544,15 @@ fun EditarHighLightScreen(
                         Button(
                             onClick = {
 
-                                for (i in 1..2) {
-                                    tituloHighLight?.let {
-                                        AtualizarHighLight(
-                                            sharedViewModelTokenEId = sharedViewModelTokenEId,
-                                            sharedViewResponseGetHighLights = sharedViewResponseGetHighLights,
-                                            tituloHighlight = it
-                                        )
-                                    }
+                                    deletarHighlight(
+                                        sharedViewModelTokenEId = sharedViewModelTokenEId
+                                    )
 
 
                                     Log.i("JSON ACEITO", "Estrutura de JSON Correta!")
                                     onNavigate("carregar_informacoes_perfil_usuario")
 
-                                    if (idHighLightState != null && idHighLightState != 0) {
-                                        uri?.let {
-                                            StorageHightLightUtil.uploadToHighLightStorage(
-                                                uri = it,
-                                                context = outroContexto,
-                                                type = "post",
-                                                id = "${idHighLightState}"
-                                            )
-                                        }
 
-                                        Log.i(
-                                            "URI IMAGEM 06",
-                                            "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uri}"
-                                        )
-
-                                        uriCapa?.let {
-                                            StorageHightLightUtil.uploadToHighLightStorage(
-                                                uri = it,
-                                                context = outroContexto,
-                                                type = "post",
-                                                id = "${idHighLightState}"
-                                            )
-                                        }
-
-                                        Log.i(
-                                            "URI CAPA 06",
-                                            "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uriCapa}"
-                                        )
-                                    }
-
-                                    Log.i(
-                                        "GENERO 02",
-                                        "Aqui esta o genero de perfil na EditarPerfilJogadorPart1Screen ${generoUserSharedState}"
-                                    )
-                                }
                             },
                             modifier = Modifier
                                 .padding(top = 20.dp)
@@ -608,11 +615,11 @@ fun EditarHighLightScreen(
 fun AtualizarHighLight(
     sharedViewModelTokenEId: SharedViewTokenEId,
     sharedViewResponseGetHighLights: SharedViewResponseGetHighLights,
-    tituloHighlight: String
+    tituloHighlight: String,
+    id: Int
 ) {
     val token = sharedViewModelTokenEId.token
 
-    var idHighLightState = sharedViewResponseGetHighLights.id
 
 
 
@@ -625,7 +632,7 @@ fun AtualizarHighLight(
     val atualizarHighLightService = RetrofitFactoryCadastro().atualizarHighlightService()
 
     // Realize a chamada de API para editar o perfil
-    atualizarHighLightService.atualizarHighLight("Bearer " + token, idHighLightState, bodyTituloHighlight)
+    atualizarHighLightService.atualizarHighLight("Bearer " + token, id, bodyTituloHighlight)
         .enqueue(object : Callback<ResponseHighLight> {
             override fun onResponse(
                 call: Call<ResponseHighLight>,
