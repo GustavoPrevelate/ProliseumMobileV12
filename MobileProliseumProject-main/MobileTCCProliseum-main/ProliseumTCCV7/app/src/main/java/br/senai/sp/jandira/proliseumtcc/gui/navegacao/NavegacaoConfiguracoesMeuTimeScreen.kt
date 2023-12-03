@@ -1,5 +1,9 @@
 package br.senai.sp.jandira.proliseumtcc.gui.navegacao
 
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,8 +19,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -30,11 +40,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.model.AdicionarJogadorAoTime
+import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
+import kotlinx.coroutines.delay
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
 fun NavegacaoConfiguracoesMeuTimeScreen(
+    sharedViewModelTokenEId: SharedViewTokenEId,
+    sharedViewModelUser: SharedViewModelUser,
+    sharedGetTimeTeams: SharedGetTimeTeams,
     onNavigate: (String) -> Unit
+
 ) {
     // Define a família da fonte personalizada
     val customFontFamily = FontFamily(
@@ -43,6 +66,11 @@ fun NavegacaoConfiguracoesMeuTimeScreen(
     val customFontFamilyText = FontFamily(
         Font(R.font.font_poppins)
     )
+
+    var camposPreenchidosCorretamente by rememberSaveable { mutableStateOf(true) }
+    var mensagemSucessoInputsPerfil = rememberSaveable { mutableStateOf("") }
+
+
 
     Box(
         modifier = Modifier
@@ -55,6 +83,9 @@ fun NavegacaoConfiguracoesMeuTimeScreen(
                 )
             )
     ) {
+
+
+
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -119,7 +150,53 @@ fun NavegacaoConfiguracoesMeuTimeScreen(
 
             Button(
                 onClick = {
-//                    onNavigate("editar_perfil_jogador_1")
+
+
+                    val idUserVaiEntrarNoTime = sharedViewModelUser.id
+
+                    val idDoTime = sharedGetTimeTeams.id
+
+                    val token = sharedViewModelTokenEId.token
+
+                    val entrarNoTimeService = RetrofitFactoryCadastro().EntrarNoMeuTimeService()
+
+                    entrarNoTimeService.putTeamTimeJogador("Bearer " + token, idDoTime, idUserVaiEntrarNoTime)
+                        .enqueue(object : Callback<AdicionarJogadorAoTime> {
+                            override fun onResponse(call: Call<AdicionarJogadorAoTime>, response: Response<AdicionarJogadorAoTime>) {
+                                if (response.isSuccessful) {
+
+                                    Log.d(
+                                        "ENTROU!",
+                                        "ENTROU NO TIME COM SUCESSO: ${response.code()}"
+                                    )
+
+
+
+                                    camposPreenchidosCorretamente = false
+                                    mensagemSucessoInputsPerfil.value = "ENTROU NO TIME COM SUCESSO!"
+
+                                } else {
+
+                                    Log.d(
+                                        "NÃO ENTROU",
+                                        "Falha ao entrar no time: ${response.code()}"
+                                    )
+                                    // Log do corpo da resposta (se necessário)
+                                    Log.d(
+                                        "BODY NÃO ENTROU",
+                                        "Corpo da resposta: ${response.errorBody()?.string()}"
+                                    )
+
+                                    camposPreenchidosCorretamente = false
+                                    mensagemSucessoInputsPerfil.value = "Jogador já tem time!"
+                                }
+                            }
+
+                            override fun onFailure(call: Call<AdicionarJogadorAoTime>, t: Throwable) {
+
+                            }
+                        })
+
                 },
                 modifier = Modifier
                     .padding(top = 20.dp)
@@ -176,5 +253,28 @@ fun NavegacaoConfiguracoesMeuTimeScreen(
 
 
         }
+
+            LaunchedEffect(camposPreenchidosCorretamente) {
+                if (!camposPreenchidosCorretamente) {
+                    delay(3000)
+                    camposPreenchidosCorretamente = true
+                    onNavigate("lista_times")
+                }
+            }
+
+            AnimatedVisibility(
+                visible = !camposPreenchidosCorretamente,
+                enter = slideInVertically(initialOffsetY = { it }),
+                exit = slideOutVertically(targetOffsetY = { it })
+            ) {
+                Snackbar(
+                    modifier = Modifier.padding(top = 16.dp),
+                    action = {}
+                ) {
+                    Text(text = mensagemSucessoInputsPerfil.value)
+                }
+            }
+
+
     }
 }

@@ -157,5 +157,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(PostHighLightService::class.java)
     }
 
+    fun deletarTimeService(): DeletarTimeService {
+        return retrofitFactoryCadastro.create(DeletarTimeService::class.java)
+    }
+
+
 
 }

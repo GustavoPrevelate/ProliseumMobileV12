@@ -96,6 +96,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesMeuPe
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarMinhaPublicacaoJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.gerenciar_time.EntrarNoTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.CriarHighLightScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.EditarHighLightScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.ListaMeusHighLightsScreen
@@ -110,6 +111,15 @@ import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.postagem.MinhaPostagemScreen
 import br.senai.sp.jandira.proliseumtcc.gui.postagem.PostagemJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeAdded
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeJogadoresPerfilId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeJogadoresTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeJogadoresTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeJogadoresTimeAtualJogadoresPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimePropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagens
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacaoDonoId
@@ -317,6 +327,17 @@ fun MainScreen() {
         val sharedViewResponseGetHighLights = remember { SharedViewResponseGetHighLights() }
         val sharedViewResponseGetHighLightsDono = remember { SharedViewResponseGetHighLightsDono() }
 
+        // SharedViewModel PUT ENTRAR NO TIME
+
+        val sharedAdicionarJogadorAoTimeAdded = remember { SharedAdicionarJogadorAoTimeAdded() }
+        val sharedAdicionarJogadorAoTime = remember { SharedAdicionarJogadorAoTime() }
+        val sharedAdicionarJogadorAoTimeDono = remember { SharedAdicionarJogadorAoTimeDono() }
+        val sharedAdicionarJogadorAoTimeJogadores = remember { SharedAdicionarJogadorAoTimeJogadores() }
+        val sharedAdicionarJogadorAoTimeJogadoresPerfilId = remember { SharedAdicionarJogadorAoTimeJogadoresPerfilId() }
+        val sharedAdicionarJogadorAoTimeJogadoresTimeAtual = remember { SharedAdicionarJogadorAoTimeJogadoresTimeAtual() }
+        val saredAdicionarJogadorAoTimeJogadoresTimeAtualJogadores = remember { SharedAdicionarJogadorAoTimeJogadoresTimeAtualJogadores() }
+        val sharedAdicionarJogadorAoTimeJogadoresTimeAtualJogadoresPropostas = remember { SharedAdicionarJogadorAoTimeJogadoresTimeAtualJogadoresPropostas() }
+        val sharedAdicionarJogadorAoTimePropostas = remember { SharedAdicionarJogadorAoTimePropostas() }
 
 
         /**********************************************************************************************************************************/
@@ -1320,6 +1341,9 @@ fun MainScreen() {
         // TELA DE NAVEGAÇÃO DE CONFIGURAÇÕES/GERENCIAMENTO DO MEU TIME
         val navegacaoConfiguracoesMeuTimeScreen: @Composable () -> Unit = {
             NavegacaoConfiguracoesMeuTimeScreen(
+                sharedViewModelTokenEId,
+                sharedViewModelUser,
+                sharedGetTimeTeams,
             ) {
                 currentScreen = it
             }
@@ -1728,11 +1752,45 @@ fun MainScreen() {
             }
         }
 
+        val entrarNoTimeScreen: @Composable () -> Unit = {
+            EntrarNoTimeScreen(
+                sharedViewModelTokenEId,
 
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
 
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
 
+                // SharedViewModel GET TIME FILTER
+                sharedGetTime,
+                sharedGetTimeTeams,
+                sharedGetTimeTeamsJogadores,
+                sharedGetTimeTeamsJogadoresPerfilId,
+                sharedGetTimeDono,
+                sharedGetTimeTeamsPropostas,
+                sharedViewModelImageUri,
 
-
+                // SharedViewModel PUT ADICIONAR JOGADOR AO TIME
+                sharedAdicionarJogadorAoTimeAdded,
+                sharedAdicionarJogadorAoTime,
+                sharedAdicionarJogadorAoTimeDono,
+                sharedAdicionarJogadorAoTimeJogadores,
+                sharedAdicionarJogadorAoTimeJogadoresPerfilId,
+                sharedAdicionarJogadorAoTimeJogadoresTimeAtual,
+                saredAdicionarJogadorAoTimeJogadoresTimeAtualJogadores,
+                sharedAdicionarJogadorAoTimeJogadoresTimeAtualJogadoresPropostas,
+                sharedAdicionarJogadorAoTimePropostas,
+            ) {
+                currentScreen = it
+            }
+        }
 
 
 
@@ -1798,6 +1856,7 @@ fun MainScreen() {
                     "lista_meus_high_lights" -> listaMeusHighLightsScreen()
                     "editar_high_lights" -> editarHighLightScreen()
                     "criar_high_light" -> criarHighLightScreen()
+                    "entrar_no_time" -> entrarNoTimeScreen()
                     else -> startScreen()
                 }
             }

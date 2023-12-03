@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.proliseumtcc.service.primeira_sprint
 
+import br.senai.sp.jandira.proliseumtcc.gui.api_filtragem_data_class.filtragemTimes
 import br.senai.sp.jandira.proliseumtcc.model.ProfileResponse
 import br.senai.sp.jandira.proliseumtcc.model.getTime
 import br.senai.sp.jandira.proliseumtcc.model.getTimeById

@@ -5,6 +5,9 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,6 +33,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -37,6 +41,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,12 +62,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.Genero
+import br.senai.sp.jandira.proliseumtcc.firebase.StorageHightLightUtil
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTime
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelImageUri
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.firebase.StorageTeamUtil
+import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.AtualizarHighLight
+import br.senai.sp.jandira.proliseumtcc.model.DeletarTimeResponse
+import br.senai.sp.jandira.proliseumtcc.model.GenericResponse
 import br.senai.sp.jandira.proliseumtcc.model.infoAtualizarTime
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
@@ -107,6 +116,7 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import kotlinx.coroutines.delay
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -176,15 +186,6 @@ fun EditarInformacoesTimeScreen(
     //FONTE
     val customFontFamilyTitle = FontFamily(Font(R.font.font_title))
     val customFontFamilyText = FontFamily(Font(R.font.font_poppins))
-    
-
-//    // ID DE TIME COMPARTILHADO
-//    val selectedTimeId by remember { mutableStateOf(sharedGetMyTeamsGeral.selectedTimeId) }
-//    Log.e("ID DO TIME COMPARTILHADO 02","ID compartilhado EditarPerfilTime ${selectedTimeId}")
-//
-//    val team = selectedTimeId?.let { sharedGetMyTeamsGeral.getTeamById(it) }
-//    Log.e("ID DO TIME ESCOLHIDO 02","o id do time da tela EditarPerfilTime ${team}")
-
 
     //FOTO DE PERFIL
 
@@ -240,6 +241,7 @@ fun EditarInformacoesTimeScreen(
 
 
     var idDonoDoTime by remember { mutableStateOf(sharedGetTimeDono.id) }
+
 
 
     LaunchedEffect(sharedGetTimeTeams, sharedGetTimeDono) {
@@ -520,25 +522,33 @@ fun EditarInformacoesTimeScreen(
                         )
                     }
 
-                    fun AtualizarDadosPerfilTime(
-                        sharedViewModelTokenEId: SharedViewTokenEId,
-                        sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
-                        nomeTimeAtualizar: String,
-                        biografiaTimeAtualizar: String?,
-                    ) {
-                        val token = sharedViewModelTokenEId.token
 
-                        // Criar uma instância da classe EditarPerfilUsuario com os dados a serem atualizados
-                        val editarPerfilTimeData = infoAtualizarTime(
-                            nome_time = nomeTimeAtualizar,
-                            biografia = biografiaTimeAtualizar
-                        )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
 
 
-                        // Obtenha o serviço Retrofit para editar o perfil do usuário
-                        val editarPerfilTimeService = RetrofitFactoryCadastro().postUpdateTimeService()
+                        fun AtualizarDadosPerfilTime(
+                            sharedViewModelTokenEId: SharedViewTokenEId,
+                            sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
+                            nomeTimeAtualizar: String,
+                            biografiaTimeAtualizar: String?,
+                        ) {
+                            val token = sharedViewModelTokenEId.token
 
-                        // Realize a chamada de API para editar o perfil
+                            // Criar uma instância da classe EditarPerfilUsuario com os dados a serem atualizados
+                            val editarPerfilTimeData = infoAtualizarTime(
+                                nome_time = nomeTimeAtualizar,
+                                biografia = biografiaTimeAtualizar
+                            )
+
+
+                            // Obtenha o serviço Retrofit para editar o perfil do usuário
+                            val editarPerfilTimeService = RetrofitFactoryCadastro().postUpdateTimeService()
+
+                            // Realize a chamada de API para editar o perfil
                             idDoTime?.let {
                                 editarPerfilTimeService.postUpdateTime("Bearer " + token,
                                     it, editarPerfilTimeData)
@@ -574,92 +584,172 @@ fun EditarInformacoesTimeScreen(
                                     })
                             }
 
-                    }
+                        }
 
-                    Button(
-                        onClick = {
-                            if( token != null && idDoTime != null){
-                                editarNomeTime?.let {
-                                    AtualizarDadosPerfilTime(
-                                        sharedViewModelTokenEId = sharedViewModelTokenEId,
-                                        sharedGetMyTeamsGeral = sharedGetMyTeamsGeral,
-                                        nomeTimeAtualizar = it,
-                                        biografiaTimeAtualizar = editarBiografiaTime
-                                    )
+
+                        fun deletarTimeFunction(
+                            sharedViewModelTokenEId: SharedViewTokenEId,
+                        ){
+
+                            val token = sharedViewModelTokenEId.token
+
+
+                            val deletarTimeService = RetrofitFactoryCadastro().deletarTimeService()
+
+                            deletarTimeService.deletarTimeResponse("Bearer " + token, idDoTime).enqueue(object :
+                                Callback<DeletarTimeResponse> {
+                                override fun onResponse(call: Call<DeletarTimeResponse>, response: Response<DeletarTimeResponse>) {
+                                    if (response.isSuccessful) {
+
+                                        val timeDeletadoBody = response.body()
+
+                                        val timeDeletado = timeDeletadoBody?.deleted
+
+                                        Log.d("TIME DELETADO!", "Time deletado? ${timeDeletado}")
+
+
+
+                                    } else {
+                                        // Trate a resposta não bem-sucedida
+                                        Log.d("EditarMeuTimeScreen CODE", "Resposta não bem-sucedida: ${response.code()}")
+                                        // Log de corpo da resposta (se necessário)
+                                        Log.d(
+                                            "EditarMeuTimeScreen BODY",
+                                            "Corpo da resposta: ${response.errorBody()?.string()}"
+                                        )
+                                    }
                                 }
-                                onNavigate("carregar_informacoes_perfil_usuario")
-                            }
-                            
-                            if (idDoTime != null) {
-                                if (idDoTime != null && idDoTime != 0) {
-                                    uriTime?.let {
-                                        StorageTeamUtil.uploadToTeamStorage(
-                                            uri = it,
-                                            context = context,
-                                            type = "team",
-                                            id = "${idDoTime}",
-                                            "profile"
+
+                                override fun onFailure(call: Call<DeletarTimeResponse>, t: Throwable) {
+                                    // Trate o erro de falha na rede.
+                                    Log.d("EditarMeuTimeScreen ERROR", "Erro de rede: ${t.message}")
+                                }
+
+                            })
+                        }
+
+                        Button(
+                            onClick = {
+                                if( token != null && idDoTime != null){
+                                    editarNomeTime?.let {
+                                        AtualizarDadosPerfilTime(
+                                            sharedViewModelTokenEId = sharedViewModelTokenEId,
+                                            sharedGetMyTeamsGeral = sharedGetMyTeamsGeral,
+                                            nomeTimeAtualizar = it,
+                                            biografiaTimeAtualizar = editarBiografiaTime
                                         )
                                     }
-
-                                    Log.i(
-                                        "URI IMAGEM 06",
-                                        "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uriTime}"
-                                    )
-
-                                    uriCapaTime?.let {
-                                        StorageTeamUtil.uploadToTeamStorage(
-                                            uri = it,
-                                            context = context,
-                                            type = "team",
-                                            id = "${idDoTime}",
-                                            "capa"
-                                        )
-                                    }
-
-                                    Log.i(
-                                        "FOTO TIME 01",
-                                        "Aqui esta a URI da imagem na EditarPerfilTime -> ${uriTime}"
-                                    )
-
-                                    Log.i(
-                                        "CAPA TIME 01",
-                                        "Aqui esta a URI da imagem na EditarPerfilTime -> ${uriCapaTime}"
-                                    )
 
                                     onNavigate("carregar_informacoes_perfil_usuario")
+
+
                                 }
-                            }
+
+                                if (idDoTime != null) {
+                                    if (idDoTime != null && idDoTime != 0) {
+                                        uriTime?.let {
+                                            StorageTeamUtil.uploadToTeamStorage(
+                                                uri = it,
+                                                context = context,
+                                                type = "team",
+                                                id = "${idDoTime}",
+                                                "profile"
+                                            )
+                                        }
+
+                                        Log.i(
+                                            "URI IMAGEM 06",
+                                            "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uriTime}"
+                                        )
+
+                                        uriCapaTime?.let {
+                                            StorageTeamUtil.uploadToTeamStorage(
+                                                uri = it,
+                                                context = context,
+                                                type = "team",
+                                                id = "${idDoTime}",
+                                                "capa"
+                                            )
+                                        }
+
+                                        Log.i(
+                                            "FOTO TIME 01",
+                                            "Aqui esta a URI da imagem na EditarPerfilTime -> ${uriTime}"
+                                        )
+
+                                        Log.i(
+                                            "CAPA TIME 01",
+                                            "Aqui esta a URI da imagem na EditarPerfilTime -> ${uriCapaTime}"
+                                        )
+
+                                    }
+                                }
 
 
-                                  },
-                        modifier = Modifier
-                            .padding(top = 20.dp)
-                            .width(300.dp)
-                            .height(48.dp),
-                        shape = RoundedCornerShape(73.dp),
-                        colors = ButtonDefaults.buttonColors(RedProliseum)
+                            },
+                            modifier = Modifier
+                                .padding(top = 20.dp)
+                                .width(180.dp)
+                                .height(48.dp),
+                            shape = RoundedCornerShape(73.dp),
+                            colors = ButtonDefaults.buttonColors(RedProliseum)
 
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.logocadastro),
-                            contentDescription = stringResource(id = R.string.button_proximo),
-                            tint = Color(255, 255, 255, 255)
-                        )
-                        Text(
-                            text = "SALVAR ALTERAÇÕES",
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Center,
-                            color = Color.White,
-                            fontFamily = customFontFamilyText,
-                            fontWeight = FontWeight(900),
-
+                        ) {
+                            Text(
+                                text = "SALVAR",
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Center,
+                                color = Color.White,
+                                fontFamily = customFontFamilyText,
+                                fontWeight = FontWeight(900),
                             )
+                        }
+
+                        Spacer(modifier = Modifier.width(20.dp))
+
+
+                        Button(
+                            onClick = {
+
+                                deletarTimeFunction(
+                                    sharedViewModelTokenEId = sharedViewModelTokenEId
+                                )
+
+
+                                Log.i("JSON ACEITO", "Estrutura de JSON Correta!")
+
+                                onNavigate("carregar_informacoes_perfil_usuario")
+
+
+
+
+
+                            },
+                            modifier = Modifier
+                                .padding(top = 20.dp)
+                                .width(180.dp)
+                                .height(48.dp),
+                            shape = RoundedCornerShape(73.dp),
+                            colors = ButtonDefaults.buttonColors(RedProliseum)
+
+                        ) {
+                            Text(
+                                text = "DELETAR",
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Center,
+                                color = Color.White,
+                                fontFamily = customFontFamilyText,
+                                fontWeight = FontWeight(900),
+                            )
+                        }
+
                     }
 
                 }
             }
         }
+
+
     }
 }
 

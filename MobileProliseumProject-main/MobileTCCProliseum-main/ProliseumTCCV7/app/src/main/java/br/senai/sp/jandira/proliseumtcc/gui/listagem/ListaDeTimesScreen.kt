@@ -21,13 +21,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -45,13 +48,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.gui.api_filtragem_data_class.filtragemTimes
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDe
@@ -169,6 +175,9 @@ fun ListaDeTimesScreen (
     onNavigate: (String) -> Unit
 ) {
 
+//    // VARIAVEL PARA FILTRAGEM DE TIME
+//    var nomeTimeFilter by rememberSaveable { mutableStateOf("") }
+
     var loading by remember { mutableStateOf(true) }
 
     val idUser = sharedViewModelUser.id
@@ -216,13 +225,21 @@ fun ListaDeTimesScreen (
 
     val token = sharedViewModelTokenEId.token
 
+//    fun nomeTimeFiltradoFunction(
+//        nomeTimeFiltradoString: String
+//    ){
+//        val nomeTimeFiltrado = filtragemTimes(
+//            name = nomeTimeFiltradoString
+//        )
+//    }
+
     if(token != null && token.isNotEmpty()){
 
-        val qualquerNome = ""
 
+        val aaa = ""
         val perfilTimeService = RetrofitFactoryCadastro().theGetTimeService()
 
-        perfilTimeService.theGetTime(qualquerNome).enqueue(object : Callback<getTime> {
+        perfilTimeService.theGetTime(aaa).enqueue(object : Callback<getTime> {
             override fun onResponse(call: Call<getTime>, response: Response<getTime>) {
                 if (response.isSuccessful) {
                     Log.d("GET TIME FILTER CERTO", "Resposta bem-sucedida: ${response.code()}")
@@ -399,71 +416,103 @@ fun ListaDeTimesScreen (
                 )
             )
     ) {
+        Column(){
 
-        Row(
-            modifier = Modifier.padding(start = 20.dp)
-        ) {
             Row(
-                modifier = Modifier.padding(top = 20.dp)
+                modifier = Modifier.padding(start = 20.dp)
             ) {
-                Icon(
-                    modifier = Modifier.clickable {
-                        //rememberNavController.navigate("home")
-                        onNavigate("home")
-                    },
-                    painter = painterResource(id = R.drawable.arrow_back_32),
-                    contentDescription = stringResource(id = R.string.button_sair),
-                    tint = Color.White
-                )
-                Spacer(modifier = Modifier.height(40.dp))
-
-                Text(
-                    text = "TIMES",
-                    fontFamily = customFontFamilyText,
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight(900),
-                    color = Color.White
-                )
-            }
-
-
-            Row(
-                modifier = Modifier.padding(top = 12.dp)
-            ){
-                Spacer(modifier = Modifier.width(20.dp))
-
-                Button(
-                    onClick = {
-                        onNavigate("criar_time")
-                    },
-                    modifier = Modifier
-                        .height(48.dp),
-                    shape = RoundedCornerShape(73.dp),
-                    colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
-
+                Row(
+                    modifier = Modifier.padding(top = 20.dp)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.teams_icon),
-                        contentDescription = stringResource(id = R.string.button_proximo),
-                        modifier = Modifier.size(30.dp)
+                    Icon(
+                        modifier = Modifier.clickable {
+                            //rememberNavController.navigate("home")
+                            onNavigate("home")
+                        },
+                        painter = painterResource(id = R.drawable.arrow_back_32),
+                        contentDescription = stringResource(id = R.string.button_sair),
+                        tint = Color.White
                     )
-                    Spacer(modifier = Modifier.padding(start = 10.dp))
+                    Spacer(modifier = Modifier.height(40.dp))
+
                     Text(
-                        text = "CRIAR TIME",
-                        fontSize = 25.sp,
-                        textAlign = TextAlign.Center,
-                        color = Color.White,
+                        text = "TIMES",
                         fontFamily = customFontFamilyText,
+                        fontSize = 25.sp,
                         fontWeight = FontWeight(900),
+                        color = Color.White
                     )
+                }
+
+
+                Row(
+                    modifier = Modifier.padding(top = 12.dp)
+                ){
+                    Spacer(modifier = Modifier.width(20.dp))
+
+                    Button(
+                        onClick = {
+                            onNavigate("criar_time")
+                        },
+                        modifier = Modifier
+                            .height(48.dp),
+                        shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                        colors = ButtonDefaults.buttonColors(RedProliseum)
+
+                    ) {
+                        Text(
+                            text = "CRIAR TIME",
+                            fontSize = 25.sp,
+                            textAlign = TextAlign.Center,
+                            color = Color.White,
+                            fontFamily = customFontFamilyText,
+                            fontWeight = FontWeight(900),
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
             }
 
-        }
+            Spacer(modifier = Modifier.height(20.dp))
 
-        Spacer(modifier = Modifier.height(100.dp))
+//            OutlinedTextField(
+//                value = nomeTimeFilter,
+//                onValueChange = { nomeTimeFilter = it },
+//                modifier = Modifier
+//
+//                    .width(320.dp),
+//                shape = RoundedCornerShape(16.dp),
+//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//                label = {
+//                    Text(
+//                        text = "FILTRAGEM DE TIME",
+//                        color = Color.White,
+//                        fontFamily = customFontFamilyText,
+//                        fontWeight = FontWeight(600),
+//                    )
+//                },
+//                colors = TextFieldDefaults.outlinedTextFieldColors(
+//                    unfocusedBorderColor = Color(255, 255, 255, 255),
+//                    focusedBorderColor = Color(255, 255, 255, 255),
+//                    cursorColor = Color.White
+//                ),
+//                textStyle = TextStyle(color = Color.White)
+//            )
+//
+//            Button(
+//                onClick = {
+//                    nomeTimeFiltradoFunction(
+//                        nomeTimeFiltradoString = nomeTimeFilter
+//                    )
+//                }
+//            ){
+//
+//            }
+
+        }
 
         val token = sharedViewModelTokenEId.token
 
@@ -474,7 +523,7 @@ fun ListaDeTimesScreen (
         if(minhaListaDeTimes != null){
             Column(
                 modifier = Modifier
-                    .padding(top = 20.dp)
+                    .padding(top = 100.dp)
                 ,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -560,7 +609,7 @@ fun ListaDeTimesScreen (
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .height(250.dp)
-                                    .padding( top = 20.dp),
+                                    .padding(top = 20.dp),
                             ) {
                                 Button(
                                     onClick = {
