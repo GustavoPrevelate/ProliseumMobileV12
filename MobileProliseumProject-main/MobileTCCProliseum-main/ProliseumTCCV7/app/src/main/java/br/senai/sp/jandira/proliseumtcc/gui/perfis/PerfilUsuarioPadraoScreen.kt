@@ -944,7 +944,7 @@ fun PerfilUsuarioPadraoScreen(
 
                         },
                         modifier = Modifier
-                            .width(180.dp)
+                            .width(390.dp)
                             .height(50.dp)
                             .padding(start = 0.dp, top = 0.dp),
                         shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
