@@ -33,6 +33,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,6 +56,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.components.Genero
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTime
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelImageUri
@@ -63,6 +65,33 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.firebase.StorageTeamUtil
 import br.senai.sp.jandira.proliseumtcc.model.infoAtualizarTime
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPerfilId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresDentroDeTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresDentroDeTimeList
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresInfoPerfil
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresList
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresPropostasList
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresPropostasRecebidas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTimeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTimePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsUserPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelNomeJogadorListaJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilJogadorOutro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganizadorOutro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOutro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
@@ -100,8 +129,44 @@ fun EditarInformacoesTimeScreen(
     sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
 
 
+    sharedViewModelPerfilEditarOutro: SharedViewModelPerfilOutro,
+    sharedViewModelPerfilJogadorOutro: SharedViewModelPerfilJogadorOutro,
+    sharedViewModelPerfilOrganizadorOutro: SharedViewModelPerfilOrganizadorOutro,
+
+    // SharedViewModel GET MY TEAMS GERAL
     sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
+
+    // SharedViewModelGetMyTeams de USUARIO
+    sharedViewModelGetMyTeamsUser: SharedViewModelGetMyTeamsUser,
+    sharedViewModelGetMyTeamsUserPropostas: SharedViewModelGetMyTeamsUserPropostas,
+    sharedViewModelGetMyTeamsUserPropostasDe: SharedGetMyTeamsUserPropostasDe,
+    sharedViewModelGetMyTeamsUserPropostasDeJogadores: SharedGetMyTeamsUserPropostasDeJogadores,
+    sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos: SharedGetMyTeamsUserPropostasDeJogadoresAtivos,
+    sharedViewModelGetMyTeamsUserPropostasDePropostas: SharedGetMyTeamsUserPropostasDePropostas,
+
+    // SharedViewModelGetMyTeams de TIME
     sharedViewModelGetMyTeamsTime: SharedViewModelGetMyTeamsTime,
+    sharedViewModelGetMyTeamsTimeJogadores: SharedViewModelGetMyTeamsTimeJogadores,
+    sharedViewModelGetMyTeamsTimeJogadoresAtivos: SharedGetMyTeamsTimeJogadoresAtivos,
+    sharedViewModelGetMyTeamsTimePropostas: SharedViewModelGetMyTeamsTimePropostas,
+
+    sharedViewModelNomeJogadorListaJogadores: SharedViewModelNomeJogadorListaJogadores,
+    sharedViewModelGetListaJogadores: SharedViewModelGetListaJogadores,
+    sharedViewModelGetListaJogadoresList: SharedViewModelGetListaJogadoresList,
+    sharedViewModelGetListaJogadoresInfoPerfil: SharedViewModelGetListaJogadoresInfoPerfil,
+    sharedViewModelGetListaJogadoresTimeAtual: SharedViewModelGetListaJogadoresTimeAtual,
+    sharedViewModelGetListaJogadoresDentroDeTime: SharedViewModelGetListaJogadoresDentroDeTime,
+    sharedViewModelGetListaJogadoresDentroDeTimeList: SharedViewModelGetListaJogadoresDentroDeTimeList,
+    sharedViewModelGetListaJogadoresPropostasList: SharedViewModelGetListaJogadoresPropostasList,
+    sharedViewModelGetListaJogadoresPropostasRecebidas: SharedViewModelGetListaJogadoresPropostasRecebidas,
+
+    // SharedViewModel GET TIME FILTER
+    sharedGetTime: SharedGetTime,
+    sharedGetTimeTeams: SharedGetTimeTeams,
+    sharedGetTimeTeamsJogadores: SharedGetTimeTeamsJogadores,
+    sharedGetTimeTeamsJogadoresPerfilId: SharedGetTimeTeamsJogadoresPerfilId,
+    sharedGetTimeDono: SharedGetTimeDono,
+    sharedGetTimeTeamsPropostas: SharedGetTimeTeamsPropostas,
     sharedViewModelImageUri: SharedViewModelImageUri,
     onNavigate: (String) -> Unit
 ) {
@@ -113,20 +178,13 @@ fun EditarInformacoesTimeScreen(
     val customFontFamilyText = FontFamily(Font(R.font.font_poppins))
     
 
-    // ID DE TIME COMPARTILHADO
-    val selectedTimeId by remember { mutableStateOf(sharedGetMyTeamsGeral.selectedTimeId) }
-    Log.e("ID DO TIME COMPARTILHADO 02","ID compartilhado EditarPerfilTime ${selectedTimeId}")
+//    // ID DE TIME COMPARTILHADO
+//    val selectedTimeId by remember { mutableStateOf(sharedGetMyTeamsGeral.selectedTimeId) }
+//    Log.e("ID DO TIME COMPARTILHADO 02","ID compartilhado EditarPerfilTime ${selectedTimeId}")
+//
+//    val team = selectedTimeId?.let { sharedGetMyTeamsGeral.getTeamById(it) }
+//    Log.e("ID DO TIME ESCOLHIDO 02","o id do time da tela EditarPerfilTime ${team}")
 
-    val team = selectedTimeId?.let { sharedGetMyTeamsGeral.getTeamById(it) }
-    Log.e("ID DO TIME ESCOLHIDO 02","o id do time da tela EditarPerfilTime ${team}")
-
-    // OUTRAS INFORMAÇÕES
-    val idUsuarioOrganizador = sharedViewModelUser.id
-
-    var nomeTime by remember { mutableStateOf(team?.nome_time ?: "Nome do Time não encontrado") }
-    var biografiaTime by remember { mutableStateOf(team?.biografia ?: "Biografia do Time não encontrado") }
-
-    val idTime by remember { mutableStateOf(sharedViewModelGetMyTeamsTime.idData) }
 
     //FOTO DE PERFIL
 
@@ -172,6 +230,29 @@ fun EditarInformacoesTimeScreen(
 
     val context = LocalContext.current
 
+    var idDoTime by remember { mutableStateOf(sharedGetTimeTeams.id) }
+    var editarNomeTime by remember { mutableStateOf(sharedGetTimeTeams.nome_time) }
+    var editarBiografiaTime by remember { mutableStateOf(sharedGetTimeTeams.biografia) }
+
+    Log.e("ID DO TIME","${idDoTime}")
+    Log.e("editarNomeTime","${editarNomeTime}")
+    Log.e("editarBiografiaTime","${editarBiografiaTime}")
+
+
+    var idDonoDoTime by remember { mutableStateOf(sharedGetTimeDono.id) }
+
+
+    LaunchedEffect(sharedGetTimeTeams, sharedGetTimeDono) {
+
+        // Esta parte só será executada quando o composable for inicializado
+        idDoTime = sharedGetTimeTeams.id
+        editarNomeTime = sharedGetTimeTeams.nome_time
+        editarBiografiaTime = sharedGetTimeTeams.biografia
+
+        idDonoDoTime = sharedGetTimeDono.id
+
+        // Atribua outras variáveis de estado para outros campos da mesma maneira
+    }
 
     // DESIGN DA TELA
     Box(
@@ -278,28 +359,30 @@ fun EditarInformacoesTimeScreen(
                     //var nomeOrganizacaoState by remember { mutableStateOf("") }
 
 
-                    OutlinedTextField(
-                        value = nomeTime,
-                        onValueChange = { newNomeTime -> nomeTime = newNomeTime },
-                        modifier = Modifier
-                            .width(370.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        label = {
-                            Text(
-                                text = "Nome do time:",
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(600),
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            unfocusedBorderColor = Color(255, 255, 255, 255),
-                            focusedBorderColor = Color(255, 255, 255, 255),
-                            cursorColor = Color.White
-                        ),
-                        textStyle = TextStyle(color = Color.White)
-                    )
+                    editarNomeTime?.let {
+                        OutlinedTextField(
+                            value = it,
+                            onValueChange = { newNomeTime -> editarNomeTime = newNomeTime },
+                            modifier = Modifier
+                                .width(370.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            label = {
+                                Text(
+                                    text = "Nome do time:",
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(600),
+                                )
+                            },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                unfocusedBorderColor = Color(255, 255, 255, 255),
+                                focusedBorderColor = Color(255, 255, 255, 255),
+                                cursorColor = Color.White
+                            ),
+                            textStyle = TextStyle(color = Color.White)
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(20.dp))
 
@@ -411,10 +494,10 @@ fun EditarInformacoesTimeScreen(
 
                     //var fullBioJogadorState by remember { mutableStateOf("") }
 
-                    biografiaTime?.let {
+                    editarBiografiaTime?.let {
                         OutlinedTextField(
                             value = it,
-                            onValueChange = { newBioTime -> biografiaTime = newBioTime },
+                            onValueChange = { newBioTime -> editarBiografiaTime = newBioTime },
                             modifier = Modifier
                                 .height(220.dp)
                                 .width(370.dp),
@@ -437,26 +520,84 @@ fun EditarInformacoesTimeScreen(
                         )
                     }
 
+                    fun AtualizarDadosPerfilTime(
+                        sharedViewModelTokenEId: SharedViewTokenEId,
+                        sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
+                        nomeTimeAtualizar: String,
+                        biografiaTimeAtualizar: String?,
+                    ) {
+                        val token = sharedViewModelTokenEId.token
+
+                        // Criar uma instância da classe EditarPerfilUsuario com os dados a serem atualizados
+                        val editarPerfilTimeData = infoAtualizarTime(
+                            nome_time = nomeTimeAtualizar,
+                            biografia = biografiaTimeAtualizar
+                        )
+
+
+                        // Obtenha o serviço Retrofit para editar o perfil do usuário
+                        val editarPerfilTimeService = RetrofitFactoryCadastro().postUpdateTimeService()
+
+                        // Realize a chamada de API para editar o perfil
+                            idDoTime?.let {
+                                editarPerfilTimeService.postUpdateTime("Bearer " + token,
+                                    it, editarPerfilTimeData)
+                                    .enqueue(object : Callback<infoAtualizarTime> {
+                                        override fun onResponse(
+                                            call: Call<infoAtualizarTime>,
+                                            response: Response<infoAtualizarTime>
+                                        ) {
+                                            if (response.isSuccessful) {
+                                                Log.d(
+                                                    "EditarPerfilJogadorPart1",
+                                                    "Perfil de usuário atualizado com sucesso: ${response.code()}"
+                                                )
+                                                // Trate a resposta bem-sucedida, se necessário
+                                            } else {
+                                                // Trate a resposta não bem-sucedida
+                                                Log.d(
+                                                    "EditarPerfilJogadorPart1",
+                                                    "Falha ao atualizar o perfil do usuário: ${response.code()}"
+                                                )
+                                                // Log do corpo da resposta (se necessário)
+                                                Log.d(
+                                                    "EditarPerfilJogadorPart1",
+                                                    "Corpo da resposta: ${response.errorBody()?.string()}"
+                                                )
+                                            }
+                                        }
+
+                                        override fun onFailure(call: Call<infoAtualizarTime>, t: Throwable) {
+                                            // Trate o erro de falha na rede.
+                                            Log.d("EditarPerfilJogadorPart1", "Erro de rede: ${t.message}")
+                                        }
+                                    })
+                            }
+
+                    }
+
                     Button(
                         onClick = {
-                            if(selectedTimeId != null && token != null && idUsuarioOrganizador != null){
-                                AtualizarDadosPerfilTime(
-                                    sharedViewModelTokenEId = sharedViewModelTokenEId,
-                                    sharedGetMyTeamsGeral = sharedGetMyTeamsGeral,
-                                    nomeTimeAtualizar = nomeTime,
-                                    biografiaTimeAtualizar = biografiaTime
-                                )
+                            if( token != null && idDoTime != null){
+                                editarNomeTime?.let {
+                                    AtualizarDadosPerfilTime(
+                                        sharedViewModelTokenEId = sharedViewModelTokenEId,
+                                        sharedGetMyTeamsGeral = sharedGetMyTeamsGeral,
+                                        nomeTimeAtualizar = it,
+                                        biografiaTimeAtualizar = editarBiografiaTime
+                                    )
+                                }
                                 onNavigate("carregar_informacoes_perfil_usuario")
                             }
                             
-                            if (team != null) {
-                                if (team.id != null && team.id != 0) {
+                            if (idDoTime != null) {
+                                if (idDoTime != null && idDoTime != 0) {
                                     uriTime?.let {
                                         StorageTeamUtil.uploadToTeamStorage(
                                             uri = it,
                                             context = context,
                                             type = "team",
-                                            id = "${team.id}",
+                                            id = "${idDoTime}",
                                             "profile"
                                         )
                                     }
@@ -471,7 +612,7 @@ fun EditarInformacoesTimeScreen(
                                             uri = it,
                                             context = context,
                                             type = "team",
-                                            id = "${team.id}",
+                                            id = "${idDoTime}",
                                             "capa"
                                         )
                                     }
@@ -522,60 +663,7 @@ fun EditarInformacoesTimeScreen(
     }
 }
 
-fun AtualizarDadosPerfilTime(
-    sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
-    nomeTimeAtualizar: String,
-    biografiaTimeAtualizar: String?,
-) {
-    val token = sharedViewModelTokenEId.token
 
-    val selectedTimeId = sharedGetMyTeamsGeral.selectedTimeId
-
-    // Criar uma instância da classe EditarPerfilUsuario com os dados a serem atualizados
-    val editarPerfilTimeData = infoAtualizarTime(
-        nome_time = nomeTimeAtualizar,
-        biografia = biografiaTimeAtualizar
-    )
-
-    // Obtenha o serviço Retrofit para editar o perfil do usuário
-    val editarPerfilTimeService = RetrofitFactoryCadastro().postUpdateTimeService()
-
-    // Realize a chamada de API para editar o perfil
-    if (selectedTimeId != null) {
-        editarPerfilTimeService.postUpdateTime("Bearer " + token, selectedTimeId, editarPerfilTimeData)
-            .enqueue(object : Callback<infoAtualizarTime> {
-                override fun onResponse(
-                    call: Call<infoAtualizarTime>,
-                    response: Response<infoAtualizarTime>
-                ) {
-                    if (response.isSuccessful) {
-                        Log.d(
-                            "EditarPerfilJogadorPart1",
-                            "Perfil de usuário atualizado com sucesso: ${response.code()}"
-                        )
-                        // Trate a resposta bem-sucedida, se necessário
-                    } else {
-                        // Trate a resposta não bem-sucedida
-                        Log.d(
-                            "EditarPerfilJogadorPart1",
-                            "Falha ao atualizar o perfil do usuário: ${response.code()}"
-                        )
-                        // Log do corpo da resposta (se necessário)
-                        Log.d(
-                            "EditarPerfilJogadorPart1",
-                            "Corpo da resposta: ${response.errorBody()?.string()}"
-                        )
-                    }
-                }
-
-                override fun onFailure(call: Call<infoAtualizarTime>, t: Throwable) {
-                    // Trate o erro de falha na rede.
-                    Log.d("EditarPerfilJogadorPart1", "Erro de rede: ${t.message}")
-                }
-            })
-    }
-}
 
 @Preview(showBackground = true)
 @Composable

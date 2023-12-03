@@ -67,7 +67,7 @@ fun NavegacaoConfiguracoesMeuTimeScreen(
                 Icon(
                     modifier = Modifier.clickable {
                         //rememberNavController.navigate("home")
-                        onNavigate("perfil_time")
+                        onNavigate("perfil_outro_time")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),

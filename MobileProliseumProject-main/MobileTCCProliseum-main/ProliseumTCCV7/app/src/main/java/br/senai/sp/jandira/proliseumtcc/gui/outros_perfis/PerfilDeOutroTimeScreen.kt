@@ -45,7 +45,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
@@ -93,6 +95,7 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
+import br.senai.sp.jandira.proliseumtcc.ui.theme.Purple40
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
@@ -211,7 +214,6 @@ fun PerfilDeOutroTimeScreen(
     Log.e("ID DO TIME FILTER HAHA","o id do time FILTER da tela PerfilOutroTime ${team}")
 
 
-
 //    val selectedJogadorTimeById by remember { mutableStateOf(sharedGetTimeByIdTeams.selectedJogadorIdTimeById) }
 //    Log.e("AAA","ID jogador compartilhado ${selectedJogadorTimeById}")
 //
@@ -316,9 +318,12 @@ fun PerfilDeOutroTimeScreen(
     val customFontFamily = FontFamily(
         Font(R.font.font_title)
     )
+
+
     val customFontFamilyText = FontFamily(
         Font(R.font.font_poppins)
     )
+
 
     var photoUri by remember {
         mutableStateOf<Uri?>(null)
@@ -369,6 +374,7 @@ fun PerfilDeOutroTimeScreen(
             }
         }
 
+
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -386,6 +392,46 @@ fun PerfilDeOutroTimeScreen(
                 contentDescription = stringResource(id = R.string.button_sair),
                 tint = Color.White
             )
+
+            Spacer(modifier = Modifier.width(3.dp))
+
+            if(
+                team?.dono?.id == idUser
+            ){
+                Log.e(" DEU CERTO","ISSO É DEMAIS!")
+
+                Button(
+                    onClick = {
+
+                        sharedGetTimeTeams.id = team.id
+                        sharedGetTimeTeams.nome_time = team.nome_time
+                        sharedGetTimeTeams.biografia = team.biografia
+
+                        sharedGetTimeDono.id = team.dono.id
+
+
+                        onNavigate("navigation_configuracoes_meu_time")
+                    },
+                    colors = ButtonDefaults.buttonColors(Color.Transparent)
+                ) {
+                    Text(
+                        text = "GERENCIAR PERFIL",
+                        color = Color.White,
+                        fontFamily = customFontFamilyText,
+                        fontWeight = FontWeight(600),
+                        fontSize = 16.sp
+                    )
+
+                    Spacer(modifier = Modifier.width(3.dp))
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.escrever),
+                        contentDescription = "Editar"
+                    )
+                }
+            } else if(team?.dono?.id != idUser){
+                Log.e("NAO DEU CERTO","O AMIGAO ESSE AI NÃO É O SEU TIME!")
+            }
 
 
 //                Text(
@@ -466,7 +512,6 @@ fun PerfilDeOutroTimeScreen(
         }
 
 
-
         Column(
             modifier = Modifier.padding(top = 250.dp),
         ) {
@@ -475,21 +520,46 @@ fun PerfilDeOutroTimeScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 item {
-                    Text(
-                        text = team?.nome_time ?: "Time não encontrado",
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight(600),
-                        color = Color.White
-                    )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
 
+                        Card(
+                            modifier = Modifier
+                                .size(50.dp),
+                            shape = CircleShape
+                        ) {
+                            if (idUser != null && idUser != 0) {
+                                // Exiba a imagem se a URI estiver definida
+                                AsyncImage(
+                                    model = imageTimeUri,
+                                    contentDescription = null,
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop
+                                )
+                            } else {
+                                // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                                Text("Carregando imagem...")
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.width(5.dp))
+
+                        Text(
+                            text = "${team?.nome_time}".toUpperCase(),
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight(900),
+                            color = Color.White
+                        )
+                    }
 
                     //Social
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(15.dp),
+                            .fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -498,27 +568,26 @@ fun PerfilDeOutroTimeScreen(
                             text = "GERENCIADOR POR",
                             color = Color.Gray,
                             modifier = Modifier.padding(5.dp),
-                            fontWeight = FontWeight(600),
+                            fontWeight = FontWeight(900),
                             fontFamily = customFontFamilyText,
-                            fontSize = 14.sp
+                            fontSize = 16.sp
                         )
 
                         Text(
-                            text = "${gerenciadoPorEmail}",
+                            text = "${team?.dono?.nickname}".toUpperCase(),
                             modifier = Modifier
                                 .clickable {
                                            onNavigate("home")
                                            },
-                            color = Color.Magenta,
-                            fontWeight = FontWeight(600),
+                            color = Purple40,
+                            fontWeight = FontWeight(900),
                             fontFamily = customFontFamilyText,
-                            fontSize = 14.sp
+                            fontSize = 16.sp
                         )
 
 
                     }
 
-                    Spacer(modifier = Modifier.height(20.dp))
 
                     Row(
                         modifier = Modifier
@@ -529,7 +598,7 @@ fun PerfilDeOutroTimeScreen(
                     ) {
                         Card(
                             modifier = Modifier
-                                .size(70.dp),
+                                .size(100.dp),
                             colors = CardDefaults.cardColors(RedProliseum)
                         ) {
                             Image(
@@ -583,7 +652,7 @@ fun PerfilDeOutroTimeScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(0.5.dp)
+                            .height(1.dp)
                             .background(Color.Red)
                     )
 
