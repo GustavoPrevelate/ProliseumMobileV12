@@ -244,6 +244,9 @@ fun PerfilDeOutroTimeScreen(
 
     val donoId = sharedGetTimeDono.id
 
+    val gerenciadoPor = sharedGetTimeDono.nickname
+    val gerenciadoPorEmail = sharedGetTimeDono.email
+
     Log.e("DONO TIME","id do dono do time ${donoId}")
 
     Log.e("MEU ID","O meu id ${idUser}")
@@ -491,61 +494,26 @@ fun PerfilDeOutroTimeScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        Card(
-                            modifier = Modifier
-                                .height(45.dp)
-                                .width(45.dp),
-                            colors = CardDefaults.cardColors(RedProliseum)
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.discord),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(8.dp),
-                                alignment = Alignment.Center,
-                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                            )
-                        }
-
                         Text(
-                            text = stringResource(id = R.string.label_nome_jogador),
-                            color = Color.White,
+                            text = "GERENCIADOR POR",
+                            color = Color.Gray,
                             modifier = Modifier.padding(5.dp),
                             fontWeight = FontWeight(600),
                             fontFamily = customFontFamilyText,
                             fontSize = 14.sp
                         )
 
-                        Spacer(modifier = Modifier.width(5.dp))
-
-                        Card(
-                            modifier = Modifier
-                                .height(45.dp)
-                                .width(45.dp),
-                            colors = CardDefaults.cardColors(RedProliseum)
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.twitter),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(8.dp),
-                                alignment = Alignment.Center,
-                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                            )
-                        }
-
                         Text(
-                            text = stringResource(id = R.string.label_nome_jogador),
-                            color = Color.White,
-                            modifier = Modifier.padding(5.dp),
+                            text = "${gerenciadoPorEmail}",
+                            modifier = Modifier
+                                .clickable {
+                                           onNavigate("home")
+                                           },
+                            color = Color.Magenta,
                             fontWeight = FontWeight(600),
                             fontFamily = customFontFamilyText,
                             fontSize = 14.sp
                         )
-
-                        Spacer(modifier = Modifier.width(5.dp))
 
 
                     }
@@ -561,8 +529,7 @@ fun PerfilDeOutroTimeScreen(
                     ) {
                         Card(
                             modifier = Modifier
-                                .height(55.dp)
-                                .width(55.dp),
+                                .size(70.dp),
                             colors = CardDefaults.cardColors(RedProliseum)
                         ) {
                             Image(
