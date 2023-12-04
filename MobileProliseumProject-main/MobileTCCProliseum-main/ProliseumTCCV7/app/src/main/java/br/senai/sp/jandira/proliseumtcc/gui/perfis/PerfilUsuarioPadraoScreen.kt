@@ -786,8 +786,7 @@ fun PerfilUsuarioPadraoScreen(
                         Column() {
 
                             Column(
-                                modifier = Modifier
-                                    .padding(top = 5.dp, start = 30.dp)
+
                             ) {
                                 Text(
                                     text = "${nomeTimeAtualUserPadrao}",

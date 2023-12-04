@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import br.senai.sp.jandira.proliseumtcc.model.GetProfileByIdDoUsuario
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDe
@@ -40,6 +41,14 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOutro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.model.ProfileResponse
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdDoUsuario
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUserHighlights
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUserRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTime
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
@@ -54,181 +63,250 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-//@Composable
-//fun CarregarInformacoesPerfilOutroJogadorListaTimesScreen(
-//    sharedViewModelTokenEId: SharedViewTokenEId,
-//    sharedViewModelPerfilEditarOutro: SharedViewModelPerfilOutro,
-//    sharedViewModelPerfilJogadorOutro: SharedViewModelPerfilJogadorOutro,
-//    sharedViewModelPerfilOrganizadorOutro: SharedViewModelPerfilOrganizadorOutro,
-//
-//    // SharedViewModel GET MY TEAMS GERAL
-//    sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
-//
-//    // SharedViewModelGetMyTeams de USUARIO
-//    sharedViewModelGetMyTeamsUser: SharedViewModelGetMyTeamsUser,
-//    sharedViewModelGetMyTeamsUserPropostas: SharedViewModelGetMyTeamsUserPropostas,
-//    sharedViewModelGetMyTeamsUserPropostasDe: SharedGetMyTeamsUserPropostasDe,
-//    sharedViewModelGetMyTeamsUserPropostasDeJogadores: SharedGetMyTeamsUserPropostasDeJogadores,
-//    sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos: SharedGetMyTeamsUserPropostasDeJogadoresAtivos,
-//    sharedViewModelGetMyTeamsUserPropostasDePropostas: SharedGetMyTeamsUserPropostasDePropostas,
-//
-//    // SharedViewModelGetMyTeams de TIME
-//    sharedViewModelGetMyTeamsTime: SharedViewModelGetMyTeamsTime,
-//    sharedViewModelGetMyTeamsTimeJogadores: SharedViewModelGetMyTeamsTimeJogadores,
-//    sharedViewModelGetMyTeamsTimeJogadoresAtivos: SharedGetMyTeamsTimeJogadoresAtivos,
-//    sharedViewModelGetMyTeamsTimePropostas: SharedViewModelGetMyTeamsTimePropostas,
-//
-//    sharedViewModelNomeJogadorListaJogadores: SharedViewModelNomeJogadorListaJogadores,
-//    sharedViewModelGetListaJogadores: SharedViewModelGetListaJogadores,
-//    sharedViewModelGetListaJogadoresList: SharedViewModelGetListaJogadoresList,
-//    sharedViewModelGetListaJogadoresInfoPerfil: SharedViewModelGetListaJogadoresInfoPerfil,
-//    sharedViewModelGetListaJogadoresTimeAtual: SharedViewModelGetListaJogadoresTimeAtual,
-//    sharedViewModelGetListaJogadoresDentroDeTime: SharedViewModelGetListaJogadoresDentroDeTime,
-//    sharedViewModelGetListaJogadoresDentroDeTimeList: SharedViewModelGetListaJogadoresDentroDeTimeList,
-//    sharedViewModelGetListaJogadoresPropostasList: SharedViewModelGetListaJogadoresPropostasList,
-//    sharedViewModelGetListaJogadoresPropostasRecebidas: SharedViewModelGetListaJogadoresPropostasRecebidas,
-//
-//    // SharedViewModel GET TIME FILTER
-//    sharedGetTime: SharedGetTime,
-//    sharedGetTimeTeams: SharedGetTimeTeams,
-//    sharedGetTimeTeamsJogadores: SharedGetTimeTeamsJogadores,
-//    sharedGetTimeTeamsJogadoresPerfilId: SharedGetTimeTeamsJogadoresPerfilId,
-//    sharedGetTimeDono: SharedGetTimeDono,
-//    sharedGetTimeTeamsPropostas: SharedGetTimeTeamsPropostas,
-//    onNavigate: (String) -> Unit
-//) {
-//
-//    //CARREGAR TELA
-//    var loading by remember { mutableStateOf(true) }
-//
-//    LaunchedEffect(Unit) {
-//        // Espera por 3 segundos antes de continuar
-//        delay(3000)
-//        loading = false
-//    }
-//
-//    //DESIGN DA TELA
-//    Box(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(
-//                brush = Brush.horizontalGradient(
-//                    listOf(
-//                        AzulEscuroProliseum, AzulEscuroProliseum
-//                    )
-//                )
-//            )
-//    ) {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//
-//        ) {
-//
-//
-//            if (loading) {
-//                // Exibe um indicador de progresso enquanto carrega
-//                CircularProgressIndicator(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = RedProliseum
-//                )
-//            } else {
-//                CircularProgressIndicator(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = RedProliseum
-//                )
-//
-//                // Se o tempo de espera terminou, continue com a validação do token
-//                // Restante do código aqui
-//                val token = sharedViewModelTokenEId.token
-//                // Restante do seu código de validação do token
-//                Log.d("CarregarPerfilUsuarioScreen", "Token: $token")
-//
-//                val idOutroJogador = sharedGetTimeTeamsJogadoresPerfilId.id
-//
-//                if(token != null && token.isNotEmpty()){
-//
-//                    val profileOutroJogadorService = RetrofitFactoryCadastro().getJogadoresByIdService()
-//
-//                    profileOutroJogadorService.getProfileById(idOutroJogador).enqueue(object : Callback<ProfileResponse> {
-//                        override fun onResponse(call: Call<ProfileResponse>, response: Response<ProfileResponse>) {
-//                            if (response.isSuccessful) {
-//                                Log.d("PerfilUsuarioJogadorScreen", "Resposta bem-sucedida: ${response.code()}")
-//                                val profileResponseData = response.body()
-//
-//                                val user = profileResponseData!!.user
-//
-//                                sharedViewModelPerfilEditarOutro.id = user.id
-//                                sharedViewModelPerfilEditarOutro.nome_usuario = user.nome_usuario
-//                                sharedViewModelPerfilEditarOutro.nome_completo = user.nome_completo.toString()
-//                                sharedViewModelPerfilEditarOutro.email = user.email
-//                                sharedViewModelPerfilEditarOutro.data_nascimento = user.data_nascimento
-//                                sharedViewModelPerfilEditarOutro.genero = user.genero
-//                                sharedViewModelPerfilEditarOutro.nickname = user.nickname
-//                                sharedViewModelPerfilEditarOutro.biografia = user.biografia
-//
-//                                if (profileResponseData.playerProfile != null) {
-//                                    val playerProfile = profileResponseData.playerProfile
-//                                    sharedViewModelPerfilJogadorOutro.id = playerProfile.id
-//                                    sharedViewModelPerfilJogadorOutro.nickname = playerProfile.nickname
-//                                    sharedViewModelPerfilJogadorOutro.jogo = playerProfile.jogo!!
-//                                    sharedViewModelPerfilJogadorOutro.funcao = playerProfile.funcao!!
-//                                    sharedViewModelPerfilJogadorOutro.elo = playerProfile.elo!!
-//                                }
-//
-//                                if (profileResponseData.orgProfile == null) {
-//
-//                                    Log.e("NENHUMA ORGANIZACAO","Nenhuma organização para retornar dados")
-//
-//                                } else if (profileResponseData.orgProfile != null){
-//                                    val orgProfile = profileResponseData.orgProfile
-//                                    sharedViewModelPerfilOrganizadorOutro.orgProfile = orgProfile
-//                                    sharedViewModelPerfilOrganizadorOutro.nome_organizacao = orgProfile.nome_organizacao
-//                                    sharedViewModelPerfilOrganizadorOutro.biografia = orgProfile.biografia
-//                                }
-//
-//
-//
-//                                Log.d("INFORMAÇOES DE USUARIO 01", "Token: $token, Id: ${sharedViewModelPerfilEditarOutro.id}, Nome de usuario: ${sharedViewModelPerfilEditarOutro.nome_usuario}")
-//                                Log.d("CarregarPerfilUsuarioScreen", "Resposta corpo bem-sucedida: ${response.code()}")
-//
-//                                if( sharedViewModelPerfilEditarOutro.id != 0){
-//
-//                                    Log.d("INFORMAÇOES DE USUARIO 02", "Token: $token, Id: ${sharedViewModelPerfilEditarOutro.id}, Nome de usuario: ${sharedViewModelPerfilEditarOutro.nome_usuario}")
-//
-//                                    onNavigate("perfil_outro_jogador_lista_times")
-//                                }
-//
-////                            onNavigate("home")
-//                            } else {
-//                                // Trate a resposta não bem-sucedida
-//                                Log.d("PerfilUsuarioJogadorScreen", "Resposta não bem-sucedida: ${response.code()}")
-//                                // Log de corpo da resposta (se necessário)
-//                                Log.d(
-//                                    "PerfilUsuarioJogadorScreen",
-//                                    "Corpo da resposta: ${response.errorBody()?.string()}"
-//                                )
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
-//                            // Trate o erro de falha na rede.
-//                            Log.d("PerfilUsuarioJogadorScreen", "Erro de rede: ${t.message}")
-//                        }
-//
-//                    })
-//
-//                } else{
-//                    Log.e("TOKEN NULO","o token esta nulo, carregando informaçoes")
-//                    CircularProgressIndicator(
-//                        modifier = Modifier.fillMaxSize(),
-//                        color = RedProliseum
-//                    )
-//                }
-//            }
-//
-//
-//        }
-//    }
-//
-//}
+@Composable
+fun CarregarInformacoesPerfilOutroJogadorListaTimesScreen(
+    sharedViewModelTokenEId: SharedViewTokenEId,
+
+    // SharedViewModel GET TIME FILTER
+    sharedGetTime: SharedGetTime,
+    sharedGetTimeTeams: SharedGetTimeTeams,
+    sharedGetTimeTeamsJogadores: SharedGetTimeTeamsJogadores,
+    sharedGetTimeTeamsJogadoresPerfilId: SharedGetTimeTeamsJogadoresPerfilId,
+    sharedGetTimeDono: SharedGetTimeDono,
+    sharedGetTimeTeamsPropostas: SharedGetTimeTeamsPropostas,
+
+    sharedGetProfileByIdDoUsuario: SharedGetProfileByIdDoUsuario,
+    sharedGetProfileByIdUser: SharedGetProfileByIdUser,
+    sharedGetProfileByIdUserRedeSocial: SharedGetProfileByIdUserRedeSocial,
+    sharedGetProfileByIdUserHighlights: SharedGetProfileByIdUserHighlights,
+
+    sharedGetProfileByIdPlayerProfile: SharedGetProfileByIdPlayerProfile,
+    sharedGetProfileByIdPlayerProfileTimeAtual: SharedGetProfileByIdPlayerProfileTimeAtual,
+    sharedGetProfileByIdPlayerProfileTimeAtualJogadores: SharedGetProfileByIdPlayerProfileTimeAtualJogadores,
+    sharedGetProfileByIdPlayerProfileTimeAtualPropostas: SharedGetProfileByIdPlayerProfileTimeAtualPropostas,
+
+
+    onNavigate: (String) -> Unit
+) {
+
+    //CARREGAR TELA
+    var loading by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        // Espera por 3 segundos antes de continuar
+        delay(3000)
+        loading = false
+    }
+
+    //DESIGN DA TELA
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.horizontalGradient(
+                    listOf(
+                        AzulEscuroProliseum, AzulEscuroProliseum
+                    )
+                )
+            )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+
+        ) {
+
+
+            if (loading) {
+                // Exibe um indicador de progresso enquanto carrega
+                CircularProgressIndicator(
+                    modifier = Modifier.fillMaxSize(),
+                    color = RedProliseum
+                )
+            } else {
+                CircularProgressIndicator(
+                    modifier = Modifier.fillMaxSize(),
+                    color = RedProliseum
+                )
+
+                // Se o tempo de espera terminou, continue com a validação do token
+                // Restante do código aqui
+                val token = sharedViewModelTokenEId.token
+                // Restante do seu código de validação do token
+                Log.d("CarrregarPerfilOutroJogadorListaTimesScreen", "Token: $token")
+
+                val idOutroJogador = sharedGetTimeTeamsJogadoresPerfilId.id
+
+                Log.d("CarrregarPerfilOutroJogadorListaTimesScreen", "id do jogador escolhido: $idOutroJogador")
+
+                if(token != null && token.isNotEmpty()){
+
+                    val profileOutroJogadorService = RetrofitFactoryCadastro().getJogadoresByIdService()
+
+                    profileOutroJogadorService.getProfileById(idOutroJogador).enqueue(object : Callback<GetProfileByIdDoUsuario> {
+                        override fun onResponse(call: Call<GetProfileByIdDoUsuario>, response: Response<GetProfileByIdDoUsuario>) {
+                            if (response.isSuccessful) {
+                                Log.d("CarrregarPerfilOutroJogadorListaTimesScreen", "CarrregarPerfilOutroJogadorListaTimesScreen, Resposta bem-sucedida: ${response.code()}")
+
+                                val getUserByIdResponse = response.body()
+
+                                val user = getUserByIdResponse?.user
+                                val playerProfile = getUserByIdResponse?.playerProfile
+
+                                sharedGetProfileByIdDoUsuario.user = getUserByIdResponse?.user
+                                sharedGetProfileByIdDoUsuario.playerProfile = getUserByIdResponse?.playerProfile
+
+
+
+                                if(user != null){
+
+                                    val idInfoUserGetById = user.id
+                                    val nomeUsuarioInfoUserGetById = user.nome_usuario
+                                    val nomeCompletoInfoUserGetById = user.nome_completo
+                                    val emailInfoUserGetById = user.email
+                                    val dataNascimentoInfoUserGetById = user.data_nascimento
+                                    val generoInfoUserGetById = user.genero
+                                    val nicknameInfoUserGetById = user.nickname
+                                    val biografiaInfoUserGetById = user.biografia
+
+                                    sharedGetProfileByIdUser.id = user.id
+                                    sharedGetProfileByIdUser.nome_usuario = user.nome_usuario
+                                    sharedGetProfileByIdUser.nome_completo = user.nome_completo
+                                    sharedGetProfileByIdUser.email = user.email
+                                    sharedGetProfileByIdUser.data_nascimento = user.data_nascimento
+                                    sharedGetProfileByIdUser.genero = user.genero
+                                    sharedGetProfileByIdUser.nickname = user.nickname
+                                    sharedGetProfileByIdUser.biografia = user.biografia
+
+                                    val redeSocialInfoUserGetById = user.redeSocial
+                                    val highlightsInfoUserGetById = user.highlights
+
+                                    sharedGetProfileByIdUser.redeSocial = user.redeSocial
+                                    sharedGetProfileByIdUser.highlights = user.highlights
+
+                                    if(redeSocialInfoUserGetById != null){
+                                        for(redeSocialInfo in redeSocialInfoUserGetById){
+                                            val idRedeSocialInfoUserGetById = redeSocialInfo.id
+                                            val linkRedeSocialInfoUserGetById = redeSocialInfo.link
+                                            val tipoRedeSocialInfoUserGetById = redeSocialInfo.tipo
+
+                                            sharedGetProfileByIdUserRedeSocial.id = redeSocialInfo.id
+                                            sharedGetProfileByIdUserRedeSocial.link = redeSocialInfo.link
+                                            sharedGetProfileByIdUserRedeSocial.tipo = redeSocialInfo.tipo
+                                        }
+                                    }
+
+                                    if(highlightsInfoUserGetById != null){
+                                        for(highLightsInfo in highlightsInfoUserGetById){
+                                            val idHighlightInfoUserGetById = highLightsInfo.id
+                                            val tituloHighlightInfoUserGetById = highLightsInfo.titulo
+
+                                            sharedGetProfileByIdUserHighlights.id = highLightsInfo.id
+                                            sharedGetProfileByIdUserHighlights.titulo = highLightsInfo.titulo
+                                        }
+                                    }
+                                }
+
+                                if(playerProfile != null){
+                                    val idInfoPlayerProfileGetById = playerProfile.id
+                                    val nickNameInfoPlayerProfileGetById = playerProfile.nickname
+                                    val jogoInfoPlayerProfileGetById = playerProfile.jogo
+                                    val funcaoInfoPlayerProfileGetById = playerProfile.funcao
+                                    val eloInfoPlayerProfileGetById = playerProfile.elo
+
+                                    sharedGetProfileByIdPlayerProfile.id = playerProfile.id
+                                    sharedGetProfileByIdPlayerProfile.nickname = playerProfile.nickname
+                                    sharedGetProfileByIdPlayerProfile.jogo = playerProfile.jogo
+                                    sharedGetProfileByIdPlayerProfile.funcao = playerProfile.funcao
+                                    sharedGetProfileByIdPlayerProfile.elo = playerProfile.elo
+
+                                    val timeAtualInfoPlayerProfileGetById = playerProfile.time_atual
+
+                                    sharedGetProfileByIdPlayerProfile.time_atual = playerProfile.time_atual
+
+                                    if(timeAtualInfoPlayerProfileGetById != null){
+                                        val idTimeAtualInfoPlayerProfileGetById = timeAtualInfoPlayerProfileGetById.id
+                                        val nomeTimeTimeAtualInfoPlayerProfileGetById = timeAtualInfoPlayerProfileGetById.nome_time
+                                        val jogoTimeAtualInfoPlayerProfileGetById = timeAtualInfoPlayerProfileGetById.jogo
+                                        val biografiaTimeAtualInfoPlayerProfileGetById = timeAtualInfoPlayerProfileGetById.biografia
+
+                                        sharedGetProfileByIdPlayerProfileTimeAtual.id = timeAtualInfoPlayerProfileGetById.id
+                                        sharedGetProfileByIdPlayerProfileTimeAtual.nome_time = timeAtualInfoPlayerProfileGetById.nome_time
+                                        sharedGetProfileByIdPlayerProfileTimeAtual.jogo = timeAtualInfoPlayerProfileGetById.jogo
+                                        sharedGetProfileByIdPlayerProfileTimeAtual.biografia = timeAtualInfoPlayerProfileGetById.biografia
+
+
+
+                                        val jogadoresTimeAtualInfoPlayerProfileGetById = timeAtualInfoPlayerProfileGetById.jogadores
+
+                                        sharedGetProfileByIdPlayerProfileTimeAtual.jogadores = timeAtualInfoPlayerProfileGetById.jogadores
+
+                                        if(jogadoresTimeAtualInfoPlayerProfileGetById != null){
+                                            for(jogadoresTimeAtualInfo in jogadoresTimeAtualInfoPlayerProfileGetById){
+                                                val idJogadorTimeAtualPlayerProfile = jogadoresTimeAtualInfo.id
+                                                val nicknameJogadorTimeAtualPlayerProfile = jogadoresTimeAtualInfo.nickname
+                                                val jogoJogadorTimeAtualPlayerProfile = jogadoresTimeAtualInfo.jogo
+                                                val funcaoJogadorTimeAtualPlayerProfile = jogadoresTimeAtualInfo.funcao
+                                                val eloJogadorTimeAtualPlayerProfile = jogadoresTimeAtualInfo.elo
+
+                                                sharedGetProfileByIdPlayerProfileTimeAtualJogadores.id = jogadoresTimeAtualInfo.id
+                                                sharedGetProfileByIdPlayerProfileTimeAtualJogadores.nickname = jogadoresTimeAtualInfo.nickname
+                                                sharedGetProfileByIdPlayerProfileTimeAtualJogadores.jogo = jogadoresTimeAtualInfo.jogo
+                                                sharedGetProfileByIdPlayerProfileTimeAtualJogadores.funcao = jogadoresTimeAtualInfo.funcao
+                                                sharedGetProfileByIdPlayerProfileTimeAtualJogadores.elo = jogadoresTimeAtualInfo.elo
+                                            }
+                                        }
+
+                                        val propostasTimeAtualInfoPlayerProfileGetById = timeAtualInfoPlayerProfileGetById.propostas
+
+                                        sharedGetProfileByIdPlayerProfileTimeAtual.propostas = timeAtualInfoPlayerProfileGetById.propostas
+
+                                        if(propostasTimeAtualInfoPlayerProfileGetById != null){
+                                            for(propostasTimeAtualInfo in propostasTimeAtualInfoPlayerProfileGetById){
+                                                val idPropostasTimeAtualPlayerProfile = propostasTimeAtualInfo.id
+                                                val menssagemPropostasTimeAtualPlayerProfile = propostasTimeAtualInfo.menssagem
+
+                                                sharedGetProfileByIdPlayerProfileTimeAtualPropostas.id = propostasTimeAtualInfo.id
+                                                sharedGetProfileByIdPlayerProfileTimeAtualPropostas.menssagem = propostasTimeAtualInfo.menssagem
+                                            }
+                                        }
+                                    }
+
+                                }
+
+                                onNavigate("perfil_outro_jogador")
+
+
+
+                            } else {
+                                // Trate a resposta não bem-sucedida
+                                Log.d("CarrregarPerfilOutroJogadorListaTimesScreen", "CarrregarPerfilOutroJogadorListaTimesScreen, Resposta não bem-sucedida: ${response.code()}")
+                                // Log de corpo da resposta (se necessário)
+                                Log.d(
+                                    "CarrregarPerfilOutroJogadorListaTimesScreen",
+                                    "Corpo da resposta: ${response.errorBody()?.string()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<GetProfileByIdDoUsuario>, t: Throwable) {
+                            // Trate o erro de falha na rede.
+                            Log.d("CarrregarPerfilOutroJogadorListaTimesScreen", "Erro de rede: ${t.message}")
+                        }
+
+                    })
+
+                } else{
+                    Log.e("TOKEN NULO","o token esta nulo, carregando informaçoes")
+                    CircularProgressIndicator(
+                        modifier = Modifier.fillMaxSize(),
+                        color = RedProliseum
+                    )
+                }
+            }
+
+
+        }
+    }
+
+}
