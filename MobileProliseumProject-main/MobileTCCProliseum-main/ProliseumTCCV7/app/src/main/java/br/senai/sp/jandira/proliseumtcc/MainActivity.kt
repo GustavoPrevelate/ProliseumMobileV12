@@ -111,6 +111,8 @@ import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.postagem.MinhaPostagemScreen
 import br.senai.sp.jandira.proliseumtcc.gui.postagem.PostagemJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.proposta.EnviarPropostaScreen
+import br.senai.sp.jandira.proliseumtcc.gui.proposta.EnviarPropostaSegundaParteScreen
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTime
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeAdded
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeDono
@@ -1796,6 +1798,62 @@ fun MainScreen() {
             }
         }
 
+        val enviarPropostaScreen: @Composable () -> Unit = {
+            EnviarPropostaScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                // SharedViewModel GET TIME BY ID
+                sharedGetTime,
+                sharedGetTimeTeams,
+                sharedGetTimeTeamsJogadores,
+                sharedGetTimeTeamsJogadoresPerfilId,
+                sharedGetTimeDono,
+                sharedGetTimeTeamsPropostas,
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val enviarPropostaSegundaParteScreen: @Composable () -> Unit = {
+            EnviarPropostaSegundaParteScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                // SharedViewModel GET TIME BY ID
+                sharedGetTime,
+                sharedGetTimeTeams,
+                sharedGetTimeTeamsJogadores,
+                sharedGetTimeTeamsJogadoresPerfilId,
+                sharedGetTimeDono,
+                sharedGetTimeTeamsPropostas,
+
+                sharedGetProfileByIdDoUsuario,
+                sharedGetProfileByIdUser,
+                sharedGetProfileByIdUserRedeSocial,
+                sharedGetProfileByIdUserHighlights,
+
+                sharedGetProfileByIdPlayerProfile,
+                sharedGetProfileByIdPlayerProfileTimeAtual,
+                sharedGetProfileByIdPlayerProfileTimeAtualJogadores,
+                sharedGetProfileByIdPlayerProfileTimeAtualPropostas,
+            ) {
+                currentScreen = it
+            }
+        }
+
 
 
 
@@ -1862,6 +1920,10 @@ fun MainScreen() {
                     "entrar_no_time" -> entrarNoTimeScreen()
 
                     "carregar_informacoes_perfil_outro_jogador_lista_jogadores" -> carregarInformacoesPerfilOutroJogadorListaTimesScreen()
+                    "enviar_proposta" -> enviarPropostaScreen()
+                    "enviar_proposta_segunda_parte" -> enviarPropostaSegundaParteScreen()
+
+
                     else -> startScreen()
                 }
             }

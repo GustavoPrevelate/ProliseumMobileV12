@@ -575,10 +575,6 @@ fun PerfilDeOutroTimeScreen(
 
                         Text(
                             text = "${team?.dono?.nickname}".toUpperCase(),
-                            modifier = Modifier
-                                .clickable {
-                                           onNavigate("home")
-                                           },
                             color = Purple40,
                             fontWeight = FontWeight(900),
                             fontFamily = customFontFamilyText,

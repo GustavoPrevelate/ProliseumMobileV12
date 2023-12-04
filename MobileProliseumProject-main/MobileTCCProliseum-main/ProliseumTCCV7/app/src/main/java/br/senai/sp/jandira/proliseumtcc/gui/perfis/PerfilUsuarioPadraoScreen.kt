@@ -878,15 +878,17 @@ fun PerfilUsuarioPadraoScreen(
                                 fontWeight = FontWeight(900),
                             )
                             Image(
-                                painter = if ("${eloJogadorPerfilUser}" == "0") painterResource(id = R.drawable.icone_iron)
-                                else if ("${eloJogadorPerfilUser}" == "1") painterResource(id = R.drawable.icone_bronze)
-                                else if ("${eloJogadorPerfilUser}" == "2") painterResource(id = R.drawable.icone_silver)
-                                else if ("${eloJogadorPerfilUser}" == "3") painterResource(id = R.drawable.icone_gold)
-                                else if ("${eloJogadorPerfilUser}" == "4") painterResource(id = R.drawable.icone_platinum)
-                                else if ("${eloJogadorPerfilUser}" == "5") painterResource(id = R.drawable.icone_diamond)
-                                else if ("${eloJogadorPerfilUser}" == "6") painterResource(id = R.drawable.icone_master)
-                                else if ("${eloJogadorPerfilUser}" == "7") painterResource(id = R.drawable.icone_grandmaster)
-                                else if ("${eloJogadorPerfilUser}" == "8") painterResource(id = R.drawable.icone_challenger)
+                                painter = if ("${eloJogadorPerfilUser}" == "0") painterResource(id = R.drawable.unranked_proliseum_elo)
+                                else if ("${eloJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iron_proliseum_elo)
+                                else if ("${eloJogadorPerfilUser}" == "2") painterResource(id = R.drawable.bronze_proliseum_elo)
+                                else if ("${eloJogadorPerfilUser}" == "3") painterResource(id = R.drawable.silver_proliseum_elo)
+                                else if ("${eloJogadorPerfilUser}" == "4") painterResource(id = R.drawable.gold_proliseum_elo)
+                                else if ("${eloJogadorPerfilUser}" == "5") painterResource(id = R.drawable.platinum_proliseum_elo)
+                                else if ("${eloJogadorPerfilUser}" == "6") painterResource(id = R.drawable.emerald_proliseum_elo)
+                                else if ("${eloJogadorPerfilUser}" == "7") painterResource(id = R.drawable.diamond_proliseum_elo)
+                                else if ("${eloJogadorPerfilUser}" == "8") painterResource(id = R.drawable.master_proliseum_elo)
+                                else if ("${eloJogadorPerfilUser}" == "9") painterResource(id = R.drawable.grandmaster_proliseum_elo)
+                                else if ("${eloJogadorPerfilUser}" == "10") painterResource(id = R.drawable.challenger_proliseum_elo)
                                 else painter,
                                 contentDescription = "",
                                 modifier = Modifier.size(100.dp)

@@ -188,7 +188,7 @@ fun NavegacaoConfiguracoesMeuTimeScreen(
                                     )
 
                                     camposPreenchidosCorretamente = false
-                                    mensagemSucessoInputsPerfil.value = "Jogador já tem time!"
+                                    mensagemSucessoInputsPerfil.value = "Você não pode entrar nesse time, você já está em um time!"
                                 }
                             }
 
@@ -256,7 +256,7 @@ fun NavegacaoConfiguracoesMeuTimeScreen(
 
             LaunchedEffect(camposPreenchidosCorretamente) {
                 if (!camposPreenchidosCorretamente) {
-                    delay(3000)
+                    delay(5000)
                     camposPreenchidosCorretamente = true
                     onNavigate("lista_times")
                 }

@@ -24,27 +24,31 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.rememberImagePainter
 
 enum class EloLol(val imageRes: Int, val id: Int) {
-    IRON(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_iron, 0),
-    BRONZE(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_bronze, 1),
-    SILVER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_silver, 2),
-    GOLD(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_gold, 3),
-    PLATINUM(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_platinum, 4),
-    DIAMOND(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_diamond, 5),
-    MASTER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_master, 6),
-    GRANDMASTER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_grandmaster, 7),
-    CHALLENGER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_challenger, 8);
+    UNRANKED(br.senai.sp.jandira.proliseumtcc.R.drawable.unranked_proliseum_elo, 0),
+    IRON(br.senai.sp.jandira.proliseumtcc.R.drawable.iron_proliseum_elo, 1),
+    BRONZE(br.senai.sp.jandira.proliseumtcc.R.drawable.bronze_proliseum_elo, 2),
+    SILVER(br.senai.sp.jandira.proliseumtcc.R.drawable.silver_proliseum_elo, 3),
+    GOLD(br.senai.sp.jandira.proliseumtcc.R.drawable.gold_proliseum_elo, 4),
+    PLATINUM(br.senai.sp.jandira.proliseumtcc.R.drawable.platinum_proliseum_elo, 5),
+    ESMERALD(br.senai.sp.jandira.proliseumtcc.R.drawable.emerald_proliseum_elo, 6),
+    DIAMOND(br.senai.sp.jandira.proliseumtcc.R.drawable.diamond_proliseum_elo, 7),
+    MASTER(br.senai.sp.jandira.proliseumtcc.R.drawable.master_proliseum_elo, 8),
+    GRANDMASTER(br.senai.sp.jandira.proliseumtcc.R.drawable.grandmaster_proliseum_elo, 9),
+    CHALLENGER(br.senai.sp.jandira.proliseumtcc.R.drawable.challenger_proliseum_elo, 10);
 
     fun toRepresentationStringEloLol(): String {
         return when (this) {
-            IRON -> "0"
-            BRONZE -> "1"
-            SILVER -> "2"
-            GOLD -> "3"
-            PLATINUM -> "4"
-            DIAMOND -> "5"
-            MASTER -> "6"
-            GRANDMASTER -> "7"
-            CHALLENGER -> "8"
+            UNRANKED -> "0"
+            IRON -> "1"
+            BRONZE -> "2"
+            SILVER -> "3"
+            GOLD -> "4"
+            PLATINUM -> "5"
+            ESMERALD -> "6"
+            DIAMOND -> "7"
+            MASTER -> "8"
+            GRANDMASTER -> "9"
+            CHALLENGER -> "10"
         }
     }
 }

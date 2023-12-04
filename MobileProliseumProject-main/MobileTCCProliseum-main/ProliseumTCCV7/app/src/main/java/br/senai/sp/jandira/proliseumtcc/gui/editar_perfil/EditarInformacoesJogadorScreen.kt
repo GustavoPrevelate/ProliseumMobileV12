@@ -351,17 +351,6 @@ fun EditarInformacoesJogadorScreen(
                         }
 
                         Spacer(modifier = Modifier.height(5.dp))
-
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            ToggleButtonRedeSocial(
-                            ) { rede_social ->
-                                selectedRedeSocial = rede_social
-                            }
-                        }
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))

@@ -161,6 +161,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(DeletarTimeService::class.java)
     }
 
+    fun postPropostaService(): PostPropostaService {
+        return retrofitFactoryCadastro.create(PostPropostaService::class.java)
+    }
+
 
 
 }
