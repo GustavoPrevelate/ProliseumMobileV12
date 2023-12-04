@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -44,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
@@ -87,7 +89,9 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileT
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
+import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
+import br.senai.sp.jandira.proliseumtcc.ui.theme.cinzaProliseumElos
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -592,7 +596,7 @@ fun ListaDeJogadoresScreen(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .height(250.dp)
-                                .padding(start = 20.dp, top = 20.dp),
+                                .padding(top = 20.dp),
                         ) {
                             Button(
                                 onClick = {
@@ -613,7 +617,7 @@ fun ListaDeJogadoresScreen(
                                     .height(250.dp)
                                     .padding(start = 0.dp, top = 0.dp),
                                 shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                                colors = ButtonDefaults.buttonColors(RedProliseum),
+                                colors = ButtonDefaults.buttonColors(BlackTransparentProliseum),
                             ) {
 
                                 Row(
@@ -649,95 +653,98 @@ fun ListaDeJogadoresScreen(
 
                                     Column {
                                         Text(
-                                            text = "${playerListJogadores.nickname}",
+                                            text = "${playerListJogadores.nickname}".toUpperCase(),
                                             color = Color.White,
                                             modifier = Modifier.padding(5.dp),
-                                            fontWeight = FontWeight(600),
+                                            fontWeight = FontWeight(900),
                                             fontFamily = customFontFamilyText,
-                                            fontSize = 16.sp
+                                            fontSize = 20.sp
                                         )
-
-                                        Card(
-                                            modifier = Modifier
-                                                .height(55.dp)
-                                                .width(55.dp),
-                                            colors = CardDefaults.cardColors(RedProliseum)
-                                        ) {
-                                            Image(
-                                                painter =
-                                                if ("${playerListJogadores.jogo}" == "0") painterResource(
-                                                    id = R.drawable.iconlol
+                                        Column(){
+                                            Card(
+                                                modifier = Modifier
+                                                    .size(90.dp),
+                                                colors = CardDefaults.cardColors(RedProliseum)
+                                            ) {
+                                                Image(
+                                                    painter =
+                                                    if ("${playerListJogadores.jogo}" == "0") painterResource(
+                                                        id = R.drawable.iconlol
+                                                    )
+                                                    else if ("${playerListJogadores.jogo}" == "1") painterResource(id = R.drawable.iconlol)
+                                                    else if ("${playerListJogadores.jogo}" == "2") painterResource(id = R.drawable.iconlol)
+                                                    else painter,
+                                                    contentDescription = "",
+                                                    modifier = Modifier.fillMaxSize(),
+                                                    alignment = Alignment.Center,
+                                                    colorFilter = ColorFilter.tint(AzulEscuroProliseum)
                                                 )
-                                                else if ("${playerListJogadores.jogo}" == "1") painterResource(id = R.drawable.iconlol)
-                                                else if ("${playerListJogadores.jogo}" == "2") painterResource(id = R.drawable.iconlol)
-                                                else painter,
-                                                contentDescription = "",
-                                                modifier = Modifier.fillMaxSize(),
-                                                alignment = Alignment.Center,
-                                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                                            )
+                                            }
                                         }
+
+
 
 
                                         Spacer(modifier = Modifier.height(5.dp))
 
-                                        Card(
-                                            modifier = Modifier
-                                                .height(55.dp)
-                                                .width(55.dp),
-                                            colors = CardDefaults.cardColors(RedProliseum)
-                                        ) {
-                                            Image(
-                                                painter =
-                                                if ("${playerListJogadores.elo}" == "0") painterResource(
-                                                    id = R.drawable.icone_iron
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth()
+                                        ){
+                                            Card(
+                                                modifier = Modifier
+                                                    .height(55.dp)
+                                                    .width(55.dp),
+                                                colors = CardDefaults.cardColors(RedProliseum)
+                                            ) {
+                                                Image(
+                                                    painter =
+                                                    if ("${playerListJogadores.elo}" == "0") painterResource(
+                                                        id = R.drawable.unranked_proliseum_elo
+                                                    )
+                                                    else if ("${playerListJogadores.elo}" == "1") painterResource(id = R.drawable.iron_proliseum_elo)
+                                                    else if ("${playerListJogadores.elo}" == "2") painterResource(id = R.drawable.bronze_proliseum_elo)
+                                                    else if ("${playerListJogadores.elo}" == "3") painterResource(id = R.drawable.silver_proliseum_elo)
+                                                    else if ("${playerListJogadores.elo}" == "4") painterResource(id = R.drawable.gold_proliseum_elo)
+                                                    else if ("${playerListJogadores.elo}" == "5") painterResource(id = R.drawable.platinum_proliseum_elo)
+                                                    else if ("${playerListJogadores.elo}" == "6") painterResource(id = R.drawable.emerald_proliseum_elo)
+                                                    else if ("${playerListJogadores.elo}" == "7") painterResource(id = R.drawable.diamond_proliseum_elo)
+                                                    else if ("${playerListJogadores.elo}" == "8") painterResource(id = R.drawable.master_proliseum_elo)
+                                                    else if ("${playerListJogadores.elo}" == "9") painterResource(id = R.drawable.grandmaster_proliseum_elo)
+                                                    else if ("${playerListJogadores.elo}" == "10") painterResource(id = R.drawable.challenger_proliseum_elo)
+                                                    else painter,
+                                                    contentDescription = "",
+                                                    modifier = Modifier.fillMaxSize(),
                                                 )
-                                                else if ("${playerListJogadores.elo}" == "1") painterResource(id = R.drawable.icone_bronze)
-                                                else if ("${playerListJogadores.elo}" == "2") painterResource(id = R.drawable.icone_silver)
-                                                else if ("${playerListJogadores.elo}" == "3") painterResource(id = R.drawable.icone_gold)
-                                                else if ("${playerListJogadores.elo}" == "4") painterResource(id = R.drawable.icone_platinum)
-                                                else if ("${playerListJogadores.elo}" == "5") painterResource(id = R.drawable.icone_diamond)
-                                                else if ("${playerListJogadores.elo}" == "6") painterResource(id = R.drawable.icone_master)
-                                                else if ("${playerListJogadores.elo}" == "7") painterResource(id = R.drawable.icone_grandmaster)
-                                                else if ("${playerListJogadores.elo}" == "8") painterResource(id = R.drawable.icone_challenger)
-                                                else painter,
-                                                contentDescription = "",
-                                                modifier = Modifier.fillMaxSize(),
-                                            )
+                                            }
+
+
+                                            Spacer(modifier = Modifier.width(5.dp))
+
+                                            Card(
+                                                modifier = Modifier
+                                                    .height(55.dp)
+                                                    .width(55.dp),
+                                                colors = CardDefaults.cardColors(RedProliseum)
+                                            ) {
+                                                Image(
+                                                    painter =
+                                                    if ("${playerListJogadores.funcao}" == "0") painterResource(
+                                                        id = R.drawable.icontoplane
+                                                    )
+                                                    else if ("${playerListJogadores.funcao}" == "1") painterResource(id = R.drawable.iconjungle)
+                                                    else if ("${playerListJogadores.funcao}" == "2") painterResource(id = R.drawable.iconmidlane)
+                                                    else if ("${playerListJogadores.funcao}" == "3") painterResource(id = R.drawable.iconsupport)
+                                                    else if ("${playerListJogadores.funcao}" == "4") painterResource(id = R.drawable.iconadc)
+                                                    else painter,
+                                                    contentDescription = "",
+                                                    modifier = Modifier.fillMaxSize(),
+                                                    colorFilter = ColorFilter.tint(cinzaProliseumElos)
+
+                                                )
+                                            }
                                         }
 
-//                                Text(
-//                                    text = "${playerListJogadores.elo}",
-//                                    color = Color.White,
-//                                    modifier = Modifier.padding(5.dp),
-//                                    fontWeight = FontWeight(600),
-//                                    fontFamily = customFontFamilyText,
-//                                    fontSize = 12.sp
-//                                )
 
-                                        Spacer(modifier = Modifier.height(5.dp))
-
-                                        Card(
-                                            modifier = Modifier
-                                                .height(55.dp)
-                                                .width(55.dp),
-                                            colors = CardDefaults.cardColors(RedProliseum)
-                                        ) {
-                                            Image(
-                                                painter =
-                                                if ("${playerListJogadores.jogo}" == "0") painterResource(
-                                                    id = R.drawable.icontoplane
-                                                )
-                                                else if ("${playerListJogadores.jogo}" == "1") painterResource(id = R.drawable.iconjungle)
-                                                else if ("${playerListJogadores.jogo}" == "2") painterResource(id = R.drawable.iconmidlane)
-                                                else if ("${playerListJogadores.jogo}" == "3") painterResource(id = R.drawable.iconsupport)
-                                                else if ("${playerListJogadores.jogo}" == "4") painterResource(id = R.drawable.iconadc)
-                                                else painter,
-                                                contentDescription = "",
-                                                modifier = Modifier.fillMaxSize(),
-
-                                                )
-                                        }
                                     }
 
                                 }
