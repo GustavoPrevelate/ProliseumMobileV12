@@ -977,7 +977,7 @@ fun PerfilDeOutroJogadorScreen(
                     Button(
                         onClick = {
 
-//                            onNavigate("lista_meus_high_lights")
+                            onNavigate("lista_highlights_outros_usuarios")
 
                         },
                         modifier = Modifier

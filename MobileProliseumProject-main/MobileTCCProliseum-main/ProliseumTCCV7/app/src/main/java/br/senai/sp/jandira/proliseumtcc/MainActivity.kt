@@ -102,6 +102,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.EditarHighLightScree
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.ListaMeusHighLightsScreen
 import br.senai.sp.jandira.proliseumtcc.gui.minhas_redes_sociais.DeletarRedeSocialScreen
 import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavegacaoConfiguracoesMeuPerfilPrincipal
+import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.ListaHighlightsOutrosUsuariosScreen
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroJogadorListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroTimeScreen
@@ -1854,6 +1855,80 @@ fun MainScreen() {
             }
         }
 
+        val listaHighlightsOutrosUsuariosScreen: @Composable () -> Unit = {
+            ListaHighlightsOutrosUsuariosScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+
+                // SharedViewModel GET MY TEAMS GERAL
+                sharedGetMyTeamsGeral,
+
+                // SharedViewModelGetMyTeams de USUARIO
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                // SharedViewModelGetMyTeams de TIME
+                sharedViewModelGetMyTeamsTime,
+                sharedViewModelGetMyTeamsTimeJogadores,
+                sharedViewModelGetMyTeamsTimeJogadoresAtivos,
+                sharedViewModelGetMyTeamsTimePropostas,
+
+                sharedViewModelNomeJogadorListaJogadores,
+                sharedViewModelGetListaJogadores,
+                sharedViewModelGetListaJogadoresList,
+                sharedViewModelGetListaJogadoresInfoPerfil,
+                sharedViewModelGetListaJogadoresTimeAtual,
+                sharedViewModelGetListaJogadoresDentroDeTime,
+                sharedViewModelGetListaJogadoresDentroDeTimeList,
+                sharedViewModelGetListaJogadoresPropostasList,
+                sharedViewModelGetListaJogadoresPropostasRecebidas,
+
+
+                sharedViewModelListaPublicacaoJogadores,
+
+                sharedGetListaPostagens,
+                sharedGetListaPostagensPublicacao,
+                sharedGetListaPostagensPublicacaoDonoId,
+
+                sharedViewResponseFirstGetHighLights,
+                sharedViewResponseGetHighLights,
+                sharedViewResponseGetHighLightsDono,
+
+
+                sharedGetProfileByIdDoUsuario,
+                sharedGetProfileByIdUser,
+                sharedGetProfileByIdUserRedeSocial,
+                sharedGetProfileByIdUserHighlights,
+
+                sharedGetProfileByIdPlayerProfile,
+                sharedGetProfileByIdPlayerProfileTimeAtual,
+                sharedGetProfileByIdPlayerProfileTimeAtualJogadores,
+                sharedGetProfileByIdPlayerProfileTimeAtualPropostas,
+            ) {
+                currentScreen = it
+            }
+        }
+
+
+
 
 
 
@@ -1922,6 +1997,7 @@ fun MainScreen() {
                     "carregar_informacoes_perfil_outro_jogador_lista_jogadores" -> carregarInformacoesPerfilOutroJogadorListaTimesScreen()
                     "enviar_proposta" -> enviarPropostaScreen()
                     "enviar_proposta_segunda_parte" -> enviarPropostaSegundaParteScreen()
+                    "lista_highlights_outros_usuarios" -> listaHighlightsOutrosUsuariosScreen()
 
 
                     else -> startScreen()
