@@ -1,0 +1,6 @@
+package br.senai.sp.jandira.proliseumtcc.sharedview
+
+class SharedViewModelPerfilOutroUsuarioPlayerProfileTimePropostas {
+    var id: Int? = 0
+    var menssagem: String? = ""
+}
