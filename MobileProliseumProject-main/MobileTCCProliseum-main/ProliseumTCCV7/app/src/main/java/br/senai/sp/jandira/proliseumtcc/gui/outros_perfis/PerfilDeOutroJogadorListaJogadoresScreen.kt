@@ -827,10 +827,12 @@ fun PerfilDeOutroJogadorListaJogadoresScreen(
                                     .height(140.dp)
                                     .padding(start = 0.dp, top = 0.dp),
                                 shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                                colors = ButtonDefaults.buttonColors(BlackTransparentProliseum),
+                                colors = ButtonDefaults.buttonColors(RedProliseum),
                             ){
                                 Column(
-
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
                                 ) {
                                     Text(
                                         text = "${nomeTimeAtualUserPadrao}",

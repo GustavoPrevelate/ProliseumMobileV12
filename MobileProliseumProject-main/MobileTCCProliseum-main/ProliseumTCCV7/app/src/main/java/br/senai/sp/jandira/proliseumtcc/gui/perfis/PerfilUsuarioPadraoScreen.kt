@@ -785,52 +785,68 @@ fun PerfilUsuarioPadraoScreen(
 
                         Column() {
 
-                            Column(
-
-                            ) {
-                                Text(
-                                    text = "${nomeTimeAtualUserPadrao}",
-                                    fontSize = 15.sp,
-                                    color = Color.White,
-                                    fontFamily = customFontFamilyText,
-                                    fontWeight = FontWeight(900),
-                                )
-
-                                Spacer(modifier = Modifier.height( 5.dp))
-                            }
+                            Button(
+                                onClick = {
 
 
-                            Box(
-                                contentAlignment = Alignment.BottomEnd
-                            ) {
+                                    onNavigate("carregar_informacoes_outro_time_lista_jogadores")
 
-
-
-                                Card(
-                                    modifier = Modifier
-                                        .clickable {
-                                            onNavigate("home")
-                                        }
-                                        .height(100.dp)
-                                        .width(100.dp),
-
-                                    shape = CircleShape
+                                },
+                                modifier = Modifier
+                                    .width(180.dp)
+                                    .height(140.dp)
+                                    .padding(start = 0.dp, top = 0.dp),
+                                shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                                colors = ButtonDefaults.buttonColors(RedProliseum),
+                            ){
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
                                 ) {
+                                    Text(
+                                        text = "${nomeTimeAtualUserPadrao}",
+                                        fontSize = 15.sp,
+                                        color = Color.White,
+                                        fontFamily = customFontFamilyText,
+                                        fontWeight = FontWeight(900),
+                                    )
 
-                                    if (idUser != null && idUser != 0) {
-                                        // Exiba a imagem se a URI estiver definida
-                                        AsyncImage(
-                                            model = imageTimeUri,
-                                            contentDescription = null,
-                                            modifier = Modifier.fillMaxSize(),
-                                            contentScale = ContentScale.Crop
-                                        )
-                                    } else {
-                                        // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
-                                        Text("Carregando imagem...")
+                                    Spacer(modifier = Modifier.height( 5.dp))
+
+                                    Box(
+                                        modifier = Modifier.padding(start = 20.dp),
+                                        contentAlignment = Alignment.BottomEnd
+                                    ) {
+
+
+
+                                        Card(
+                                            modifier = Modifier
+                                                .height(100.dp)
+                                                .width(100.dp),
+
+                                            shape = CircleShape
+                                        ) {
+
+                                            if (idUser != null && idUser != 0) {
+                                                // Exiba a imagem se a URI estiver definida
+                                                AsyncImage(
+                                                    model = imageTimeUri,
+                                                    contentDescription = null,
+                                                    modifier = Modifier.fillMaxSize(),
+                                                    contentScale = ContentScale.Crop
+                                                )
+                                            } else {
+                                                // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                                                Text("Carregando imagem...")
+                                            }
+                                        }
                                     }
                                 }
+
                             }
+
                         }
 
 

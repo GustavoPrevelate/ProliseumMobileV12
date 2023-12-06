@@ -245,36 +245,20 @@ fun EnviarPropostaSegundaParteScreen(
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        onNavigate("home")
+                        onNavigate("enviar_proposta")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
                     tint = Color.White
                 )
             }
-        }
 
-        // Conteúdo do formulário
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 250.dp), // Ajuste o valor do topo para centralizar verticalmente
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Box(
+            // Conteúdo do formulário
+            Column(
                 modifier = Modifier
-                    .background(
-                        brush = Brush.horizontalGradient(
-                            listOf(
-                                BlackTransparentProliseum,
-                                BlackTransparentProliseum
-                            )
-                        ),
-                        shape = RoundedCornerShape(50.dp, 50.dp, 0.dp, 0.dp)
-                    )
-                    .padding(40.dp)
-
+                    .fillMaxSize(), // Ajuste o valor do topo para centralizar verticalmente
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
@@ -285,6 +269,7 @@ fun EnviarPropostaSegundaParteScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(start = 20.dp),
                     ) {
                         Text(
                             text = "Menssagem:",
@@ -310,7 +295,7 @@ fun EnviarPropostaSegundaParteScreen(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         label = {
                             Text(
-                                text = "Nome do time:",
+                                text = "Menssagem para o jogador:",
                                 color = Color.White,
                                 fontFamily = customFontFamilyText,
                                 fontWeight = FontWeight(600),
@@ -352,36 +337,36 @@ fun EnviarPropostaSegundaParteScreen(
 
                             // Realize a chamada de API para editar o perfil
                             postPropostaService.criarProposta("Bearer " + token, idTimeEscolhido, idUserSharedState, editarPerfilTimeData)
-                                    .enqueue(object : Callback<PostProposta> {
-                                        override fun onResponse(
-                                            call: Call<PostProposta>,
-                                            response: Response<PostProposta>
-                                        ) {
-                                            if (response.isSuccessful) {
-                                                Log.d(
-                                                    "EnviarPropostaSegundaParteScreen",
-                                                    "Proposta enviada com sucesso: ${response.code()}"
-                                                )
-                                                // Trate a resposta bem-sucedida, se necessário
-                                            } else {
-                                                // Trate a resposta não bem-sucedida
-                                                Log.d(
-                                                    "EnviarPropostaSegundaParteScreen",
-                                                    "Falha ao enviar proposta para um usuário: ${response.code()}"
-                                                )
-                                                // Log do corpo da resposta (se necessário)
-                                                Log.d(
-                                                    "EnviarPropostaSegundaParteScreen",
-                                                    "Corpo da resposta: ${response.errorBody()?.string()}"
-                                                )
-                                            }
+                                .enqueue(object : Callback<PostProposta> {
+                                    override fun onResponse(
+                                        call: Call<PostProposta>,
+                                        response: Response<PostProposta>
+                                    ) {
+                                        if (response.isSuccessful) {
+                                            Log.d(
+                                                "EnviarPropostaSegundaParteScreen",
+                                                "Proposta enviada com sucesso: ${response.code()}"
+                                            )
+                                            // Trate a resposta bem-sucedida, se necessário
+                                        } else {
+                                            // Trate a resposta não bem-sucedida
+                                            Log.d(
+                                                "EnviarPropostaSegundaParteScreen",
+                                                "Falha ao enviar proposta para um usuário: ${response.code()}"
+                                            )
+                                            // Log do corpo da resposta (se necessário)
+                                            Log.d(
+                                                "EnviarPropostaSegundaParteScreen",
+                                                "Corpo da resposta: ${response.errorBody()?.string()}"
+                                            )
                                         }
+                                    }
 
-                                        override fun onFailure(call: Call<PostProposta>, t: Throwable) {
-                                            // Trate o erro de falha na rede.
-                                            Log.d("EnviarPropostaSegundaParteScreen", "Erro de rede: ${t.message}")
-                                        }
-                                    })
+                                    override fun onFailure(call: Call<PostProposta>, t: Throwable) {
+                                        // Trate o erro de falha na rede.
+                                        Log.d("EnviarPropostaSegundaParteScreen", "Erro de rede: ${t.message}")
+                                    }
+                                })
 
                         }
 
@@ -403,14 +388,14 @@ fun EnviarPropostaSegundaParteScreen(
                             },
                             modifier = Modifier
                                 .padding(top = 20.dp)
-                                .fillMaxWidth()
+                                .width(370.dp)
                                 .height(48.dp),
                             shape = RoundedCornerShape(73.dp),
                             colors = ButtonDefaults.buttonColors(RedProliseum)
 
                         ) {
                             Text(
-                                text = "SALVAR",
+                                text = "Enviar proposta!",
                                 fontSize = 16.sp,
                                 textAlign = TextAlign.Center,
                                 color = Color.White,
@@ -420,12 +405,12 @@ fun EnviarPropostaSegundaParteScreen(
                         }
 
 
+
                     }
 
                 }
             }
         }
-
 
     }
 
