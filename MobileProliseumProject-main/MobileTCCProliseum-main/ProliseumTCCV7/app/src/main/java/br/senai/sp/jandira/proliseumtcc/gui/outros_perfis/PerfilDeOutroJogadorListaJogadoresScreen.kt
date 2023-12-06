@@ -818,7 +818,8 @@ fun PerfilDeOutroJogadorListaJogadoresScreen(
                             Button(
                                 onClick = {
 
-                                    onNavigate("perfil_outro_time")
+
+                                    onNavigate("carregar_informacoes_outro_time_lista_jogadores")
 
                                 },
                                 modifier = Modifier

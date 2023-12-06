@@ -11,14 +11,16 @@ import br.senai.sp.jandira.proliseumtcc.model.getTimeByIdTeamsOrganizacao
 import br.senai.sp.jandira.proliseumtcc.model.getTimeByIdTeamsOrganizacaoDonoId
 import br.senai.sp.jandira.proliseumtcc.model.getTimeByIdTeamsPropostas
 
-class SharedGetTimeByIdTeams: ViewModel() {
+class SharedGetTimeByIdTeamsDono: ViewModel() {
 
     var id: Int? = 0
-    var nome_time: String?  = ""
-    var jogo: Int?  = 0
+    var nome_usuario: String? = ""
+    var nome_completo: String? = ""
+    var email: String? = ""
+    var senha: String? = ""
+    var data_nascimento: String? = ""
+    var genero: Int? = 0
+    var nickname: String? = ""
     var biografia: String? = ""
-    var dono: getTimeByIdTeamsOrganizacaoDonoId? = null
-    var jogadores: List<getTimeByIdTeamsJogadores>? = null
-    var propostas: List<getTimeByIdTeamsPropostas>? = null
 
 }

@@ -5,7 +5,7 @@ data class getTimeByIdTeams(
     val nome_time: String?,
     val jogo: Int?,
     val biografia: String?,
-    val organizacao: getTimeByIdTeamsOrganizacao?,
+    val dono: getTimeByIdTeamsOrganizacaoDonoId?,
     val jogadores: List<getTimeByIdTeamsJogadores>?,
     val propostas: List<getTimeByIdTeamsPropostas>?
 )

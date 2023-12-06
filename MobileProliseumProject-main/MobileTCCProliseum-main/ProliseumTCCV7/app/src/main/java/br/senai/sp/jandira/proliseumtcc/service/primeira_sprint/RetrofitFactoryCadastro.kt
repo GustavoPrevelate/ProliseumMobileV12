@@ -1,13 +1,12 @@
 package br.senai.sp.jandira.proliseumtcc.service.primeira_sprint
 
-import br.senai.sp.jandira.proliseumtcc.model.getTimeById
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
 class RetrofitFactoryCadastro {
 
-    private val URL_BASE = "https://proliseum-back.cyclic.app"
+    private val URL_BASE = "http://10.0.2.2:3000"
 
     //Guarda a conexão com o servidor, devolve a conexão
     private val retrofitFactoryCadastro = Retrofit
@@ -164,6 +163,12 @@ class RetrofitFactoryCadastro {
     fun postPropostaService(): PostPropostaService {
         return retrofitFactoryCadastro.create(PostPropostaService::class.java)
     }
+
+    fun getFilterTimesByUserIDService(): GetFilterTimesByUserIDService {
+        return retrofitFactoryCadastro.create(GetFilterTimesByUserIDService::class.java)
+    }
+
+
 
 
 

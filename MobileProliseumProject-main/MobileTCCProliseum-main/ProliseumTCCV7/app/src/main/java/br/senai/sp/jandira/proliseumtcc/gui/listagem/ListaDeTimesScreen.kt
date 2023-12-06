@@ -172,6 +172,7 @@ fun ListaDeTimesScreen (
     sharedGetTimeTeamsJogadoresPerfilId: SharedGetTimeTeamsJogadoresPerfilId,
     sharedGetTimeDono: SharedGetTimeDono,
     sharedGetTimeTeamsPropostas: SharedGetTimeTeamsPropostas,
+
     onNavigate: (String) -> Unit
 ) {
 
