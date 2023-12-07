@@ -45,6 +45,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.model.GenericResponse
+import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagens
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacaoDonoId
@@ -87,6 +89,7 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileT
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
+import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
@@ -95,6 +98,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
 fun MinhaPostagemScreen(
@@ -264,7 +270,7 @@ fun MinhaPostagemScreen(
                         .height(450.dp)
                         .padding(start = 0.dp, top = 0.dp),
                     shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                    colors = ButtonDefaults.buttonColors(RedProliseum),
+                    colors = ButtonDefaults.buttonColors(BlackTransparentProliseum),
                 ) {
 
                     Column(
@@ -307,18 +313,45 @@ fun MinhaPostagemScreen(
                         }
 
 
+                        Spacer(modifier = Modifier.height(10.dp))
+
                         Column(
                             modifier = Modifier
-                                .fillMaxSize(),
-                        ) {
+                                .height(80.dp)
+                                .fillMaxWidth()
+                        ){
 
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(70.dp),
-                                horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
+
+                            Text(
+                                text = "${descricaoMinhaPublicacao}",
+                                color = Color.White,
+                                modifier = Modifier.padding(5.dp),
+                                fontWeight = FontWeight(600),
+                                fontFamily = customFontFamilyText,
+                                fontSize = 14.sp
+                            )
+
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp),
+                        ) {
+                            Column {
+
+                                Text(
+                                    text = "ELO",
+                                    color = Color.White,
+                                    modifier = Modifier.padding(5.dp),
+                                    fontWeight = FontWeight(600),
+                                    fontFamily = customFontFamilyText,
+                                    fontSize = 14.sp
+                                )
+
                                 Card(
                                     modifier = Modifier
                                         .height(55.dp)
@@ -327,24 +360,37 @@ fun MinhaPostagemScreen(
                                 ) {
                                     Image(
                                         painter =
-                                        if ("${eloMinhaPublicacao}" == "0") painterResource(
-                                            id = R.drawable.icone_iron
-                                        )
-                                        else if ("${eloMinhaPublicacao}" == "1") painterResource(id = R.drawable.icone_bronze)
-                                        else if ("${eloMinhaPublicacao}" == "2") painterResource(id = R.drawable.icone_silver)
-                                        else if ("${eloMinhaPublicacao}" == "3") painterResource(id = R.drawable.icone_gold)
-                                        else if ("${eloMinhaPublicacao}" == "4") painterResource(id = R.drawable.icone_platinum)
-                                        else if ("${eloMinhaPublicacao}" == "5") painterResource(id = R.drawable.icone_diamond)
-                                        else if ("${eloMinhaPublicacao}" == "6") painterResource(id = R.drawable.icone_master)
-                                        else if ("${eloMinhaPublicacao}" == "7") painterResource(id = R.drawable.icone_grandmaster)
-                                        else if ("${eloMinhaPublicacao}" == "8") painterResource(id = R.drawable.icone_challenger)
+                                        if ("${eloMinhaPublicacao}" == "0") painterResource(id = R.drawable.unranked_proliseum_elo)
+                                        else if ("${eloMinhaPublicacao}" == "1") painterResource(id = R.drawable.iron_proliseum_elo)
+                                        else if ("${eloMinhaPublicacao}" == "2") painterResource(id = R.drawable.bronze_proliseum_elo)
+                                        else if ("${eloMinhaPublicacao}" == "3") painterResource(id = R.drawable.silver_proliseum_elo)
+                                        else if ("${eloMinhaPublicacao}" == "4") painterResource(id = R.drawable.gold_proliseum_elo)
+                                        else if ("${eloMinhaPublicacao}" == "5") painterResource(id = R.drawable.platinum_proliseum_elo)
+                                        else if ("${eloMinhaPublicacao}" == "6") painterResource(id = R.drawable.emerald_proliseum_elo)
+                                        else if ("${eloMinhaPublicacao}" == "7") painterResource(id = R.drawable.diamond_proliseum_elo)
+                                        else if ("${eloMinhaPublicacao}" == "8") painterResource(id = R.drawable.master_proliseum_elo)
+                                        else if ("${eloMinhaPublicacao}" == "9") painterResource(id = R.drawable.grandmaster_proliseum_elo)
+                                        else if ("${eloMinhaPublicacao}" == "10") painterResource(id = R.drawable.challenger_proliseum_elo)
                                         else painter,
                                         contentDescription = "",
                                         modifier = Modifier.fillMaxSize(),
                                     )
                                 }
+                            }
 
-                                Spacer(modifier = Modifier.width(25.dp))
+                            Spacer(modifier = Modifier.width(25.dp))
+
+                            Column {
+
+                                Text(
+                                    text = "FUNÇÃO",
+                                    color = Color.White,
+                                    modifier = Modifier.padding(5.dp),
+                                    fontWeight = FontWeight(600),
+                                    fontFamily = customFontFamilyText,
+                                    fontSize = 14.sp
+                                )
+
 
                                 Card(
                                     modifier = Modifier
@@ -367,47 +413,45 @@ fun MinhaPostagemScreen(
 
                                         )
                                 }
-
-
-                                Spacer(modifier = Modifier.width(25.dp))
-
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ){
-                                    Text(
-                                        text = "${horaMinhaPublicacao}",
-                                        color = Color.White,
-                                        modifier = Modifier.padding(5.dp),
-                                        fontWeight = FontWeight(600),
-                                        fontFamily = customFontFamilyText,
-                                        fontSize = 16.sp
-                                    )
-                                }
-
-
-
                             }
-                            Spacer(modifier = Modifier.height(15.dp))
 
-                            Row(
-                                modifier = Modifier
-                                    .height(70.dp)
-                            ) {
+                            Spacer(modifier = Modifier.width(25.dp))
+
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ){
                                 Text(
-                                    text = "${descricaoMinhaPublicacao}",
+                                    text = "HORARIO",
                                     color = Color.White,
                                     modifier = Modifier.padding(5.dp),
                                     fontWeight = FontWeight(600),
                                     fontFamily = customFontFamilyText,
                                     fontSize = 14.sp
                                 )
+
+                                Text(
+                                    text = "${horaMinhaPublicacao}",
+                                    color = Color.White,
+                                    modifier = Modifier.padding(5.dp),
+                                    fontWeight = FontWeight(600),
+                                    fontFamily = customFontFamilyText,
+                                    fontSize = 16.sp
+                                )
                             }
 
-                            Spacer(modifier = Modifier.height(5.dp))
+                            Spacer(modifier = Modifier.width(25.dp))
 
-                            Row(){
-                                Spacer(modifier = Modifier.height(5.dp))
+                            Column(
+                            ) {
+                                Text(
+                                    text = "PROS",
+                                    color = Color.White,
+                                    modifier = Modifier.padding(5.dp),
+                                    fontWeight = FontWeight(600),
+                                    fontFamily = customFontFamilyText,
+                                    fontSize = 14.sp
+                                )
 
                                 Text(
                                     text = "${prosMinhaPublicacao}",
@@ -418,6 +462,7 @@ fun MinhaPostagemScreen(
                                     fontSize = 14.sp
                                 )
                             }
+
                         }
                     }
                 }
@@ -463,7 +508,11 @@ fun MinhaPostagemScreen(
                     ){
                         Button(
                             onClick = {
-//                    onNavigate("carregar_informacoes_minha_publicacao")
+                                deletarPublicacaoJogador(
+                                    sharedViewModelTokenEId = sharedViewModelTokenEId
+                                )
+
+                                onNavigate("navigation_proliseum")
                             },
                             modifier = Modifier
                                 .width(170.dp)
@@ -483,7 +532,78 @@ fun MinhaPostagemScreen(
                     }
 
                 }
+
+
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(80.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = {
+                            onNavigate("lista_propostas_recebidas_para_jogadores")
+                        },
+                        modifier = Modifier
+                            .width(370.dp)
+                            .height(70.dp),
+                        shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                        colors = ButtonDefaults.buttonColors(RedProliseum),
+                    ) {
+                        Text(
+                            text = "PROPOSTAS RECEBIDAS",
+                            color = Color.White,
+                            modifier = Modifier.padding(5.dp),
+                            fontWeight = FontWeight(600),
+                            fontFamily = customFontFamilyText,
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+
             }
         }
     }
+}
+
+fun deletarPublicacaoJogador(
+    sharedViewModelTokenEId: SharedViewTokenEId
+){
+
+    val token = sharedViewModelTokenEId.token
+
+    // Obtenha o serviço Retrofit para editar o perfil do usuário
+    val apagarPublicacaoJogadorService = RetrofitFactoryCadastro().apagarPublicacaoJogadorService()
+
+    // Realize a chamada de API para editar o perfil
+    apagarPublicacaoJogadorService.deletarMinhaPostagem("Bearer " + token)
+        .enqueue(object : Callback<GenericResponse> {
+            override fun onResponse(
+                call: Call<GenericResponse>,
+                response: Response<GenericResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d(
+                        "DeletarPublicacaoJogadorScreen",
+                        "DeletarPublicacaoJogadorScreen, Publicação apagada com sucesso: ${response.code()}"
+                    )
+                    // Trate a resposta bem-sucedida, se necessário
+                } else {
+                    // Trate a resposta não bem-sucedida
+                    Log.d(
+                        "DeletarPublicacaoJogadorScreen",
+                        "DeletarPublicacaoJogadorScreen, Falha ao tentar apagar a publição do jogador: ${response.code()}"
+                    )
+                    // Log do corpo da resposta (se necessário)
+                    Log.d(
+                        "DeletarPublicacaoJogadorScreen",
+                        "DeletarPublicacaoJogadorScreen, Corpo da resposta: ${response.errorBody()?.string()}"
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
+                // Trate o erro de falha na rede.
+                Log.d("DeletarPublicacaoJogadorScreen", "Erro de rede: ${t.message}")
+            }
+        })
 }

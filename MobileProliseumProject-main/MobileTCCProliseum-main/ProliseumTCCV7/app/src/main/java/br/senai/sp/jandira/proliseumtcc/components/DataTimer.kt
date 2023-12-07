@@ -56,7 +56,7 @@ fun TimePickerComponent(
                 onClick = { isStartTimePickerVisible = true },
                 colors = ButtonDefaults.buttonColors(RedProliseum)
             ) {
-                Text(text = "Tempo de início")
+                Text(text = "TEMPO DE INÍCIO")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -69,7 +69,7 @@ fun TimePickerComponent(
                 text = selectedTimeString,
                 color = Color.White,
                 fontWeight = FontWeight(900),
-                fontSize = 22.sp
+                fontSize = 32.sp
             )
 
             if (isStartTimePickerVisible) {

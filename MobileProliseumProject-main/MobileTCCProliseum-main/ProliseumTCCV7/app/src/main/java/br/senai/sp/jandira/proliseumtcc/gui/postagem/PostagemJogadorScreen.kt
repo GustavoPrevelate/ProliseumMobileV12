@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -66,6 +67,7 @@ import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryC
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
+import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import kotlinx.coroutines.delay
 import retrofit2.Call
 import retrofit2.Callback
@@ -144,7 +146,7 @@ fun PostagemJogadorScreen(
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        onNavigate("login")
+                        onNavigate("lista_de_publicacoes_jogadores")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
@@ -167,9 +169,9 @@ fun PostagemJogadorScreen(
                 contentDescription = ""
             )
             Text(
-                text = stringResource(id = R.string.text_cadastro),
+                text = "CRIAR POSTAGEM",
                 fontFamily = customFontFamily,
-                fontSize = 48.sp,
+                fontSize = 36.sp,
                 textAlign = TextAlign.Center,
                 color = Color.White
 
@@ -177,26 +179,7 @@ fun PostagemJogadorScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            //PopUp
-            LaunchedEffect(camposPreenchidosCorretamente) {
-                if (!camposPreenchidosCorretamente) {
-                    delay(15000)
-                    camposPreenchidosCorretamente = true
-                }
-            }
 
-            AnimatedVisibility(
-                visible = !camposPreenchidosCorretamente,
-                enter = slideInVertically(initialOffsetY = { it }),
-                exit = slideOutVertically(targetOffsetY = { it })
-            ) {
-                Snackbar(
-                    modifier = Modifier.padding(top = 16.dp),
-                    action = {}
-                ) {
-                    Text(text = mensagemErroInputsPerfil.value)
-                }
-            }
 
         }
 
@@ -212,7 +195,7 @@ fun PostagemJogadorScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .fillMaxHeight()
-                    .padding(top = 300.dp)
+                    .padding(top = 200.dp)
                     .background(
                         brush = Brush.horizontalGradient(
                             listOf(
@@ -233,6 +216,7 @@ fun PostagemJogadorScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
 
                     ) {
+
 
 
 
@@ -262,6 +246,22 @@ fun PostagemJogadorScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 40.dp)
+                    ) {
+                        Text(
+                            text = "JOGO:",
+                            fontFamily = customFontFamilyText,
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight(900),
+                            color = Color.White
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(5.dp))
+
 
                     Column {
                         ToggleButtonJogoUI{ jogo ->
@@ -275,9 +275,10 @@ fun PostagemJogadorScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(start = 40.dp)
                     ) {
                         Text(
-                            text = "FUNCAO JOGO:",
+                            text = "FUNÇÃO:",
                             fontFamily = customFontFamilyText,
                             fontSize = 25.sp,
                             fontWeight = FontWeight(900),
@@ -285,6 +286,7 @@ fun PostagemJogadorScreen(
                         )
                     }
 
+                    Spacer(modifier = Modifier.height(5.dp))
 
                     Column {
                         ToggleButtonFuncaoLolUI{ funcao ->
@@ -298,9 +300,10 @@ fun PostagemJogadorScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(start = 40.dp)
                     ) {
                         Text(
-                            text = "FUNCAO JOGO:",
+                            text = "ELO:",
                             fontFamily = customFontFamilyText,
                             fontSize = 25.sp,
                             fontWeight = FontWeight(900),
@@ -308,6 +311,7 @@ fun PostagemJogadorScreen(
                         )
                     }
 
+                    Spacer(modifier = Modifier.height(5.dp))
 
                     Column {
                         ToggleButtonEloLol{ eloLol ->
@@ -361,9 +365,6 @@ fun PostagemJogadorScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-
-
-
                     OutlinedTextField(
                         value = prosJogador,
                         onValueChange = {  prosJogador = it },
@@ -390,7 +391,8 @@ fun PostagemJogadorScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Button(onClick = {
+                    Button(
+                        onClick = {
 
                         atualizarPostagem(
                             sharedViewModelTokenEId = sharedViewModelTokenEId,
@@ -411,16 +413,54 @@ fun PostagemJogadorScreen(
                         Log.e("REMUNERACAO 10","Remuneração: ${jogadorRemunerado.value}")
                         Log.e("PROS 10","Pros: ${prosJogador}")
 
-                        onNavigate("lista_de_publicacoes_jogadores")
+                        onNavigate("navigation_proliseum")
 
-                    }) {
+                        },
+                        modifier = Modifier
+                            .width(370.dp)
+                            .height(50.dp)
+                            .padding(start = 0.dp, top = 0.dp),
+                        shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                        colors = ButtonDefaults.buttonColors(RedProliseum),
 
+                    ) {
+                        Text(
+                            text = "CRIAR PUBLICAÇÃO",
+                            fontFamily = customFontFamilyText,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight(900),
+                            color = Color.White
+                        )
                     }
+
+                    Spacer(modifier = Modifier.height(30.dp))
+
                 }
 
 
             }
 
+        }
+
+        //PopUp
+        LaunchedEffect(camposPreenchidosCorretamente) {
+            if (!camposPreenchidosCorretamente) {
+                delay(15000)
+                camposPreenchidosCorretamente = true
+            }
+        }
+
+        AnimatedVisibility(
+            visible = !camposPreenchidosCorretamente,
+            enter = slideInVertically(initialOffsetY = { it }),
+            exit = slideOutVertically(targetOffsetY = { it })
+        ) {
+            Snackbar(
+                modifier = Modifier.padding(top = 16.dp),
+                action = {}
+            ) {
+                Text(text = mensagemErroInputsPerfil.value)
+            }
         }
     }
 }

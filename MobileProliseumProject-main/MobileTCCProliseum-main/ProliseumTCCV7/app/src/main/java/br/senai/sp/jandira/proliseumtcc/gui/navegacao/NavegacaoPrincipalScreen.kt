@@ -365,7 +365,7 @@ fun NavigationPrincipalScreen(
 
                 Button(
                     onClick = {
-                              onNavigate("lista_de_publicacoes_jogadores")
+                              onNavigate("carregar_informacoes_lista_publicacoes_jogadores")
                     },
                     modifier = Modifier
                         .padding(top = 20.dp)

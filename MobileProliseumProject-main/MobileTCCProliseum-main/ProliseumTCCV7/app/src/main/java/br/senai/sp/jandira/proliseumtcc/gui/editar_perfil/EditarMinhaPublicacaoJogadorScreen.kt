@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -75,6 +76,7 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganiza
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
+import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import kotlinx.coroutines.delay
 import retrofit2.Call
 import retrofit2.Callback
@@ -187,7 +189,7 @@ fun EditarMinhaPublicacaoJogadorScreen(
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        onNavigate("home")
+                        onNavigate("minha_postagem")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
@@ -210,9 +212,9 @@ fun EditarMinhaPublicacaoJogadorScreen(
                 contentDescription = ""
             )
             Text(
-                text = stringResource(id = R.string.text_cadastro),
+                text = "EDITAR PUBLICAÇÃO",
                 fontFamily = customFontFamily,
-                fontSize = 48.sp,
+                fontSize = 36.sp,
                 textAlign = TextAlign.Center,
                 color = Color.White
 
@@ -220,26 +222,7 @@ fun EditarMinhaPublicacaoJogadorScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            //PopUp
-            LaunchedEffect(camposPreenchidosCorretamente) {
-                if (!camposPreenchidosCorretamente) {
-                    delay(15000)
-                    camposPreenchidosCorretamente = true
-                }
-            }
 
-            AnimatedVisibility(
-                visible = !camposPreenchidosCorretamente,
-                enter = slideInVertically(initialOffsetY = { it }),
-                exit = slideOutVertically(targetOffsetY = { it })
-            ) {
-                Snackbar(
-                    modifier = Modifier.padding(top = 16.dp),
-                    action = {}
-                ) {
-                    Text(text = mensagemErroInputsPerfil.value)
-                }
-            }
 
         }
 
@@ -255,7 +238,7 @@ fun EditarMinhaPublicacaoJogadorScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .fillMaxHeight()
-                    .padding(top = 300.dp)
+                    .padding(top = 200.dp)
                     .background(
                         brush = Brush.horizontalGradient(
                             listOf(
@@ -290,7 +273,7 @@ fun EditarMinhaPublicacaoJogadorScreen(
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                             label = {
                                 Text(
-                                    text = "DESCRICAO PUBLICACAO",
+                                    text = "DESCRICAO PUBLICAÇÃO",
                                     color = Color.White,
                                     fontFamily = customFontFamilyText,
                                     fontWeight = FontWeight(600),
@@ -307,6 +290,22 @@ fun EditarMinhaPublicacaoJogadorScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 40.dp)
+                    ) {
+                        Text(
+                            text = "JOGO:",
+                            fontFamily = customFontFamilyText,
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight(900),
+                            color = Color.White
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(5.dp))
+
 
                     Column {
                         ToggleButtonJogoUI{ jogo ->
@@ -320,15 +319,18 @@ fun EditarMinhaPublicacaoJogadorScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(start = 40.dp)
                     ) {
                         Text(
-                            text = "FUNCAO JOGO:",
+                            text = "FUNÇÃO:",
                             fontFamily = customFontFamilyText,
                             fontSize = 25.sp,
                             fontWeight = FontWeight(900),
                             color = Color.White
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(5.dp))
 
 
                     Column {
@@ -343,15 +345,18 @@ fun EditarMinhaPublicacaoJogadorScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(start = 40.dp)
                     ) {
                         Text(
-                            text = "FUNCAO JOGO:",
+                            text = "ELO:",
                             fontFamily = customFontFamilyText,
                             fontSize = 25.sp,
                             fontWeight = FontWeight(900),
                             color = Color.White
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(5.dp))
 
 
                     Column {
@@ -406,9 +411,10 @@ fun EditarMinhaPublicacaoJogadorScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Button(onClick = {
+                    Button(
+                        onClick = {
 
-                        for (i in 1..2) {
+
                             atualizarPostagem(
                                 sharedViewModelTokenEId = sharedViewModelTokenEId,
                                 descricaoJogador = descricaoMinhaPublicacaoState,
@@ -429,18 +435,54 @@ fun EditarMinhaPublicacaoJogadorScreen(
                             Log.e("PROS 10","Pros: ${prosJogador}")
 
                             onNavigate("carregar_informacoes_minha_publicacao")
-                        }
+
 //
 
 
-                    }) {
-
+                    },
+                        modifier = Modifier
+                            .width(370.dp)
+                            .height(50.dp)
+                            .padding(start = 0.dp, top = 0.dp),
+                        shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                        colors = ButtonDefaults.buttonColors(RedProliseum),
+                    ) {
+                        Text(
+                            text = "EDITAR PUBLICAÇÃO",
+                            fontFamily = customFontFamilyText,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight(900),
+                            color = Color.White
+                        )
                     }
+
+                    Spacer(modifier = Modifier.height(30.dp))
                 }
 
 
             }
 
+        }
+
+        //PopUp
+        LaunchedEffect(camposPreenchidosCorretamente) {
+            if (!camposPreenchidosCorretamente) {
+                delay(15000)
+                camposPreenchidosCorretamente = true
+            }
+        }
+
+        AnimatedVisibility(
+            visible = !camposPreenchidosCorretamente,
+            enter = slideInVertically(initialOffsetY = { it }),
+            exit = slideOutVertically(targetOffsetY = { it })
+        ) {
+            Snackbar(
+                modifier = Modifier.padding(top = 16.dp),
+                action = {}
+            ) {
+                Text(text = mensagemErroInputsPerfil.value)
+            }
         }
     }
 }

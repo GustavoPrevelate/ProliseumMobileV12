@@ -24,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.model.GetMinhaPostagem
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemList
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemListPublicacao
 import br.senai.sp.jandira.proliseumtcc.model.ResponseGetListaJogadores
@@ -55,6 +57,10 @@ import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryC
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagens
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagem
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemPostProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMinhaPostagemUserPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDe
@@ -90,6 +96,7 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileT
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
+import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
@@ -154,6 +161,12 @@ fun ListaDePublicacoesDeJogadoresScreen(
     sharedGetListaPostagens: SharedGetListaPostagens,
     sharedGetListaPostagensPublicacao: SharedGetListaPostagensPublicacao,
     sharedGetListaPostagensPublicacaoDonoId: SharedGetListaPostagensPublicacaoDonoId,
+
+    //SharedViewModel GET MINHA POSTAGEM
+    sharedGetMinhaPostagem: SharedGetMinhaPostagem,
+    sharedGetMinhaPostagemUser: SharedGetMinhaPostagemUser,
+    sharedGetMinhaPostagemUserPropostas: SharedGetMinhaPostagemUserPropostas,
+    sharedGetMinhaPostagemPostProfile: SharedGetMinhaPostagemPostProfile,
     onNavigate: (String) -> Unit
 ) {
     val token = sharedViewModelTokenEId.token
@@ -416,6 +429,8 @@ fun ListaDePublicacoesDeJogadoresScreen(
 
     }
 
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -478,6 +493,76 @@ fun ListaDePublicacoesDeJogadoresScreen(
 
         val listaIdsPerfisJogadores = remember { mutableListOf<Int>() }
 
+        val verificarPostProfile = sharedGetMinhaPostagem.postProfile
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 100.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            if(verificarPostProfile == null){
+
+                Column(
+
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+
+                    Button(
+                        onClick = {
+                            onNavigate("postagem_jogador_screen")
+                        },
+                        modifier = Modifier
+                            .width(250.dp)
+                            .height(50.dp)
+                            .padding(start = 0.dp, top = 0.dp),
+                        shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                        colors = ButtonDefaults.buttonColors(RedProliseum),
+                    ) {
+                        Text(
+                            text = "CRIAR POSTAGEM",
+                            color = Color.White,
+                            modifier = Modifier.padding(5.dp),
+                            fontWeight = FontWeight(600),
+                            fontFamily = customFontFamilyText,
+                            fontSize = 12.sp
+                        )
+                    }
+
+                }
+            } else if(verificarPostProfile != null){
+
+                Column(
+
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Button(
+                        onClick = {
+                            onNavigate("carregar_informacoes_minha_publicacao")
+                        },
+                        modifier = Modifier
+                            .width(250.dp)
+                            .height(50.dp)
+                            .padding(start = 0.dp, top = 0.dp),
+                        shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                        colors = ButtonDefaults.buttonColors(RedProliseum),
+                    ) {
+                        Text(
+                            text = "MINHA POSTAGEM",
+                            color = Color.White,
+                            modifier = Modifier.padding(5.dp),
+                            fontWeight = FontWeight(600),
+                            fontFamily = customFontFamilyText,
+                            fontSize = 12.sp
+                        )
+                    }
+                }
+            }
+        }
+
+
         Column(
             modifier = Modifier
                 .padding(top = 120.dp)
@@ -485,55 +570,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Column(
 
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Button(
-                    onClick = {
-                        onNavigate("carregar_informacoes_minha_publicacao")
-                    },
-                    modifier = Modifier
-                        .width(250.dp)
-                        .height(50.dp)
-                        .padding(start = 0.dp, top = 0.dp),
-                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                    colors = ButtonDefaults.buttonColors(RedProliseum),
-                ) {
-                    Text(
-                        text = "MINHA POSTAGEM",
-                        color = Color.White,
-                        modifier = Modifier.padding(5.dp),
-                        fontWeight = FontWeight(600),
-                        fontFamily = customFontFamilyText,
-                        fontSize = 12.sp
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Button(
-                    onClick = {
-                        onNavigate("postagem_jogador_screen")
-                    },
-                    modifier = Modifier
-                        .width(250.dp)
-                        .height(50.dp)
-                        .padding(start = 0.dp, top = 0.dp),
-                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                    colors = ButtonDefaults.buttonColors(RedProliseum),
-                ) {
-                    Text(
-                        text = "CRIAR POSTAGEM",
-                        color = Color.White,
-                        modifier = Modifier.padding(5.dp),
-                        fontWeight = FontWeight(600),
-                        fontFamily = customFontFamilyText,
-                        fontSize = 12.sp
-                    )
-                }
-
-            }
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -640,7 +677,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
                                     .height(550.dp)
                                     .padding(start = 0.dp, top = 0.dp),
                                 shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                                colors = ButtonDefaults.buttonColors(RedProliseum),
+                                colors = ButtonDefaults.buttonColors(BlackTransparentProliseum),
                             ) {
 
                                 Column(
@@ -679,22 +716,47 @@ fun ListaDePublicacoesDeJogadoresScreen(
                                             }
                                         }
 
-                                        Spacer(modifier = Modifier.padding(start = 20.dp))
                                     }
-
+                                    
+                                    Spacer(modifier = Modifier.height(10.dp))
 
                                     Column(
                                         modifier = Modifier
-                                            .fillMaxSize(),
-                                    ) {
+                                            .height(80.dp)
+                                            .fillMaxWidth()
+                                    ){
 
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .height(70.dp),
-                                            horizontalArrangement = Arrangement.Center,
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
+
+                                        Text(
+                                            text = "${infoPublicacao.descricao}",
+                                            color = Color.White,
+                                            modifier = Modifier.padding(5.dp),
+                                            fontWeight = FontWeight(600),
+                                            fontFamily = customFontFamilyText,
+                                            fontSize = 14.sp
+                                        )
+
+                                    }
+
+                                    Spacer(modifier = Modifier.height(10.dp))
+
+
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(200.dp),
+                                    ) {
+                                        Column {
+
+                                            Text(
+                                                text = "ELO",
+                                                color = Color.White,
+                                                modifier = Modifier.padding(5.dp),
+                                                fontWeight = FontWeight(600),
+                                                fontFamily = customFontFamilyText,
+                                                fontSize = 14.sp
+                                            )
+
                                             Card(
                                                 modifier = Modifier
                                                     .height(55.dp)
@@ -703,24 +765,37 @@ fun ListaDePublicacoesDeJogadoresScreen(
                                             ) {
                                                 Image(
                                                     painter =
-                                                    if ("${infoPublicacao.elo}" == "0") painterResource(
-                                                        id = R.drawable.icone_iron
-                                                    )
-                                                    else if ("${infoPublicacao.elo}" == "1") painterResource(id = R.drawable.icone_bronze)
-                                                    else if ("${infoPublicacao.elo}" == "2") painterResource(id = R.drawable.icone_silver)
-                                                    else if ("${infoPublicacao.elo}" == "3") painterResource(id = R.drawable.icone_gold)
-                                                    else if ("${infoPublicacao.elo}" == "4") painterResource(id = R.drawable.icone_platinum)
-                                                    else if ("${infoPublicacao.elo}" == "5") painterResource(id = R.drawable.icone_diamond)
-                                                    else if ("${infoPublicacao.elo}" == "6") painterResource(id = R.drawable.icone_master)
-                                                    else if ("${infoPublicacao.elo}" == "7") painterResource(id = R.drawable.icone_grandmaster)
-                                                    else if ("${infoPublicacao.elo}" == "8") painterResource(id = R.drawable.icone_challenger)
+                                                    if ("${infoPublicacao.elo}" == "0") painterResource(id = R.drawable.unranked_proliseum_elo)
+                                                    else if ("${infoPublicacao.elo}" == "1") painterResource(id = R.drawable.iron_proliseum_elo)
+                                                    else if ("${infoPublicacao.elo}" == "2") painterResource(id = R.drawable.bronze_proliseum_elo)
+                                                    else if ("${infoPublicacao.elo}" == "3") painterResource(id = R.drawable.silver_proliseum_elo)
+                                                    else if ("${infoPublicacao.elo}" == "4") painterResource(id = R.drawable.gold_proliseum_elo)
+                                                    else if ("${infoPublicacao.elo}" == "5") painterResource(id = R.drawable.platinum_proliseum_elo)
+                                                    else if ("${infoPublicacao.elo}" == "6") painterResource(id = R.drawable.emerald_proliseum_elo)
+                                                    else if ("${infoPublicacao.elo}" == "7") painterResource(id = R.drawable.diamond_proliseum_elo)
+                                                    else if ("${infoPublicacao.elo}" == "8") painterResource(id = R.drawable.master_proliseum_elo)
+                                                    else if ("${infoPublicacao.elo}" == "9") painterResource(id = R.drawable.grandmaster_proliseum_elo)
+                                                    else if ("${infoPublicacao.elo}" == "10") painterResource(id = R.drawable.challenger_proliseum_elo)
                                                     else painter,
                                                     contentDescription = "",
                                                     modifier = Modifier.fillMaxSize(),
                                                 )
                                             }
+                                        }
 
-                                            Spacer(modifier = Modifier.width(25.dp))
+                                        Spacer(modifier = Modifier.width(25.dp))
+
+                                        Column {
+
+                                            Text(
+                                                text = "FUNÇÃO",
+                                                color = Color.White,
+                                                modifier = Modifier.padding(5.dp),
+                                                fontWeight = FontWeight(600),
+                                                fontFamily = customFontFamilyText,
+                                                fontSize = 14.sp
+                                            )
+
 
                                             Card(
                                                 modifier = Modifier
@@ -743,47 +818,45 @@ fun ListaDePublicacoesDeJogadoresScreen(
 
                                                     )
                                             }
-
-
-                                            Spacer(modifier = Modifier.width(25.dp))
-
-                                            Column(
-                                                horizontalAlignment = Alignment.CenterHorizontally,
-                                                verticalArrangement = Arrangement.Center
-                                            ){
-                                                Text(
-                                                    text = "${infoPublicacao.hora}",
-                                                    color = Color.White,
-                                                    modifier = Modifier.padding(5.dp),
-                                                    fontWeight = FontWeight(600),
-                                                    fontFamily = customFontFamilyText,
-                                                    fontSize = 16.sp
-                                                )
-                                            }
-
-
-
                                         }
-                                        Spacer(modifier = Modifier.height(15.dp))
 
-                                        Row(
-                                            modifier = Modifier
-                                                .height(70.dp)
-                                        ) {
+                                        Spacer(modifier = Modifier.width(25.dp))
+
+                                        Column(
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                            verticalArrangement = Arrangement.Center
+                                        ){
                                             Text(
-                                                text = "${infoPublicacao.descricao}",
+                                                text = "HORARIO",
                                                 color = Color.White,
                                                 modifier = Modifier.padding(5.dp),
                                                 fontWeight = FontWeight(600),
                                                 fontFamily = customFontFamilyText,
                                                 fontSize = 14.sp
                                             )
+
+                                            Text(
+                                                text = "${infoPublicacao.hora}",
+                                                color = Color.White,
+                                                modifier = Modifier.padding(5.dp),
+                                                fontWeight = FontWeight(600),
+                                                fontFamily = customFontFamilyText,
+                                                fontSize = 16.sp
+                                            )
                                         }
 
-                                        Spacer(modifier = Modifier.height(5.dp))
+                                        Spacer(modifier = Modifier.width(25.dp))
 
-                                        Row(){
-                                            Spacer(modifier = Modifier.height(5.dp))
+                                        Column(
+                                        ) {
+                                            Text(
+                                                text = "PROS",
+                                                color = Color.White,
+                                                modifier = Modifier.padding(5.dp),
+                                                fontWeight = FontWeight(600),
+                                                fontFamily = customFontFamilyText,
+                                                fontSize = 14.sp
+                                            )
 
                                             Text(
                                                 text = "${infoPublicacao.pros}",
@@ -794,8 +867,14 @@ fun ListaDePublicacoesDeJogadoresScreen(
                                                 fontSize = 14.sp
                                             )
                                         }
+
                                     }
+
+
+
+
                                 }
+
                             }
                         }
                     }
@@ -804,3 +883,4 @@ fun ListaDePublicacoesDeJogadoresScreen(
         }
     }
 }
+

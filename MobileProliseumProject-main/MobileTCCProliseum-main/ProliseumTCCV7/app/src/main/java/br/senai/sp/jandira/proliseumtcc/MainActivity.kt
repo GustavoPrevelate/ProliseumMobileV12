@@ -84,6 +84,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioJogadorScree
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroDadosPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroGeneroEDataNascimentoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.FinalizarCadastroUsuarioPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesListaPublicacoesJogadoresScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesMinhaPublicacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorListaTimesQueFoiEscolhidoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaNotificacoesScreen
@@ -91,6 +92,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaRed
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.criar.CriarTimeScreen
+//import br.senai.sp.jandira.proliseumtcc.gui.deletar.ApagarPublicacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.deletar.DeletarOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.minhas_redes_sociais.CriarRedeSocialScreen
@@ -99,6 +101,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesOrgan
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarMinhaPublicacaoJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.gerenciar_time.EntrarNoTimeScreen
+import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDePropostasRecebidasParaJogadoresScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.CriarHighLightScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.EditarHighLightScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.ListaMeusHighLightsScreen
@@ -145,6 +148,11 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUserHighlights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUserRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeByIdTeamsDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedPropostasRecebidas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedPropostasRecebidasGeral
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedPropostasRecebidasGeralDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedPropostasRecebidasGeralDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedPropostasRecebidasGeralDePropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoHighlights
@@ -369,6 +377,15 @@ fun MainScreen() {
         val sharedGetProfileByIdPlayerProfileTimeAtual = remember { SharedGetProfileByIdPlayerProfileTimeAtual() }
         val sharedGetProfileByIdPlayerProfileTimeAtualJogadores = remember { SharedGetProfileByIdPlayerProfileTimeAtualJogadores() }
         val sharedGetProfileByIdPlayerProfileTimeAtualPropostas = remember { SharedGetProfileByIdPlayerProfileTimeAtualPropostas() }
+
+        // SharedViewModel GET PROPOSTAS RECEBIDAS
+
+
+        val sharedPropostasRecebidas = remember { SharedPropostasRecebidas() }
+        val sharedPropostasRecebidasGeral = remember { SharedPropostasRecebidasGeral() }
+        val sharedPropostasRecebidasGeralDe = remember { SharedPropostasRecebidasGeralDe() }
+        val sharedPropostasRecebidasGeralDeJogadores = remember { SharedPropostasRecebidasGeralDeJogadores() }
+        val sharedPropostasRecebidasGeralDePropostas = remember { SharedPropostasRecebidasGeralDePropostas() }
 
 
         /**********************************************************************************************************************************/
@@ -943,6 +960,11 @@ fun MainScreen() {
                 sharedGetListaPostagens,
                 sharedGetListaPostagensPublicacao,
                 sharedGetListaPostagensPublicacaoDonoId,
+
+                sharedGetMinhaPostagem,
+                sharedGetMinhaPostagemUser,
+                sharedGetMinhaPostagemUserPropostas,
+                sharedGetMinhaPostagemPostProfile,
             ) {
                 currentScreen = it
             }
@@ -2191,6 +2213,62 @@ fun MainScreen() {
             }
         }
 
+//        val apagarPublicacaoScreen: @Composable () -> Unit = {
+//            ApagarPublicacaoScreen(
+//                sharedViewModelTokenEId,
+//
+//                sharedViewModelUser,
+//
+//                sharedViewModelPerfilOrganizador,
+//            ) {
+//                currentScreen = it
+//            }
+//        }
+
+        val carregarInformacoesListaPublicacoesJogadoresScreen: @Composable () -> Unit = {
+            CarregarInformacoesListaPublicacoesJogadoresScreen(
+                sharedViewModelTokenEId,
+
+                //SharedViewModel GET MINHA POSTAGEM
+                sharedGetMinhaPostagem,
+                sharedGetMinhaPostagemUser,
+                sharedGetMinhaPostagemUserPropostas,
+                sharedGetMinhaPostagemPostProfile,
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val listaDePropostasRecebidasParaJogadoresScreen: @Composable () -> Unit = {
+            ListaDePropostasRecebidasParaJogadoresScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+
+                // SharedViewModelGetMyTeams de USUARIO
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                sharedPropostasRecebidas,
+                sharedPropostasRecebidasGeral,
+                sharedPropostasRecebidasGeralDe,
+                sharedPropostasRecebidasGeralDeJogadores,
+                sharedPropostasRecebidasGeralDePropostas,
+            ) {
+                currentScreen = it
+            }
+        }
+
 
 
 
@@ -2274,7 +2352,11 @@ fun MainScreen() {
                     "carregar_informacoes_outro_time_lista_jogadores" -> carregarInformacoesOutroTimeListajogadoresScreen()
                     "navegacao_configuracoes_meu_time_lista_jogadores" -> navegacaoConfiguracoesMeuTimeListaJogadoresScreen()
 
+
                     "carregar_informacoes_perfil_outro_jogador_lista_times_que_foi_escolhido" -> carregarInformacoesPerfilOutroJogadorListaTimesQueFoiEscolhidoScreen()
+//                    "apagar_publicacao" -> apagarPublicacaoScreen()
+                    "carregar_informacoes_lista_publicacoes_jogadores" -> carregarInformacoesListaPublicacoesJogadoresScreen()
+                    "lista_propostas_recebidas_para_jogadores" -> listaDePropostasRecebidasParaJogadoresScreen()
 
 
                     else -> startScreen()
