@@ -176,6 +176,15 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(GetPropostasRecebidasService::class.java)
     }
 
+    fun aceitarPropostaService(): AceitarPropostaService {
+        return retrofitFactoryCadastro.create(AceitarPropostaService::class.java)
+    }
+
+    fun recusarPropostaService(): RecusarPropostaService {
+        return retrofitFactoryCadastro.create(RecusarPropostaService::class.java)
+    }
+
+
 
 
 

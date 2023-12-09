@@ -816,7 +816,7 @@ fun PerfilDeOutroJogadorScreen(
                                     .height(140.dp)
                                     .padding(start = 0.dp, top = 0.dp),
                                 shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                                colors = ButtonDefaults.buttonColors(Color.Transparent),
+                                colors = ButtonDefaults.buttonColors(RedProliseum),
                             ){
                                 Column(
 

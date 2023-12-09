@@ -91,6 +91,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaNot
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaRedesSociaisScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaListagemDePropostasScreen
 import br.senai.sp.jandira.proliseumtcc.gui.criar.CriarTimeScreen
 //import br.senai.sp.jandira.proliseumtcc.gui.deletar.ApagarPublicacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.deletar.DeletarOrganizacaoScreen
@@ -2269,6 +2270,14 @@ fun MainScreen() {
             }
         }
 
+        val carregarTelaListagemDePropostasScreen: @Composable () -> Unit = {
+            CarregarTelaListagemDePropostasScreen(
+                sharedViewModelTokenEId,
+            ) {
+                currentScreen = it
+            }
+        }
+
 
 
 
@@ -2357,6 +2366,7 @@ fun MainScreen() {
 //                    "apagar_publicacao" -> apagarPublicacaoScreen()
                     "carregar_informacoes_lista_publicacoes_jogadores" -> carregarInformacoesListaPublicacoesJogadoresScreen()
                     "lista_propostas_recebidas_para_jogadores" -> listaDePropostasRecebidasParaJogadoresScreen()
+                    "carregar_tela_listagem_propostas" -> carregarTelaListagemDePropostasScreen()
 
 
                     else -> startScreen()

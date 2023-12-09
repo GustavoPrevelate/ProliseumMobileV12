@@ -4,6 +4,9 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,12 +28,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.gui.postagem.deletarPublicacaoJogador
+import br.senai.sp.jandira.proliseumtcc.model.GenericResponse
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemList
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemListPublicacao
 import br.senai.sp.jandira.proliseumtcc.model.PropostasRecebidas
@@ -107,6 +113,7 @@ import coil.request.ImageRequest
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 import retrofit2.Call
 import retrofit2.Callback
@@ -253,10 +260,15 @@ fun ListaDePropostasRecebidasParaJogadoresScreen(
         mutableStateOf(listOf<PropostasRecebidasGeral>())
     }
 
-    // Se o tempo de espera terminou, continue com a validação do token
-    // Restante do código aqui
-//    val token = sharedViewModelTokenEId.token
-    // Restante do seu código de validação do token
+
+
+
+    var campoAceitarProposta by rememberSaveable { mutableStateOf(true) }
+    var mensagemAceitarProposta = rememberSaveable { mutableStateOf("") }
+
+    var campoRecusarProposta by rememberSaveable { mutableStateOf(true) }
+    var mensagemRecusarProposta = rememberSaveable { mutableStateOf("") }
+
     Log.d("CarregarPerfilUsuarioScreen", "Token: $token")
 
     if(token != null && token.isNotEmpty()){
@@ -508,6 +520,77 @@ fun ListaDePropostasRecebidasParaJogadoresScreen(
                         }
 
 
+                        fun RecusarPropostasFunction(
+                            sharedViewModelTokenEId: SharedViewTokenEId,
+                        ){
+
+                            val token = sharedViewModelTokenEId.token
+
+                            val recusarAProposta = 0
+
+                            val recusarPropostaService = RetrofitFactoryCadastro().recusarPropostaService()
+
+                            recusarPropostaService.recusarProposta("Bearer " + token, idPropostasRecebidas,recusarAProposta).enqueue(object :
+                                Callback<GenericResponse> {
+                                override fun onResponse(call: Call<GenericResponse>, response: Response<GenericResponse>) {
+                                    if (response.isSuccessful) {
+                                        Log.d("SUCESSO AO RECUSAR PROPOSTA", "Resposta bem-sucedida, proposta recusada!: ${response.code()}")
+
+                                    } else {
+                                        // Trate a resposta não bem-sucedida
+                                        Log.d("listaPropostasRecebidasJogadoresScreen", " listaPropostasRecebidasJogadoresScreen, Resposta não bem-sucedida: ${response.code()}")
+                                        // Log de corpo da resposta (se necessário)
+                                        Log.d(
+                                            "listaPropostasRecebidasJogadoresScreen",
+                                            "listaPropostasRecebidasJogadoresScreen, Corpo da resposta: ${response.errorBody()?.string()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
+                                    // Trate o erro de falha na rede.
+                                    Log.d("listaPropostasRecebidasJogadoresScreen", " listaPropostasRecebidasJogadoresScreen, Erro de rede: ${t.message}")
+                                }
+
+                            })
+                        }
+
+                        fun AceitarPropostasFunction(
+                            sharedViewModelTokenEId: SharedViewTokenEId,
+                        ){
+
+                            val token = sharedViewModelTokenEId.token
+
+                            val aceitarAProposta = 1
+
+                            val aceitarPropostaService = RetrofitFactoryCadastro().aceitarPropostaService()
+
+                            aceitarPropostaService.aceitarProposta("Bearer " + token, idPropostasRecebidas, aceitarAProposta).enqueue(object :
+                                Callback<GenericResponse> {
+                                override fun onResponse(call: Call<GenericResponse>, response: Response<GenericResponse>) {
+                                    if (response.isSuccessful) {
+                                        Log.d("SUCESSO AO ACEITAR PROPOSTA", "Resposta bem-sucedida, proposta recusada!: ${response.code()}")
+
+                                    } else {
+                                        // Trate a resposta não bem-sucedida
+                                        Log.d("listaPropostasRecebidasJogadoresScreen", " listaPropostasRecebidasJogadoresScreen, Resposta não bem-sucedida: ${response.code()}")
+                                        // Log de corpo da resposta (se necessário)
+                                        Log.d(
+                                            "listaPropostasRecebidasJogadoresScreen",
+                                            "listaPropostasRecebidasJogadoresScreen, Corpo da resposta: ${response.errorBody()?.string()}"
+                                        )
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
+                                    // Trate o erro de falha na rede.
+                                    Log.d("listaPropostasRecebidasJogadoresScreen", " listaPropostasRecebidasJogadoresScreen, Erro de rede: ${t.message}")
+                                }
+
+                            })
+                        }
+
+
                         //jogos
                         Column(
                             modifier = Modifier
@@ -531,7 +614,7 @@ fun ListaDePropostasRecebidasParaJogadoresScreen(
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(550.dp)
+                                    .height(650.dp)
                                     .padding(start = 0.dp, top = 0.dp),
                                 shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
                                 colors = ButtonDefaults.buttonColors(BlackTransparentProliseum),
@@ -582,6 +665,7 @@ fun ListaDePropostasRecebidasParaJogadoresScreen(
                                     Column(
                                         modifier = Modifier
                                             .fillMaxSize()
+                                            .padding(top = 30.dp)
                                     ){
                                         Row(
                                             modifier = Modifier.fillMaxWidth(),
@@ -619,7 +703,16 @@ fun ListaDePropostasRecebidasParaJogadoresScreen(
                                         ) {
                                             Button(
                                                 onClick = {
-                                                    //onNavigate("editar_minha_publicacao_jogador")
+                                                    AceitarPropostasFunction(
+                                                        sharedViewModelTokenEId
+                                                    )
+
+
+
+
+
+                                                    campoAceitarProposta = false
+                                                    mensagemAceitarProposta.value = "PROPOSTA ACEITA!"
                                                 },
                                                 modifier = Modifier
                                                     .width(170.dp),
@@ -630,9 +723,9 @@ fun ListaDePropostasRecebidasParaJogadoresScreen(
                                                     text = "ACEITAR PROPOSTA",
                                                     color = Color.White,
                                                     modifier = Modifier.padding(5.dp),
-                                                    fontWeight = FontWeight(600),
+                                                    fontWeight = FontWeight(900),
                                                     fontFamily = customFontFamilyText,
-                                                    fontSize = 8.sp
+                                                    fontSize = 9.sp
                                                 )
                                             }
 
@@ -642,7 +735,15 @@ fun ListaDePropostasRecebidasParaJogadoresScreen(
                                             Button(
                                                 onClick = {
 
-                                                    //onNavigate("navigation_proliseum")
+                                                    RecusarPropostasFunction(
+                                                        sharedViewModelTokenEId
+                                                    )
+
+
+
+                                                    campoRecusarProposta = false
+                                                    mensagemRecusarProposta.value = "PROPOSTA RECUSADA!"
+
                                                 },
                                                 modifier = Modifier
                                                     .width(170.dp),
@@ -653,9 +754,9 @@ fun ListaDePropostasRecebidasParaJogadoresScreen(
                                                     text = "RECUSAR PROPOSTA",
                                                     color = Color.White,
                                                     modifier = Modifier.padding(5.dp),
-                                                    fontWeight = FontWeight(600),
+                                                    fontWeight = FontWeight(900),
                                                     fontFamily = customFontFamilyText,
-                                                    fontSize = 8.sp
+                                                    fontSize = 9.sp
                                                 )
                                             }
 
@@ -682,6 +783,53 @@ fun ListaDePropostasRecebidasParaJogadoresScreen(
                 }
             )
         }
+
+        LaunchedEffect(campoRecusarProposta) {
+            if (!campoRecusarProposta) {
+                delay(3000)
+                campoRecusarProposta = true
+                onNavigate("carregar_tela_listagem_propostas")
+            }
+        }
+
+        AnimatedVisibility(
+            visible = !campoRecusarProposta,
+            enter = slideInVertically(initialOffsetY = { it }),
+            exit = slideOutVertically(targetOffsetY = { it })
+        ) {
+            Snackbar(
+                modifier = Modifier.padding(top = 16.dp),
+                action = {}
+            ) {
+                Text(text = mensagemRecusarProposta.value)
+            }
+        }
+
+        LaunchedEffect(campoAceitarProposta) {
+            if (!campoAceitarProposta) {
+                delay(3000)
+                campoAceitarProposta = true
+                onNavigate("carregar_informacoes_perfil_usuario")
+            }
+        }
+
+        AnimatedVisibility(
+            visible = !campoAceitarProposta,
+            enter = slideInVertically(initialOffsetY = { it }),
+            exit = slideOutVertically(targetOffsetY = { it })
+        ) {
+            Snackbar(
+                modifier = Modifier.padding(top = 16.dp),
+                action = {}
+            ) {
+                Text(text = mensagemAceitarProposta.value)
+            }
+        }
+
+
+
+
     }
 
 }
+

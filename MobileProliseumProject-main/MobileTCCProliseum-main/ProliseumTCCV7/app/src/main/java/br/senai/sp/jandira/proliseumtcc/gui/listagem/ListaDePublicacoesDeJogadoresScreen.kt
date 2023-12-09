@@ -495,6 +495,8 @@ fun ListaDePublicacoesDeJogadoresScreen(
 
         val verificarPostProfile = sharedGetMinhaPostagem.postProfile
 
+        val verificarSeJogadorTemTime = sharedViewModelPlayerProfile.time_atual
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -502,7 +504,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            if(verificarPostProfile == null){
+            if(verificarPostProfile == null && verificarSeJogadorTemTime == null){
 
                 Column(
 
@@ -559,6 +561,8 @@ fun ListaDePublicacoesDeJogadoresScreen(
                         )
                     }
                 }
+            } else if(verificarSeJogadorTemTime != null){
+                Log.e("JA TEM TIME","ESTE JOGADOR JA TEM TIME, PORTANTO NÃO PRECISA DE POSTAGEM!")
             }
         }
 
