@@ -6,16 +6,17 @@ import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 
 //GetMinhaPostagem
 interface ApagarPublicacaoTimeService {
 
-    @DELETE("post{time}")
+    @DELETE("post")
     fun deletarMinhaPostagemTime(
-        @Header("Authorization") token: String,
-        @Query("time") time: String?
+        @Header("Authorization") token: String?,
+        @Query("time") time: Int?
     ): Call<GenericResponse>
 }
 

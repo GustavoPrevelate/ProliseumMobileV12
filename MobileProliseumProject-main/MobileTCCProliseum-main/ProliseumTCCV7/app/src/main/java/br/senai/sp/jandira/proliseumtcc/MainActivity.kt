@@ -103,6 +103,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesTimeS
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarMinhaPublicacaoJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.gerenciar_time.EntrarNoTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.listagem.EscolherTimeParaCriarPostagemTimeScreen
+import br.senai.sp.jandira.proliseumtcc.gui.listagem.EscolherTimeParaVisualizarPostagemTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDePropostasRecebidasParaJogadoresScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.CriarHighLightScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.EditarHighLightScreen
@@ -123,6 +124,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.postagem.CriarPostagemTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.postagem.MinhaPostagemScreen
+import br.senai.sp.jandira.proliseumtcc.gui.postagem.MinhaPostagemTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.postagem.PostagemJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.proposta.EnviarPropostaScreen
 import br.senai.sp.jandira.proliseumtcc.gui.proposta.EnviarPropostaSegundaParteScreen
@@ -2393,6 +2395,83 @@ fun MainScreen() {
             }
         }
 
+        val escolherTimeParaVisualizarPostagemTimeScreen: @Composable () -> Unit = {
+            EscolherTimeParaVisualizarPostagemTimeScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                // SharedViewModel GET TIME BY ID
+                sharedGetTime,
+                sharedGetTimeTeams,
+                sharedGetTimeTeamsJogadores,
+                sharedGetTimeTeamsJogadoresPerfilId,
+                sharedGetTimeDono,
+                sharedGetTimeTeamsPropostas,
+
+                sharedViewModelListaPublicacaoTimes,
+
+                sharedGetTimeListaPostagens,
+                sharedGetTimeListaPostagensPublicacao,
+                sharedGetTimeListaPostagensPublicacaoDonoId,
+                sharedGetTimeListaPostagensPublicacaoTime,
+                sharedGetTimeListaPostagensPublicacaoTimeJogadores,
+                sharedGetTimeListaPostagensPublicacaoTimePropostas,
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val minhaPostagemTimeScreen: @Composable () -> Unit = {
+            MinhaPostagemTimeScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+
+                //SharedViewModel GET MINHA POSTAGEM
+                sharedGetMinhaPostagem,
+                sharedGetMinhaPostagemUser,
+                sharedGetMinhaPostagemUserPropostas,
+                sharedGetMinhaPostagemPostProfile,
+
+                sharedGetTime,
+                sharedGetTimeTeams,
+                sharedGetTimeTeamsJogadores,
+                sharedGetTimeTeamsJogadoresPerfilId,
+                sharedGetTimeDono,
+                sharedGetTimeTeamsPropostas,
+
+                sharedViewModelListaPublicacaoTimes,
+
+                sharedGetTimeListaPostagens,
+                sharedGetTimeListaPostagensPublicacao,
+                sharedGetTimeListaPostagensPublicacaoDonoId,
+                sharedGetTimeListaPostagensPublicacaoTime,
+                sharedGetTimeListaPostagensPublicacaoTimeJogadores,
+                sharedGetTimeListaPostagensPublicacaoTimePropostas,
+            ) {
+                currentScreen = it
+            }
+        }
 
 
 
@@ -2483,6 +2562,8 @@ fun MainScreen() {
                     "carregar_tela_listagem_propostas" -> carregarTelaListagemDePropostasScreen()
                     "escolher_time_para_criar_postagem_time" -> escolherTimeParaCriarPostagemTimeScreen()
                     "criar_postagem_time" -> criarPostagemTimeScreen()
+                    "escolher_time_para_visualizar_postagem_time" -> escolherTimeParaVisualizarPostagemTimeScreen()
+                    "minha_postagem_time" -> minhaPostagemTimeScreen()
 
 
                     else -> startScreen()

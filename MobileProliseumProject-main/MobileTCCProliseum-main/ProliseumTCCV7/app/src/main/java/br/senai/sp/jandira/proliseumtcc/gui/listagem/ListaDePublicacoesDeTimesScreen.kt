@@ -536,12 +536,12 @@ fun ListaDePublicacoesDeTimesScreen(
 
         val verificarSeJogadorTemTime = sharedViewModelPlayerProfile.time_atual
 
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 100.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
 //            if(verificarPostProfile == null && verificarSeJogadorTemTime == null){
 
@@ -556,7 +556,7 @@ fun ListaDePublicacoesDeTimesScreen(
                             onNavigate("escolher_time_para_criar_postagem_time")
                         },
                         modifier = Modifier
-                            .width(250.dp)
+                            .width(180.dp)
                             .height(50.dp)
                             .padding(start = 0.dp, top = 0.dp),
                         shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
@@ -575,31 +575,33 @@ fun ListaDePublicacoesDeTimesScreen(
                 }
 //            } else if(verificarPostProfile != null){
 
-//                Column(
-//
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    Button(
-//                        onClick = {
-//                            //onNavigate("carregar_informacoes_minha_publicacao")
-//                        },
-//                        modifier = Modifier
-//                            .width(250.dp)
-//                            .height(50.dp)
-//                            .padding(start = 0.dp, top = 0.dp),
-//                        shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-//                        colors = ButtonDefaults.buttonColors(RedProliseum),
-//                    ) {
-//                        Text(
-//                            text = "MINHA POSTAGEM",
-//                            color = Color.White,
-//                            modifier = Modifier.padding(5.dp),
-//                            fontWeight = FontWeight(600),
-//                            fontFamily = customFontFamilyText,
-//                            fontSize = 12.sp
-//                        )
-//                    }
-//                }
+                Spacer(modifier = Modifier.width(20.dp))
+
+                Column(
+
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Button(
+                        onClick = {
+                            onNavigate("escolher_time_para_visualizar_postagem_time")
+                        },
+                        modifier = Modifier
+                            .width(180.dp)
+                            .height(50.dp)
+                            .padding(start = 0.dp, top = 0.dp),
+                        shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                        colors = ButtonDefaults.buttonColors(RedProliseum),
+                    ) {
+                        Text(
+                            text = "MINHA POSTAGEM",
+                            color = Color.White,
+                            modifier = Modifier.padding(5.dp),
+                            fontWeight = FontWeight(600),
+                            fontFamily = customFontFamilyText,
+                            fontSize = 12.sp
+                        )
+                    }
+                }
 
 //            } else if(verificarSeJogadorTemTime != null){
                 Log.e("JA TEM TIME","ESTE JOGADOR JA TEM TIME, PORTANTO NÃO PRECISA DE POSTAGEM!")
