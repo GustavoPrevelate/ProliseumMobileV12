@@ -477,7 +477,7 @@ fun MinhaPostagemTimeScreen(
                             items(publicacoesTimes.size){ index ->
                                 val infoPublicacaoTime = publicacoesTimes[index]
 
-                                val donoDaPublicacao = infoPublicacaoTime.dono_id
+                                val donoDaPublicacao = infoPublicacaoTime.dono_id ?: null
                                 val timePublicacao = infoPublicacaoTime.time
 
                                 val idInfoPublicacao = infoPublicacaoTime?.id ?: 0
@@ -486,7 +486,7 @@ fun MinhaPostagemTimeScreen(
                                 val funcaoInfoPublicacao = infoPublicacaoTime?.funcao ?: ""
                                 val eloInfoPublicacao = infoPublicacaoTime?.elo ?: ""
                                 val horaInfoPublicacao = infoPublicacaoTime?.hora ?: 0
-                                val tipoInfoPublicacao = infoPublicacaoTime?.tipo ?: false
+                                val tipoInfoPublicacao = infoPublicacaoTime?.tipo ?: true
                                 val prosInfoPublicacao = infoPublicacaoTime?.pros ?: ""
 
 
@@ -772,7 +772,18 @@ fun MinhaPostagemTimeScreen(
                                         ){
                                             Button(
                                                 onClick = {
-                                                    //     onNavigate("editar_minha_publicacao_jogador")
+
+                                                    sharedGetTimeListaPostagensPublicacao.id = idInfoPublicacao
+                                                    sharedGetTimeListaPostagensPublicacao.descricao = descricaoInfoPublicacao
+                                                    sharedGetTimeListaPostagensPublicacao.jogo = jogoInfoPublicacao
+                                                    sharedGetTimeListaPostagensPublicacao.funcao = funcaoInfoPublicacao
+                                                    sharedGetTimeListaPostagensPublicacao.elo = eloInfoPublicacao
+                                                    sharedGetTimeListaPostagensPublicacao.tipo = tipoInfoPublicacao
+                                                    sharedGetTimeListaPostagensPublicacao.pros = prosInfoPublicacao
+
+                                                    sharedGetTimeListaPostagensPublicacaoTime.id = idTimePublicaoTime
+
+                                                    onNavigate("carregar_tela_editar_publicacao_time")
                                                 },
                                                 modifier = Modifier
                                                     .width(170.dp)
@@ -827,7 +838,9 @@ fun MinhaPostagemTimeScreen(
 
 
                                     Row(
-                                        modifier = Modifier.fillMaxWidth().height(80.dp),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(80.dp),
                                         horizontalArrangement = Arrangement.Center,
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
@@ -855,6 +868,35 @@ fun MinhaPostagemTimeScreen(
                             }
                         }
                     )
+                } else {
+                    Column(
+                        modifier = Modifier.fillMaxSize().padding(top = 40.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Button(
+                            onClick = {
+
+                                Log.e("ID DO TIME PARA CRIAR","id do time que vou criar ${idTimeEscolhido}")
+
+                                sharedGetTimeTeams.id = idTimeEscolhido
+                                onNavigate("criar_postagem_time")
+                            },
+                            modifier = Modifier
+                                .width(370.dp)
+                                .height(160.dp),
+                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                            colors = ButtonDefaults.buttonColors(RedProliseum),
+                        ) {
+                            Text(
+                                text = "Você não tem postagem com esse time, deseja criar uma?",
+                                color = Color.White,
+                                modifier = Modifier.padding(5.dp),
+                                fontWeight = FontWeight(900),
+                                fontFamily = customFontFamilyText,
+                                fontSize = 20.sp
+                            )
+                        }
+                    }
                 }
 
             }

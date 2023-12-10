@@ -52,10 +52,17 @@ import br.senai.sp.jandira.proliseumtcc.model.getTimeTeams
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTime
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagens
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacao
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoTimeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoTimePropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPerfilId
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelListaPublicacaoTimes
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
@@ -95,6 +102,15 @@ fun EscolherTimeParaCriarPostagemTimeScreen(
     sharedGetTimeTeamsJogadoresPerfilId: SharedGetTimeTeamsJogadoresPerfilId,
     sharedGetTimeDono: SharedGetTimeDono,
     sharedGetTimeTeamsPropostas: SharedGetTimeTeamsPropostas,
+
+    sharedViewModelListaPublicacaoTimes: SharedViewModelListaPublicacaoTimes,
+
+    sharedGetTimeListaPostagens: SharedGetTimeListaPostagens,
+    sharedGetTimeListaPostagensPublicacao: SharedGetTimeListaPostagensPublicacao,
+    sharedGetTimeListaPostagensPublicacaoDonoId: SharedGetTimeListaPostagensPublicacaoDonoId,
+    sharedGetTimeListaPostagensPublicacaoTime: SharedGetTimeListaPostagensPublicacaoTime,
+    sharedGetTimeListaPostagensPublicacaoTimeJogadores: SharedGetTimeListaPostagensPublicacaoTimeJogadores,
+    sharedGetTimeListaPostagensPublicacaoTimePropostas: SharedGetTimeListaPostagensPublicacaoTimePropostas,
     onNavigate: (String) -> Unit
 ) {
 
@@ -128,6 +144,8 @@ fun EscolherTimeParaCriarPostagemTimeScreen(
     }
 
     val idUser = sharedViewModelUser.id
+
+    val verificarSeTimeJaTemPostagem = sharedGetTimeListaPostagensPublicacao.time?.id
 
     if(token != null && token.isNotEmpty()){
 
@@ -477,7 +495,9 @@ fun EscolherTimeParaCriarPostagemTimeScreen(
 
                                                         sharedGetTimeDono.id = idDonoTime
                                                         Log.e("ID DONO ORIGINAL", "Id do dono do time na lista time${idDonoTime}")
+
                                                         onNavigate("criar_postagem_time")
+
 
                                                     }
 

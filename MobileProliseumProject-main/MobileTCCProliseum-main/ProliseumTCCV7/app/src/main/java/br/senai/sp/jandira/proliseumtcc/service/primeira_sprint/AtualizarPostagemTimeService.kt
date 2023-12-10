@@ -12,7 +12,7 @@ import retrofit2.http.Query
 
 interface AtualizarPostagemTimeService {
 
-    @PUT("post{time}")
+    @PUT("post")
     fun atualizarPostagemTime(
         @Header("Authorization") token: String,
         @Query("time") time: Int,

@@ -91,6 +91,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaNot
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaRedesSociaisScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaEditarPublicacaoTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarTelaListagemDePropostasScreen
 import br.senai.sp.jandira.proliseumtcc.gui.criar.CriarTimeScreen
 //import br.senai.sp.jandira.proliseumtcc.gui.deletar.ApagarPublicacaoScreen
@@ -101,6 +102,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesMeuPe
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarMinhaPublicacaoJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarMinhaPublicacaoTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.gerenciar_time.EntrarNoTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.listagem.EscolherTimeParaCriarPostagemTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.listagem.EscolherTimeParaVisualizarPostagemTimeScreen
@@ -2375,6 +2377,15 @@ fun MainScreen() {
                 sharedGetTimeTeamsJogadoresPerfilId,
                 sharedGetTimeDono,
                 sharedGetTimeTeamsPropostas,
+
+                sharedViewModelListaPublicacaoTimes,
+
+                sharedGetTimeListaPostagens,
+                sharedGetTimeListaPostagensPublicacao,
+                sharedGetTimeListaPostagensPublicacaoDonoId,
+                sharedGetTimeListaPostagensPublicacaoTime,
+                sharedGetTimeListaPostagensPublicacaoTimeJogadores,
+                sharedGetTimeListaPostagensPublicacaoTimePropostas,
             ) {
                 currentScreen = it
             }
@@ -2474,8 +2485,50 @@ fun MainScreen() {
         }
 
 
+        val editarMinhaPublicacaoTimeScreen: @Composable () -> Unit = {
+            EditarMinhaPublicacaoTimeScreen(
+                sharedViewModelTokenEId,
 
+                //SharedViewModel GET MINHA POSTAGEM
+                sharedGetMinhaPostagem,
+                sharedGetMinhaPostagemUser,
+                sharedGetMinhaPostagemUserPropostas,
+                sharedGetMinhaPostagemPostProfile,
 
+                sharedGetTime,
+                sharedGetTimeTeams,
+                sharedGetTimeTeamsJogadores,
+                sharedGetTimeTeamsJogadoresPerfilId,
+                sharedGetTimeDono,
+                sharedGetTimeTeamsPropostas,
+
+                sharedViewModelListaPublicacaoTimes,
+
+                sharedGetTimeListaPostagens,
+                sharedGetTimeListaPostagensPublicacao,
+                sharedGetTimeListaPostagensPublicacaoDonoId,
+                sharedGetTimeListaPostagensPublicacaoTime,
+                sharedGetTimeListaPostagensPublicacaoTimeJogadores,
+                sharedGetTimeListaPostagensPublicacaoTimePropostas,
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val carregarTelaEditarPublicacaoTimeScreen: @Composable () -> Unit = {
+            CarregarTelaEditarPublicacaoTimeScreen(
+                sharedViewModelTokenEId,
+
+                sharedGetTimeListaPostagens,
+                sharedGetTimeListaPostagensPublicacao,
+                sharedGetTimeListaPostagensPublicacaoDonoId,
+                sharedGetTimeListaPostagensPublicacaoTime,
+                sharedGetTimeListaPostagensPublicacaoTimeJogadores,
+                sharedGetTimeListaPostagensPublicacaoTimePropostas,
+            ) {
+                currentScreen = it
+            }
+        }
 
 
         // NAVEGAÇÃO DO PROJETO
@@ -2564,6 +2617,8 @@ fun MainScreen() {
                     "criar_postagem_time" -> criarPostagemTimeScreen()
                     "escolher_time_para_visualizar_postagem_time" -> escolherTimeParaVisualizarPostagemTimeScreen()
                     "minha_postagem_time" -> minhaPostagemTimeScreen()
+                    "editar_minha_publicacao_time" -> editarMinhaPublicacaoTimeScreen()
+                    "carregar_tela_editar_publicacao_time" -> carregarTelaEditarPublicacaoTimeScreen()
 
 
                     else -> startScreen()
