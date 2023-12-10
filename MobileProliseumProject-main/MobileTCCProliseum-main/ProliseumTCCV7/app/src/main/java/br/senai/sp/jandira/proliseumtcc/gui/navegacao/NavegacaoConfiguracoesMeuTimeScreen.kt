@@ -120,7 +120,7 @@ fun NavegacaoConfiguracoesMeuTimeScreen(
 
             Button(
                 onClick = {
-//                    onNavigate("cadastro_usuario_organizador")
+                    onNavigate("minha_postagem_time")
                 },
                 modifier = Modifier
                     .padding(top = 20.dp)

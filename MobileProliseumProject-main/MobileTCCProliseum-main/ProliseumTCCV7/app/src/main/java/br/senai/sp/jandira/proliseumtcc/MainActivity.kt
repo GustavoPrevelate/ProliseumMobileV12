@@ -74,7 +74,6 @@ import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDeTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.LoginScreen
 import br.senai.sp.jandira.proliseumtcc.gui.NotificacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavegacaoConfiguracoesMeuTimeScreen
-import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavegacaoConfiguracoesPerfilScreen
 import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavigationPrincipalScreen
 import br.senai.sp.jandira.proliseumtcc.gui.futuramente.PremiumScreen
 import br.senai.sp.jandira.proliseumtcc.gui.PropostasScreen
@@ -606,12 +605,6 @@ fun MainScreen() {
             }
         }
 
-        // TELA DE NAVEGAÇÃO DE CONFIGURAÇÕES DE PERFIL
-        val navegacaoConfiguracoesPerfilScreen: @Composable () -> Unit = {
-            NavegacaoConfiguracoesPerfilScreen() {
-                currentScreen = it
-            }
-        }
 
         // TELA DE CADASTRO DO USUÁRIO JOGADOR
         val cadastroUsuarioJogadorScreen: @Composable () -> Unit = {
@@ -2643,7 +2636,6 @@ fun MainScreen() {
                     "perfil_usuario_jogador" -> perfilUsuarioPadraoScreen()
                     "editar_perfil_usuario_padrao_1" -> editarInformacoesMeuPerfilPadraoScreen()
                     "navigation_proliseum" -> navegacaoPrincipalScreen()
-                    "navigation_configuracoes_perfil" -> navegacaoConfiguracoesPerfilScreen()
                     "cadastro_usuario_jogador" -> cadastroUsuarioJogadorScreen()
                     "cadastro_usuario_organizador" -> cadastroOrganizacaoScreen()
                     "perfil_organizacao" -> perfilOrganizacaoScreen()

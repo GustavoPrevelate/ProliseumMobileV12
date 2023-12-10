@@ -452,36 +452,6 @@ fun NavigationPrincipalScreen(
                         )
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Button(
-                    onClick = {
-                        onNavigate("navigation_configuracoes_perfil")
-                    },
-                    modifier = Modifier
-                        .padding(top = 20.dp)
-                        .height(48.dp),
-                    shape = RoundedCornerShape(73.dp),
-                    colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
-
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.editar_perfis_icon),
-                        contentDescription = stringResource(id = R.string.button_proximo),
-                        modifier = Modifier.size(30.dp),
-                        tint = Color(255, 255, 255, 255)
-                    )
-                    Spacer(modifier = Modifier.padding(start = 20.dp))
-                    Text(
-                        text = "MENU DE CONFIGURAÇÕES",
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center,
-                        color = Color.White,
-                        fontFamily = customFontFamilyText,
-                        fontWeight = FontWeight(900),
-                    )
-                }
-
                 Spacer(modifier = Modifier.height(15.dp))
 
 

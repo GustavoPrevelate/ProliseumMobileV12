@@ -156,7 +156,7 @@ fun NavegacaoConfiguracoesMeuPerfilPrincipal(
 
             Button(
                 onClick = {
-//                    onNavigate("cadastro_usuario_organizador")
+                    onNavigate("lista_de_publicacoes_jogadores")
                 },
                 modifier = Modifier
                     .padding(top = 20.dp)
