@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitFactoryCadastro {
 
-    private val URL_BASE = "https://alive-dog-parka.cyclic.app"
+    private val URL_BASE = "https://lonely-jade-helmet.cyclic.app"
 
     //Guarda a conexão com o servidor, devolve a conexão
     private val retrofitFactoryCadastro = Retrofit
@@ -202,6 +202,10 @@ class RetrofitFactoryCadastro {
 
     fun getPeneiraService(): GetPeneiraService {
         return retrofitFactoryCadastro.create(GetPeneiraService::class.java)
+    }
+
+    fun deletarPeneiraService(): DeletarPeneiraService {
+        return retrofitFactoryCadastro.create(DeletarPeneiraService::class.java)
     }
 
 

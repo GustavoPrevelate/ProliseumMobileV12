@@ -57,6 +57,7 @@ import br.senai.sp.jandira.proliseumtcc.model.GetPeneira
 import br.senai.sp.jandira.proliseumtcc.model.GetPeneiraAcepted
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemList
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemListPublicacao
+import br.senai.sp.jandira.proliseumtcc.model.PeneiraResponse
 import br.senai.sp.jandira.proliseumtcc.model.PropostasRecebidas
 import br.senai.sp.jandira.proliseumtcc.model.PropostasRecebidasGeral
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
@@ -647,77 +648,80 @@ fun ListaDeInscricoesParaTimesScreen(
                                     }
                                 }
 
-
-//                                fun RecusarPropostasFunction(
-//                                    sharedViewModelTokenEId: SharedViewTokenEId,
-//                                ){
-//
-//                                    val token = sharedViewModelTokenEId.token
-//
-//                                    val recusarAProposta = 0
-//
-//                                    val recusarPropostaService = RetrofitFactoryCadastro().recusarPropostaService()
-//
-//                                    recusarPropostaService.recusarProposta("Bearer " + token, idPropostasRecebidas,recusarAProposta).enqueue(object :
-//                                        Callback<GenericResponse> {
-//                                        override fun onResponse(call: Call<GenericResponse>, response: Response<GenericResponse>) {
-//                                            if (response.isSuccessful) {
-//                                                Log.d("SUCESSO AO RECUSAR PROPOSTA", "Resposta bem-sucedida, proposta recusada!: ${response.code()}")
-//
-//                                            } else {
-//                                                // Trate a resposta não bem-sucedida
-//                                                Log.d("listaPropostasRecebidasJogadoresScreen", " listaPropostasRecebidasJogadoresScreen, Resposta não bem-sucedida: ${response.code()}")
-//                                                // Log de corpo da resposta (se necessário)
-//                                                Log.d(
-//                                                    "listaPropostasRecebidasJogadoresScreen",
-//                                                    "listaPropostasRecebidasJogadoresScreen, Corpo da resposta: ${response.errorBody()?.string()}"
-//                                                )
-//                                            }
-//                                        }
-//
-//                                        override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
-//                                            // Trate o erro de falha na rede.
-//                                            Log.d("listaPropostasRecebidasJogadoresScreen", " listaPropostasRecebidasJogadoresScreen, Erro de rede: ${t.message}")
-//                                        }
-//
-//                                    })
-//                                }
+                                Log.e("ID DO TIME ","ID DO TIME ${idTimeEscolhido}")
+                                Log.e("ID DO JOGADOR ","ID DO JOGADOR DA PENEIRA ${idJogadoresDaPeneiraList}")
 
 
-//                                fun AceitarPropostasFunction(
-//                                    sharedViewModelTokenEId: SharedViewTokenEId,
-//                                ){
-//
-//                                    val token = sharedViewModelTokenEId.token
-//
-//                                    val aceitarAProposta = 1
-//
-//                                    val aceitarPropostaService = RetrofitFactoryCadastro().aceitarPropostaService()
-//
-//                                    aceitarPropostaService.aceitarProposta("Bearer " + token, idPropostasRecebidas, aceitarAProposta).enqueue(object :
-//                                        Callback<GenericResponse> {
-//                                        override fun onResponse(call: Call<GenericResponse>, response: Response<GenericResponse>) {
-//                                            if (response.isSuccessful) {
-//                                                Log.d("SUCESSO AO ACEITAR PROPOSTA", "Resposta bem-sucedida, proposta recusada!: ${response.code()}")
-//
-//                                            } else {
-//                                                // Trate a resposta não bem-sucedida
-//                                                Log.d("listaPropostasRecebidasJogadoresScreen", " listaPropostasRecebidasJogadoresScreen, Resposta não bem-sucedida: ${response.code()}")
-//                                                // Log de corpo da resposta (se necessário)
-//                                                Log.d(
-//                                                    "listaPropostasRecebidasJogadoresScreen",
-//                                                    "listaPropostasRecebidasJogadoresScreen, Corpo da resposta: ${response.errorBody()?.string()}"
-//                                                )
-//                                            }
-//                                        }
-//
-//                                        override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
-//                                            // Trate o erro de falha na rede.
-//                                            Log.d("listaPropostasRecebidasJogadoresScreen", " listaPropostasRecebidasJogadoresScreen, Erro de rede: ${t.message}")
-//                                        }
-//
-//                                    })
-//                                }
+                                fun RecusarInscricaoFunction(
+                                    sharedViewModelTokenEId: SharedViewTokenEId,
+                                ){
+
+                                    val token = sharedViewModelTokenEId.token
+
+                                    val recusarAProposta = 0
+
+                                    val recusarPeneiraService = RetrofitFactoryCadastro().deletarPeneiraService()
+
+                                    recusarPeneiraService.deletarPeneira("Bearer " + token, idTimeEscolhido, idJogadoresDaPeneiraList, recusarAProposta).enqueue(object :
+                                        Callback<PeneiraResponse> {
+                                        override fun onResponse(call: Call<PeneiraResponse>, response: Response<PeneiraResponse>) {
+                                            if (response.isSuccessful) {
+                                                Log.d("SUCESSO AO RECUSAR INSCRICAO", "Resposta bem-sucedida, inscricao recusada!: ${response.code()}")
+
+                                            } else {
+                                                // Trate a resposta não bem-sucedida
+                                                Log.d("listaInscricoesRecebidasJogadoresScreen", " listaInscricoesRecebidasJogadoresScreen, Resposta não bem-sucedida: ${response.code()}")
+                                                // Log de corpo da resposta (se necessário)
+                                                Log.d(
+                                                    "listaInscricoesRecebidasJogadoresScreen",
+                                                    "listaInscricoesRecebidasJogadoresScreen, Corpo da resposta: ${response.errorBody()?.string()}"
+                                                )
+                                            }
+                                        }
+
+                                        override fun onFailure(call: Call<PeneiraResponse>, t: Throwable) {
+                                            // Trate o erro de falha na rede.
+                                            Log.d("listaInscricoesRecebidasJogadoresScreen", " listaPropostasRecebidasJogadoresScreen, Erro de rede: ${t.message}")
+                                        }
+
+                                    })
+                                }
+
+
+                                fun AceitarInscricaoFunction(
+                                    sharedViewModelTokenEId: SharedViewTokenEId,
+                                ){
+
+                                    val token = sharedViewModelTokenEId.token
+
+                                    val aceitarAInscricao = 1
+
+                                    val aceitarInscricaoService = RetrofitFactoryCadastro().deletarPeneiraService()
+
+                                    aceitarInscricaoService.deletarPeneira("Bearer " + token, idTimeEscolhido, idJogadoresDaPeneiraList, aceitarAInscricao).enqueue(object :
+                                        Callback<PeneiraResponse> {
+                                        override fun onResponse(call: Call<PeneiraResponse>, response: Response<PeneiraResponse>) {
+                                            if (response.isSuccessful) {
+                                                Log.d("SUCESSO AO ACEITAR INSCRIÇÃO", "Resposta bem-sucedida, inscrição aceita!: ${response.code()}")
+
+                                            } else {
+                                                // Trate a resposta não bem-sucedida
+                                                Log.d("listaInscricoesRecebidasJogadoresScreen", " listaInscricoesRecebidasJogadoresScreen, Resposta não bem-sucedida: ${response.code()}")
+                                                // Log de corpo da resposta (se necessário)
+                                                Log.d(
+                                                    "listaInscricoesRecebidasJogadoresScreen",
+                                                    "listaInscricoesRecebidasJogadoresScreen, Corpo da resposta: ${response.errorBody()?.string()}"
+                                                )
+                                            }
+                                        }
+
+                                        override fun onFailure(call: Call<PeneiraResponse>, t: Throwable) {
+                                            // Trate o erro de falha na rede.
+                                            Log.d("listaInscricoesRecebidasJogadoresScreen", " listaInscricoesRecebidasJogadoresScreen, Erro de rede: ${t.message}")
+                                        }
+
+                                    })
+                                }
 
 
                                 //jogos
@@ -822,13 +826,13 @@ fun ListaDeInscricoesParaTimesScreen(
                                                 ) {
                                                     Button(
                                                         onClick = {
-//                                                            AceitarPropostasFunction(
-//                                                                sharedViewModelTokenEId
-//                                                            )
+                                                            AceitarInscricaoFunction(
+                                                                sharedViewModelTokenEId
+                                                            )
 
 
-//                                                            campoAceitarProposta = false
-//                                                            mensagemAceitarProposta.value = "PROPOSTA ACEITA!"
+                                                            campoAceitarProposta = false
+                                                            mensagemAceitarProposta.value = "INSCRIÇÃO ACEITA!"
 
                                                         },
                                                         modifier = Modifier
@@ -858,12 +862,12 @@ fun ListaDeInscricoesParaTimesScreen(
                                                     Button(
                                                         onClick = {
 
-//                                                            RecusarPropostasFunction(
-//                                                                sharedViewModelTokenEId
-//                                                            )
-//
-//                                                            campoRecusarProposta = false
-//                                                            mensagemRecusarProposta.value = "PROPOSTA RECUSADA!"
+                                                            RecusarInscricaoFunction(
+                                                                sharedViewModelTokenEId
+                                                            )
+
+                                                            campoRecusarProposta = false
+                                                            mensagemRecusarProposta.value = "INSCRIÇÃO RECUSADA!"
 
 
                                                         },
@@ -923,7 +927,7 @@ fun ListaDeInscricoesParaTimesScreen(
             if (!campoRecusarProposta) {
                 delay(3000)
                 campoRecusarProposta = true
-                onNavigate("carregar_tela_listagem_propostas")
+                onNavigate("carregar_tela_listagem_inscricoes")
             }
         }
 
