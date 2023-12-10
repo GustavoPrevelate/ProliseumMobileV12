@@ -208,6 +208,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(DeletarPeneiraService::class.java)
     }
 
+    fun sairDoTimeService(): SairDoTimeService {
+        return retrofitFactoryCadastro.create(SairDoTimeService::class.java)
+    }
+
 
 
 

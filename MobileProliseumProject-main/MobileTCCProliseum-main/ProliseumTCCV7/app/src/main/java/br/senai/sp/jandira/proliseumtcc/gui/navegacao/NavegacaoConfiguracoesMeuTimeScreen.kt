@@ -258,7 +258,7 @@ fun NavegacaoConfiguracoesMeuTimeScreen(
                 if (!camposPreenchidosCorretamente) {
                     delay(5000)
                     camposPreenchidosCorretamente = true
-                    onNavigate("lista_times")
+                    onNavigate("carregar_informacoes_perfil_usuario")
                 }
             }
 

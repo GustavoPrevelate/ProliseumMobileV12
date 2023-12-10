@@ -1,6 +1,9 @@
 package br.senai.sp.jandira.proliseumtcc.gui.navegacao
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,11 +19,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,9 +41,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.firebase.StorageUtil
+import br.senai.sp.jandira.proliseumtcc.model.GenericResponse
+import br.senai.sp.jandira.proliseumtcc.model.PerfilUsuario
 import br.senai.sp.jandira.proliseumtcc.model.ProfileResponsePropostasDeRedeSocial
 import br.senai.sp.jandira.proliseumtcc.model.ResponseGetRedeSocial
 import br.senai.sp.jandira.proliseumtcc.model.ResponsePostRedeSocialDonoRedeSocial
+import br.senai.sp.jandira.proliseumtcc.model.SairDoTimeResponse
+import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.PerfilUsuarioService
+import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoHighlights
@@ -65,6 +77,10 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetRedeSoci
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewResponseGetRedeSocialDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
+import kotlinx.coroutines.delay
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
 fun NavegacaoConfiguracoesMeuPerfilPrincipal(
@@ -109,7 +125,8 @@ fun NavegacaoConfiguracoesMeuPerfilPrincipal(
 
     val informacoesUserPlayerProfile = sharedViewModelPerfil.playerProfile
 
-
+    var camposPreenchidosCorretamente by rememberSaveable { mutableStateOf(true) }
+    var mensagemSucessoInputsPerfil = rememberSaveable { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -247,6 +264,7 @@ fun NavegacaoConfiguracoesMeuPerfilPrincipal(
                 Log.e("JA TEM DADOS JOGADOR", "Você ja tem perfil de jogador!")
             }
 
+            Spacer(modifier = Modifier.height(10.dp))
 
             Button(
                 onClick = {
@@ -332,7 +350,115 @@ fun NavegacaoConfiguracoesMeuPerfilPrincipal(
 
             Spacer(modifier = Modifier.height(10.dp))
 
+            fun sairDoTimeFunction(
+                sharedViewModelTokenEId: SharedViewTokenEId
+            ){
 
+                val token = sharedViewModelTokenEId.token
+
+                // Obtenha o serviço Retrofit para editar o perfil do usuário
+                val sairDoTimeService = RetrofitFactoryCadastro().sairDoTimeService()
+
+                // Realize a chamada de API para editar o perfil
+                sairDoTimeService.sairDoTime( "Bearer " + token )
+                    .enqueue(object : Callback<SairDoTimeResponse> {
+                        override fun onResponse(
+                            call: Call<SairDoTimeResponse>,
+                            response: Response<SairDoTimeResponse>
+                        ) {
+                            if (response.isSuccessful) {
+                                Log.d(
+                                    "SairDoTimeScreen",
+                                    "SairDoTimeScreen, Saiu do time com sucesso: ${response.code()}"
+                                )
+
+
+                                camposPreenchidosCorretamente = false
+                                mensagemSucessoInputsPerfil.value = "Saiu do time com sucesso!"
+
+
+                            } else {
+
+                                camposPreenchidosCorretamente = false
+                                mensagemSucessoInputsPerfil.value = "Falha ao sair do time!"
+
+                                Log.d(
+                                    "SairDoTimeScreen",
+                                    "SairDoTimeScreen, Falha ao tentar sair  do time: ${response.code()}"
+                                )
+
+                                Log.d(
+                                    "SairDoTimeScreen",
+                                    "SairDoTimeScreen, Corpo da resposta: ${response.errorBody()?.string()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<SairDoTimeResponse>, t: Throwable) {
+                            // Trate o erro de falha na rede.
+                            Log.d("DeletarPublicacaoTimeScreen", "Erro de rede: ${t.message}")
+                        }
+                    })
+            }
+
+
+            Button(
+                onClick = {
+                    sairDoTimeFunction(
+                        sharedViewModelTokenEId
+                    )
+
+
+                },
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .height(48.dp),
+                shape = RoundedCornerShape(73.dp),
+                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
+
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.sair_do_time),
+                    contentDescription = stringResource(id = R.string.button_proximo),
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.padding(start = 20.dp))
+                Text(
+                    text = "SAIR DO TIME",
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = customFontFamilyText,
+                    fontWeight = FontWeight(900),
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+
+        }
+
+        LaunchedEffect(camposPreenchidosCorretamente) {
+            if (!camposPreenchidosCorretamente) {
+                delay(3000)
+                camposPreenchidosCorretamente = true
+                onNavigate("carregar_informacoes_perfil_usuario")
+            }
+        }
+
+        AnimatedVisibility(
+            visible = !camposPreenchidosCorretamente,
+            enter = slideInVertically(initialOffsetY = { it }),
+            exit = slideOutVertically(targetOffsetY = { it })
+        ) {
+            Snackbar(
+                modifier = Modifier.padding(top = 16.dp),
+                action = {}
+            ) {
+                Text(text = mensagemSucessoInputsPerfil.value)
+            }
         }
     }
 }
+
+

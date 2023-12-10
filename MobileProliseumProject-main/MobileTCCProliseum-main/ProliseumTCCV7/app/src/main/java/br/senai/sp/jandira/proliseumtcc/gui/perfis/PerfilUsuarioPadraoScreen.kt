@@ -789,15 +789,13 @@ fun PerfilUsuarioPadraoScreen(
                                 onClick = {
 
 
-                                    onNavigate("carregar_informacoes_outro_time_lista_jogadores")
-
                                 },
                                 modifier = Modifier
                                     .width(180.dp)
                                     .height(140.dp)
                                     .padding(start = 0.dp, top = 0.dp),
                                 shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                                colors = ButtonDefaults.buttonColors(RedProliseum),
+                                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum),
                             ){
                                 Column(
                                     modifier = Modifier.fillMaxSize(),
