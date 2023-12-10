@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.proliseumtcc.gui.proposta
+package br.senai.sp.jandira.proliseumtcc.gui.listagem
 
 import android.net.Uri
 import android.util.Log
@@ -47,48 +47,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
-import br.senai.sp.jandira.proliseumtcc.gui.listagem.verificarIdDoTimeFilter
 import br.senai.sp.jandira.proliseumtcc.model.getTime
 import br.senai.sp.jandira.proliseumtcc.model.getTimeTeams
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDe
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadores
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDePropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTime
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPerfilId
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsPropostas
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadores
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresDentroDeTime
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresDentroDeTimeList
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresInfoPerfil
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresList
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresPropostasList
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresPropostasRecebidas
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresTimeAtual
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTime
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTimeJogadores
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTimePropostas
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsUser
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsUserPropostas
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelNomeJogadorListaJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilJogadorOutro
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganizadorOutro
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOutro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDePropostas
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfile
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtual
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualJogadores
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPlayerProfileTimeAtualPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
@@ -106,7 +78,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun EnviarPropostaScreen(
+fun EscolherTimeParaCriarPostagemTimeScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
 
     sharedViewModelPerfil: SharedViewModelPerfil,
@@ -358,7 +330,7 @@ fun EnviarPropostaScreen(
                 Icon(
                     modifier = Modifier.clickable {
                         //rememberNavController.navigate("home")
-                        onNavigate("home")
+                        onNavigate("lista_de_publicacoes_times")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
@@ -505,7 +477,7 @@ fun EnviarPropostaScreen(
 
                                                         sharedGetTimeDono.id = idDonoTime
                                                         Log.e("ID DONO ORIGINAL", "Id do dono do time na lista time${idDonoTime}")
-                                                        onNavigate("enviar_proposta_segunda_parte")
+                                                        onNavigate("criar_postagem_time")
 
                                                     }
 

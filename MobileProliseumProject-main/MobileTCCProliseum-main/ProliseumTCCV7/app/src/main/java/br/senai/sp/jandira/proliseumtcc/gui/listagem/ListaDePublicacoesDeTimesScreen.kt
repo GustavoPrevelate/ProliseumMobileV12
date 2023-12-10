@@ -536,52 +536,52 @@ fun ListaDePublicacoesDeTimesScreen(
 
         val verificarSeJogadorTemTime = sharedViewModelPlayerProfile.time_atual
 
-//        Column(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(top = 100.dp),
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//            verticalArrangement = Arrangement.Center
-//        ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 100.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
 //            if(verificarPostProfile == null && verificarSeJogadorTemTime == null){
-//
-//                Column(
-//
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//
-//
-//                    Button(
-//                        onClick = {
-//                            onNavigate("postagem_jogador_screen")
-//                        },
-//                        modifier = Modifier
-//                            .width(250.dp)
-//                            .height(50.dp)
-//                            .padding(start = 0.dp, top = 0.dp),
-//                        shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-//                        colors = ButtonDefaults.buttonColors(RedProliseum),
-//                    ) {
-//                        Text(
-//                            text = "CRIAR POSTAGEM",
-//                            color = Color.White,
-//                            modifier = Modifier.padding(5.dp),
-//                            fontWeight = FontWeight(600),
-//                            fontFamily = customFontFamilyText,
-//                            fontSize = 12.sp
-//                        )
-//                    }
-//
-//                }
+
+                Column(
+
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+
+                    Button(
+                        onClick = {
+                            onNavigate("escolher_time_para_criar_postagem_time")
+                        },
+                        modifier = Modifier
+                            .width(250.dp)
+                            .height(50.dp)
+                            .padding(start = 0.dp, top = 0.dp),
+                        shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                        colors = ButtonDefaults.buttonColors(RedProliseum),
+                    ) {
+                        Text(
+                            text = "CRIAR POSTAGEM",
+                            color = Color.White,
+                            modifier = Modifier.padding(5.dp),
+                            fontWeight = FontWeight(600),
+                            fontFamily = customFontFamilyText,
+                            fontSize = 12.sp
+                        )
+                    }
+
+                }
 //            } else if(verificarPostProfile != null){
-//
+
 //                Column(
 //
 //                    horizontalAlignment = Alignment.CenterHorizontally
 //                ) {
 //                    Button(
 //                        onClick = {
-//                            onNavigate("carregar_informacoes_minha_publicacao")
+//                            //onNavigate("carregar_informacoes_minha_publicacao")
 //                        },
 //                        modifier = Modifier
 //                            .width(250.dp)
@@ -600,10 +600,11 @@ fun ListaDePublicacoesDeTimesScreen(
 //                        )
 //                    }
 //                }
+
 //            } else if(verificarSeJogadorTemTime != null){
-//                Log.e("JA TEM TIME","ESTE JOGADOR JA TEM TIME, PORTANTO NÃO PRECISA DE POSTAGEM!")
+                Log.e("JA TEM TIME","ESTE JOGADOR JA TEM TIME, PORTANTO NÃO PRECISA DE POSTAGEM!")
 //            }
-//        }
+        }
 
 
         Column(
