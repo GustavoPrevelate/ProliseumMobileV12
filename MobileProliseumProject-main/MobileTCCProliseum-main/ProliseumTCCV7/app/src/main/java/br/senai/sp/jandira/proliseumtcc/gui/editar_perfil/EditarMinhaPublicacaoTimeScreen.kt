@@ -544,7 +544,7 @@ fun EditarMinhaPublicacaoTimeScreen(
                             Log.e("REMUNERACAO 10","Remuneração: ${tipoTime.value}")
                             Log.e("PROS 10","Pros: ${prosJogador}")
 
-                            onNavigate("lista_de_publicacoes_times")
+                            onNavigate("navigation_proliseum")
 
 //
 

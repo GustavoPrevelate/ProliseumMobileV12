@@ -846,7 +846,10 @@ fun MinhaPostagemTimeScreen(
                                     ) {
                                         Button(
                                             onClick = {
-                                                // onNavigate("lista_propostas_recebidas_para_jogadores")
+
+                                                sharedGetTimeListaPostagensPublicacaoTime.id = idTimePublicaoTime
+
+                                                onNavigate("carregar_tela_inscritos_postagem_time")
                                             },
                                             modifier = Modifier
                                                 .width(370.dp)
@@ -855,7 +858,7 @@ fun MinhaPostagemTimeScreen(
                                             colors = ButtonDefaults.buttonColors(RedProliseum),
                                         ) {
                                             Text(
-                                                text = "PROPOSTAS RECEBIDAS",
+                                                text = "INSCRITOS",
                                                 color = Color.White,
                                                 modifier = Modifier.padding(5.dp),
                                                 fontWeight = FontWeight(600),

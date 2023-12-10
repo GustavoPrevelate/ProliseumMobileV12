@@ -21,12 +21,18 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganiza
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.model.ProfileResponse
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagens
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoDonoId
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoTime
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoTimeJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoTimePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPerfilId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeHighlights
@@ -46,7 +52,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun CarregarTelaEditarPublicacaoTimeScreen(
+fun CarregarTelaInscritosPostagemTimeScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
 
     sharedGetTimeListaPostagens: SharedGetTimeListaPostagens,
@@ -69,43 +75,16 @@ fun CarregarTelaEditarPublicacaoTimeScreen(
 
     var idTimeEscolhido by remember { mutableStateOf(sharedGetTimeListaPostagensPublicacaoTime.id) }
 
-    var idMinhaPublicacaoState by remember { mutableStateOf(sharedGetTimeListaPostagensPublicacao.id) }
-    var descricaoMinhaPublicacaoState by remember { mutableStateOf(sharedGetTimeListaPostagensPublicacao.descricao) }
-    var jogoMinhaPublicacaoState by remember { mutableStateOf(sharedGetTimeListaPostagensPublicacao.jogo) }
-    var funcaoMinhaPublicacaoState by remember { mutableStateOf(sharedGetTimeListaPostagensPublicacao.funcao) }
-    var eloMinhaPublicacaoState by remember { mutableStateOf(sharedGetTimeListaPostagensPublicacao.elo) }
-    var horaMinhaPublicacaoState by remember { mutableStateOf(sharedGetTimeListaPostagensPublicacao.hora) }
-    var tipoMinhaPublicacaoState by remember { mutableStateOf(sharedGetTimeListaPostagensPublicacao.tipo) }
-    var prosMinhaPublicacaoState by remember { mutableStateOf(sharedGetTimeListaPostagensPublicacao.pros) }
 
     var selectedGeneroUser by remember { mutableStateOf<Genero?>(null) }
 
 
-    LaunchedEffect(sharedGetTimeListaPostagensPublicacao, sharedGetTimeListaPostagensPublicacaoTime) {
-
-        // Esta parte só será executada quando o composable for inicializado
-        idMinhaPublicacaoState = sharedGetTimeListaPostagensPublicacao.id
-        descricaoMinhaPublicacaoState = sharedGetTimeListaPostagensPublicacao.descricao
-        jogoMinhaPublicacaoState = sharedGetTimeListaPostagensPublicacao.jogo
-        funcaoMinhaPublicacaoState = sharedGetTimeListaPostagensPublicacao.funcao
-        eloMinhaPublicacaoState = sharedGetTimeListaPostagensPublicacao.elo
-        horaMinhaPublicacaoState = sharedGetTimeListaPostagensPublicacao.hora
-        tipoMinhaPublicacaoState = sharedGetTimeListaPostagensPublicacao.tipo
-        prosMinhaPublicacaoState = sharedGetTimeListaPostagensPublicacao.pros
-
+    LaunchedEffect(sharedGetTimeListaPostagensPublicacaoTime) {
         idTimeEscolhido = sharedGetTimeListaPostagensPublicacaoTime.id
-        // Atribua outras variáveis de estado para outros campos da mesma maneira
+
     }
 
-    Log.e("id do time", "ID DO TIME ESCOLHIDO ${idTimeEscolhido}")
-    Log.e("ID DA PUBLICACAO DA PUBLICACAO ", "ID DA PUBLICACAO ${idMinhaPublicacaoState}")
-    Log.e("DESCRICAO DA PUBLICACAO ", "DESCRICAO DA PUBLICACAO ${descricaoMinhaPublicacaoState}")
-    Log.e("JOGO DA PUBLICACAO", "JOGO DA PUBLICACAO ${jogoMinhaPublicacaoState}")
-    Log.e("FUNCAO DA PUBLICACAO", "FUNCAO DA PUBLICACAO ${funcaoMinhaPublicacaoState}")
-    Log.e("ELO DA PUBLICACAO", "ELO DA PUBLICACAO ${eloMinhaPublicacaoState}")
-    Log.e("HORA DA PUBLICACAO", "HORA DA PUBLICACAO ${horaMinhaPublicacaoState}")
-    Log.e("TIPO DA PUBLICACAO", "TIPODA PUBLICACAO ${tipoMinhaPublicacaoState}")
-    Log.e("PROS DA PUBLICACAO", "PROS DA PUBLICACAO ${prosMinhaPublicacaoState}")
+    Log.e("id do time", "ID DO TIME ESCOLHIDO ANTES DAS INSCRICOES ${idTimeEscolhido}")
 
     // DESIGN DA TELA
     Box(
@@ -143,18 +122,10 @@ fun CarregarTelaEditarPublicacaoTimeScreen(
 
                 if(token != null && token.isNotEmpty()){
 
-                    sharedGetTimeListaPostagensPublicacao.id = idMinhaPublicacaoState
-                    sharedGetTimeListaPostagensPublicacao.descricao = descricaoMinhaPublicacaoState
-                    sharedGetTimeListaPostagensPublicacao.jogo = jogoMinhaPublicacaoState
-                    sharedGetTimeListaPostagensPublicacao.funcao = funcaoMinhaPublicacaoState
-                    sharedGetTimeListaPostagensPublicacao.elo = eloMinhaPublicacaoState
-                    sharedGetTimeListaPostagensPublicacao.tipo = tipoMinhaPublicacaoState
-                    sharedGetTimeListaPostagensPublicacao.pros = prosMinhaPublicacaoState
-
                     sharedGetTimeListaPostagensPublicacaoTime.id = idTimeEscolhido
 
 
-                    onNavigate("editar_minha_publicacao_time")
+                    onNavigate("lista_inscricoes_para_times")
 
                 } else{
                     Log.e("TOKEN NULO","o token esta nulo, carregando informaçoes")

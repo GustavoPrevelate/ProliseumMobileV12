@@ -200,6 +200,12 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(GetTimePostagemListService::class.java)
     }
 
+    fun getPeneiraService(): GetPeneiraService {
+        return retrofitFactoryCadastro.create(GetPeneiraService::class.java)
+    }
+
+
+
 
 
 }

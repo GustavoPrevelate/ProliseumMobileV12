@@ -459,6 +459,7 @@ fun EscolherTimeParaCriarPostagemTimeScreen(
                                     }
 
                                     if(playerListTimes.dono?.id == idUser){
+
                                         Column(
                                             modifier = Modifier
                                                 .fillMaxSize()
