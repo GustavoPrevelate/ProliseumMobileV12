@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -41,13 +44,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.BottomNavigationScreeen
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
+import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.AsyncImage
@@ -132,7 +139,7 @@ fun HomeScreen(sharedViewModelTokenEId: SharedViewTokenEId, sharedViewModelPerfi
                         .clickable {
                             //rememberNavController.navigate("navigation_proliseum")
                             onNavigate("navigation_proliseum")
-                                   },
+                        },
                     painter = painterResource(id = R.drawable.menu),
                     contentDescription = stringResource(id = R.string.button_sair),
                     tint = Color(255, 255, 255, 255)
@@ -176,6 +183,176 @@ fun HomeScreen(sharedViewModelTokenEId: SharedViewTokenEId, sharedViewModelPerfi
             }
 
         }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            Box(
+                modifier = Modifier
+                    .height(250.dp)
+                    .width(390.dp)
+                    .background(
+                        brush = Brush.horizontalGradient(
+                            listOf(
+                                BlackTransparentProliseum, BlackTransparentProliseum
+                            )
+                        )
+                    )
+            ) {
+
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Text(
+                            text = "SEJA UM JOGADOR",
+                            fontFamily = customFontFamily,
+                            fontWeight = FontWeight(900),
+                            fontSize = 32.sp,
+                            textAlign = TextAlign.Center,
+                            color = Color.White
+
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Text(
+                            text = "Para procura por time é necessario criar um perfil de jogador",
+                            fontWeight = FontWeight(600),
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                            color = Color.White
+
+                        )
+                    }
+
+                    Button(
+                        onClick = {
+                            onNavigate("cadastro_usuario_jogador")
+                        },
+                        modifier = Modifier
+                            .height(48.dp),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(RedProliseum)
+
+                    ) {
+                        Text(
+                            text = "CRIE UM PERFIL AQUI!",
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                            color = Color.White,
+                            fontFamily = customFontFamilyText,
+                            fontWeight = FontWeight(900),
+                        )
+                    }
+
+                }
+
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ){
+                Text(
+                    text = "OU",
+                    fontFamily = customFontFamily,
+                    fontWeight = FontWeight(900),
+                    fontSize = 48.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White
+
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Box(
+                modifier = Modifier
+                    .height(250.dp)
+                    .width(390.dp)
+                    .background(
+                        brush = Brush.horizontalGradient(
+                            listOf(
+                                BlackTransparentProliseum, BlackTransparentProliseum
+                            )
+                        )
+                    )
+            ) {
+
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Text(
+                            text = "CRIE UM TIME",
+                            fontFamily = customFontFamily,
+                            fontWeight = FontWeight(900),
+                            fontSize = 32.sp,
+                            textAlign = TextAlign.Center,
+                            color = Color.White
+
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Text(
+                            text = "Criando um time, você poderá buscar por jogadores que desejar",
+                            fontWeight = FontWeight(600),
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                            color = Color.White
+
+                        )
+                    }
+
+                    Button(
+                        onClick = {
+                            onNavigate("criar_time")
+                        },
+                        modifier = Modifier
+                            .height(48.dp),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(RedProliseum)
+
+                    ) {
+                        Text(
+                            text = "CRIE UM TIME AQUI!",
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                            color = Color.White,
+                            fontFamily = customFontFamilyText,
+                            fontWeight = FontWeight(900),
+                        )
+                    }
+
+                }
+
+            }
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -107,7 +107,9 @@ fun CadastroUsuarioJogadorScreen(
                 verticalAlignment = Alignment.Top
             ) {
                 Icon(
-                    modifier = Modifier.clickable { onNavigate("navigation_configuracoes_perfil") },
+                    modifier = Modifier.clickable {
+                        onNavigate("home")
+                                                  },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
                     tint = Color.White

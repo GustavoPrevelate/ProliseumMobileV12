@@ -158,7 +158,7 @@ fun CriarTimeScreen(
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        onNavigate("lista_times")
+                        onNavigate("home")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
