@@ -184,8 +184,21 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(RecusarPropostaService::class.java)
     }
 
+    fun criarPostagemTimeService(): CriarPostagemTimeService {
+        return retrofitFactoryCadastro.create(CriarPostagemTimeService::class.java)
+    }
 
+    fun atualizarPostagemTimeService(): AtualizarPostagemTimeService {
+        return retrofitFactoryCadastro.create(AtualizarPostagemTimeService::class.java)
+    }
 
+    fun apagarPublicacaoTimeService(): ApagarPublicacaoTimeService {
+        return retrofitFactoryCadastro.create(ApagarPublicacaoTimeService::class.java)
+    }
+
+    fun getTimePostagemListService(): GetTimePostagemListService {
+        return retrofitFactoryCadastro.create(GetTimePostagemListService::class.java)
+    }
 
 
 

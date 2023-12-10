@@ -479,7 +479,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                text = "PUBLICAÇÃO DE JOGADORES",
+                text = "JOGADORES DISPONIVEIS",
                 fontFamily = customFontFamilyText,
                 fontSize = 25.sp,
                 fontWeight = FontWeight(900),

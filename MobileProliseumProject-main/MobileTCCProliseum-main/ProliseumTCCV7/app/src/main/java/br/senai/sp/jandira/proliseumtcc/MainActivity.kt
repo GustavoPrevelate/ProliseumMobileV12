@@ -149,6 +149,12 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUserHighlights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUserRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeByIdTeamsDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagens
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacao
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoTimeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeListaPostagensPublicacaoTimePropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedPropostasRecebidas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedPropostasRecebidasGeral
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedPropostasRecebidasGeralDe
@@ -164,6 +170,7 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialD
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoPropostasDePropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedResponsePostRedeSocialDonoRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelListaPublicacaoJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelListaPublicacaoTimes
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeHighlights
@@ -387,6 +394,18 @@ fun MainScreen() {
         val sharedPropostasRecebidasGeralDe = remember { SharedPropostasRecebidasGeralDe() }
         val sharedPropostasRecebidasGeralDeJogadores = remember { SharedPropostasRecebidasGeralDeJogadores() }
         val sharedPropostasRecebidasGeralDePropostas = remember { SharedPropostasRecebidasGeralDePropostas() }
+
+        // SharedViewModel GET PUBLICAÇÕES TIMES
+
+        val sharedViewModelListaPublicacaoTimes = remember { SharedViewModelListaPublicacaoTimes() }
+
+        val sharedGetTimeListaPostagens = remember { SharedGetTimeListaPostagens() }
+        val sharedGetTimeListaPostagensPublicacao = remember { SharedGetTimeListaPostagensPublicacao() }
+        val sharedGetTimeListaPostagensPublicacaoDonoId = remember { SharedGetTimeListaPostagensPublicacaoDonoId() }
+        val sharedGetTimeListaPostagensPublicacaoTime = remember { SharedGetTimeListaPostagensPublicacaoTime() }
+        val sharedGetTimeListaPostagensPublicacaoTimeJogadores = remember { SharedGetTimeListaPostagensPublicacaoTimeJogadores() }
+        val sharedGetTimeListaPostagensPublicacaoTimePropostas = remember { SharedGetTimeListaPostagensPublicacaoTimePropostas() }
+
 
 
         /**********************************************************************************************************************************/
@@ -974,7 +993,63 @@ fun MainScreen() {
         // TELA DE PUBLICAÇÕES DE TIMES
         val listaDePublicacoesDeTimesScreen: @Composable () -> Unit = {
             ListaDePublicacoesDeTimesScreen(
+                sharedViewModelTokenEId,
 
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+
+                // SharedViewModel GET MY TEAMS GERAL
+                sharedGetMyTeamsGeral,
+
+                // SharedViewModelGetMyTeams de USUARIO
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                // SharedViewModelGetMyTeams de TIME
+                sharedViewModelGetMyTeamsTime,
+                sharedViewModelGetMyTeamsTimeJogadores,
+                sharedViewModelGetMyTeamsTimeJogadoresAtivos,
+                sharedViewModelGetMyTeamsTimePropostas,
+
+                sharedViewModelNomeJogadorListaJogadores,
+                sharedViewModelGetListaJogadores,
+                sharedViewModelGetListaJogadoresList,
+                sharedViewModelGetListaJogadoresInfoPerfil,
+                sharedViewModelGetListaJogadoresTimeAtual,
+                sharedViewModelGetListaJogadoresDentroDeTime,
+                sharedViewModelGetListaJogadoresDentroDeTimeList,
+                sharedViewModelGetListaJogadoresPropostasList,
+                sharedViewModelGetListaJogadoresPropostasRecebidas,
+
+
+                sharedViewModelListaPublicacaoTimes,
+
+                sharedGetTimeListaPostagens,
+                sharedGetTimeListaPostagensPublicacao,
+                sharedGetTimeListaPostagensPublicacaoDonoId,
+                sharedGetTimeListaPostagensPublicacaoTime,
+                sharedGetTimeListaPostagensPublicacaoTimeJogadores,
+                sharedGetTimeListaPostagensPublicacaoTimePropostas,
+
+                //SharedViewModel GET MINHA POSTAGEM
+                sharedGetMinhaPostagem,
+                sharedGetMinhaPostagemUser,
+                sharedGetMinhaPostagemUserPropostas,
+                sharedGetMinhaPostagemPostProfile,
             ) {
                 currentScreen = it
             }
