@@ -121,7 +121,7 @@ import retrofit2.Response
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListaDeTimesScreen (
+fun ListaDeTimesMeusTimesScreen (
     sharedViewModelTokenEId: SharedViewTokenEId,
 
     sharedViewModelPerfil: SharedViewModelPerfil,
@@ -421,6 +421,8 @@ fun ListaDeTimesScreen (
         // Ou então, pode simplesmente não fazer nada.
     }
 
+    val idTimeParaFiltragem = sharedGetTimeTeams.id
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -500,7 +502,7 @@ fun ListaDeTimesScreen (
             ) {
                 Button(
                     onClick = {
-                        onNavigate("lista_times_meus_times")
+
 
                     },
                     modifier = Modifier
@@ -595,7 +597,13 @@ fun ListaDeTimesScreen (
 
         val listaIdsTimes = remember { mutableListOf<Int>() }
 
+
+
         if(minhaListaDeTimes != null){
+
+
+
+
             Column(
                 modifier = Modifier
                     .padding(top = 180.dp)
@@ -603,96 +611,103 @@ fun ListaDeTimesScreen (
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 50.dp),
-                    content = {
-                        items(minhaListaDeTimes.size){ index ->
-                            val playerListTimes = minhaListaDeTimes[index]
+
+                val matchingTimeEscolhido = minhaListaDeTimes.filter { it.id == idUser }
+
+                if(matchingTimeEscolhido.isNotEmpty()){
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = 50.dp),
+                        content = {
+                            items(minhaListaDeTimes.size){ index ->
+                                val playerListTimes = minhaListaDeTimes[index]
 
 
 
 
 
-                            val infoPerfilId = playerListTimes.id
+                                val infoPerfilId = playerListTimes.id
 
-                            Log.d("ID TIMES", "Number of ids: ${infoPerfilId}")
+                                Log.d("ID TIMES", "Number of ids: ${infoPerfilId}")
 
-                            val idInfoTime = playerListTimes?.id ?: 0
-                            val nomeTimeInfoTime = playerListTimes?.nome_time ?: ""
-                            val biografiaTimeInfoTime = playerListTimes?.biografia ?: ""
-                            val jogoTimeInfoTime = playerListTimes?.jogo ?: 0
-                            val listaJogadoresTimeInfoTime = playerListTimes?.jogadores ?: null
-                            val listaDonoTimeInfoTime = playerListTimes?.dono ?: null
-                            val listaPropostasTimeInfoTime = playerListTimes?.propostas
+                                val idInfoTime = playerListTimes?.id ?: 0
+                                val nomeTimeInfoTime = playerListTimes?.nome_time ?: ""
+                                val biografiaTimeInfoTime = playerListTimes?.biografia ?: ""
+                                val jogoTimeInfoTime = playerListTimes?.jogo ?: 0
+                                val listaJogadoresTimeInfoTime = playerListTimes?.jogadores ?: null
+                                val listaDonoTimeInfoTime = playerListTimes?.dono ?: null
+                                val listaPropostasTimeInfoTime = playerListTimes?.propostas
 
 //                        val listaJogadoresTimeInfoTime = playerListTimes?.jogadores
 //                        val listaOrganizacaoTimeInfoTime = playerListTimes?.organizacao
 //                        val listaPropostasTimeInfoTime = playerListTimes?.propostas
 
-                            val idDonoTime = playerListTimes.dono?.id ?: 0
-                            val nomeGerenciadorTime = playerListTimes.dono?.nickname ?: ""
+                                val idDonoTime = playerListTimes.dono?.id ?: 0
+                                val nomeGerenciadorTime = playerListTimes.dono?.nickname ?: ""
 
 
 
-                            listaIdsTimes.add(idInfoTime)
+                                listaIdsTimes.add(idInfoTime)
 
-                            val imageRef = remember { mutableStateOf<StorageReference?>(null) }
+                                val imageRef = remember { mutableStateOf<StorageReference?>(null) }
 
-                            if(idInfoTime != null && idInfoTime != 0){
-
-
-                                val storage = Firebase.storage
-
-                                if (playerListTimes != null) {
-
-                                    if (idInfoTime != null && idInfoTime != 0) {
-                                        // Utilize o ID do perfil aqui
-                                        imageRef.value = storage.reference.child("team/$idInfoTime/profile")
-                                    } else {
-                                        Log.e("ID DO PERFIL INVÁLIDO", "O ID do perfil é nulo ou igual a zero")
-                                    }
-                                } else {
-                                    Log.e("LISTA DE JOGADORES VAZIA", "A lista de jogadores está vazia ou nula")
-                                }
+                                if(idInfoTime != null && idInfoTime != 0){
 
 
-                            } else{
-                                Log.e("TOKEN NULO", "Token do usuario esta nulo")
-                                Log.e("ERRO", "As informaçoes do usuario nao foram carregadas")
-                            }
+                                    val storage = Firebase.storage
 
-                            var imageUri by remember { mutableStateOf<Uri?>(null) }
+                                    if (playerListTimes != null) {
 
-                            if (imageRef.value != null) { // Verifique a referência do Firebase
-                                LaunchedEffect(Unit) {
-                                    try {
-                                        val uriOrg = imageRef.value!!.downloadUrl.await()
-                                        imageUri = uriOrg
-
-                                        Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriOrg}")
-
-                                    } catch (e: Exception) {
-                                        // Trate os erros, se houver algum
-                                        Log.e("DEBUG", "Erro ao buscar imagem: $e")
-                                    }
-                                }
-                            }
-
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .height(250.dp)
-                                    .padding(top = 20.dp),
-                            ) {
-                                Button(
-                                    onClick = {
-
-                                        // Verifique se listaJogadoresTimeInfoTime não é nulo antes de atribuir ao ViewModel
-                                        listaJogadoresTimeInfoTime?.let { jogadoresList ->
-                                            sharedGetTimeTeams.jogadores = jogadoresList
+                                        if (idInfoTime != null && idInfoTime != 0) {
+                                            // Utilize o ID do perfil aqui
+                                            imageRef.value = storage.reference.child("team/$idInfoTime/profile")
+                                        } else {
+                                            Log.e("ID DO PERFIL INVÁLIDO", "O ID do perfil é nulo ou igual a zero")
                                         }
+                                    } else {
+                                        Log.e("LISTA DE JOGADORES VAZIA", "A lista de jogadores está vazia ou nula")
+                                    }
+
+
+                                } else{
+                                    Log.e("TOKEN NULO", "Token do usuario esta nulo")
+                                    Log.e("ERRO", "As informaçoes do usuario nao foram carregadas")
+                                }
+
+                                var imageUri by remember { mutableStateOf<Uri?>(null) }
+
+                                if (imageRef.value != null) { // Verifique a referência do Firebase
+                                    LaunchedEffect(Unit) {
+                                        try {
+                                            val uriOrg = imageRef.value!!.downloadUrl.await()
+                                            imageUri = uriOrg
+
+                                            Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriOrg}")
+
+                                        } catch (e: Exception) {
+                                            // Trate os erros, se houver algum
+                                            Log.e("DEBUG", "Erro ao buscar imagem: $e")
+                                        }
+                                    }
+                                }
+
+                                if(
+                                    playerListTimes.dono.id == idUser
+                                ){
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .height(250.dp)
+                                            .padding(top = 20.dp),
+                                    ) {
+                                        Button(
+                                            onClick = {
+
+                                                // Verifique se listaJogadoresTimeInfoTime não é nulo antes de atribuir ao ViewModel
+                                                listaJogadoresTimeInfoTime?.let { jogadoresList ->
+                                                    sharedGetTimeTeams.jogadores = jogadoresList
+                                                }
 
 //                                    listaDonoTimeInfoTime?.let { donoList ->
 //                                        sharedGetTimeTeams.dono = donoList
@@ -701,102 +716,102 @@ fun ListaDeTimesScreen (
 
 
 
-                                        val timeId = infoPerfilId // Obtenha o ID do time clicado
-                                        val verificacao = true
+                                                val timeId = infoPerfilId // Obtenha o ID do time clicado
+                                                val verificacao = true
 
-                                        if (verificacao == true) {
-                                            if (timeId != null) {
-                                                verificarIdDoTimeFilter(
-                                                    sharedGetTime,
-                                                    timeId
-                                                )
-                                            }
-                                            sharedGetTime.selectedTimeFilterId = timeId
-                                            Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetTime.selectedTimeFilterId}")
+                                                if (verificacao == true) {
+                                                    if (timeId != null) {
+                                                        verificarIdDoTimeFilterMeusTimes(
+                                                            sharedGetTime,
+                                                            timeId
+                                                        )
+                                                    }
+                                                    sharedGetTime.selectedTimeFilterId = timeId
+                                                    Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetTime.selectedTimeFilterId}")
 
 
-                                            sharedGetTimeDono.id = idDonoTime
-                                            Log.e("ID DONO ORIGINAL", "Id do dono do time na lista time${idDonoTime}")
-                                            onNavigate("carregar_informacoes_lista_times")
+                                                    sharedGetTimeDono.id = idDonoTime
+                                                    Log.e("ID DONO ORIGINAL", "Id do dono do time na lista time${idDonoTime}")
+                                                    onNavigate("carregar_informacoes_lista_times")
 
-                                        }
-
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(250.dp)
-                                        .padding(start = 0.dp, top = 0.dp),
-                                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                                    colors = ButtonDefaults.buttonColors(BlackTransparentProliseum),
-                                ) {
-
-                                    //Times
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxSize(),
-                                        horizontalArrangement = Arrangement.Center,
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-
-                                        Box(contentAlignment = Alignment.BottomEnd) {
-                                            Card(
-                                                modifier = Modifier
-                                                    .height(150.dp)
-                                                    .width(150.dp),
-
-                                                shape = CircleShape
-                                            ) {
-
-                                                if (idUser != null && idUser != 0) {
-                                                    // Exiba a imagem se a URI estiver definida
-                                                    AsyncImage(
-                                                        model = imageUri,
-                                                        contentDescription = null,
-                                                        modifier = Modifier.fillMaxSize(),
-                                                        contentScale = ContentScale.Crop
-                                                    )
-                                                } else {
-                                                    // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
-                                                    Text("Carregando imagem...")
                                                 }
-                                            }
-                                        }
 
-                                        Spacer(modifier = Modifier.padding(start = 20.dp))
+                                            },
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(250.dp)
+                                                .padding(start = 0.dp, top = 0.dp),
+                                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                                            colors = ButtonDefaults.buttonColors(BlackTransparentProliseum),
+                                        ) {
 
-                                        Column {
-
-                                            Text(
-                                                text = "${playerListTimes.nome_time}",
-                                                color = Color.White,
-                                                modifier = Modifier.padding(5.dp),
-                                                fontWeight = FontWeight(900),
-                                                fontFamily = customFontFamilyText,
-                                                fontSize = 20.sp
-                                            )
-
-                                            Card(
+                                            //Times
+                                            Row(
                                                 modifier = Modifier
-                                                    .height(75.dp)
-                                                    .width(75.dp),
-                                                colors = CardDefaults.cardColors(RedProliseum)
+                                                    .fillMaxSize(),
+                                                horizontalArrangement = Arrangement.Center,
+                                                verticalAlignment = Alignment.CenterVertically
                                             ) {
-                                                Image(
-                                                    painter =
-                                                    if ("${playerListTimes.jogo}" == "0") painterResource(
-                                                        id = R.drawable.iconlol
-                                                    )
-                                                    else if ("${playerListTimes.jogo}" == "1") painterResource(id = R.drawable.iconlol)
-                                                    else if ("${playerListTimes.jogo}" == "2") painterResource(id = R.drawable.iconlol)
-                                                    else painter,
-                                                    contentDescription = "",
-                                                    modifier = Modifier.fillMaxSize(),
-                                                    alignment = Alignment.Center,
-                                                    colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                                                )
-                                            }
 
-                                            Spacer(modifier = Modifier.height(5.dp))
+                                                Box(contentAlignment = Alignment.BottomEnd) {
+                                                    Card(
+                                                        modifier = Modifier
+                                                            .height(150.dp)
+                                                            .width(150.dp),
+
+                                                        shape = CircleShape
+                                                    ) {
+
+                                                        if (idUser != null && idUser != 0) {
+                                                            // Exiba a imagem se a URI estiver definida
+                                                            AsyncImage(
+                                                                model = imageUri,
+                                                                contentDescription = null,
+                                                                modifier = Modifier.fillMaxSize(),
+                                                                contentScale = ContentScale.Crop
+                                                            )
+                                                        } else {
+                                                            // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                                                            Text("Carregando imagem...")
+                                                        }
+                                                    }
+                                                }
+
+                                                Spacer(modifier = Modifier.padding(start = 20.dp))
+
+                                                Column {
+
+                                                    Text(
+                                                        text = "${playerListTimes.nome_time}",
+                                                        color = Color.White,
+                                                        modifier = Modifier.padding(5.dp),
+                                                        fontWeight = FontWeight(900),
+                                                        fontFamily = customFontFamilyText,
+                                                        fontSize = 20.sp
+                                                    )
+
+                                                    Card(
+                                                        modifier = Modifier
+                                                            .height(75.dp)
+                                                            .width(75.dp),
+                                                        colors = CardDefaults.cardColors(RedProliseum)
+                                                    ) {
+                                                        Image(
+                                                            painter =
+                                                            if ("${playerListTimes.jogo}" == "0") painterResource(
+                                                                id = R.drawable.iconlol
+                                                            )
+                                                            else if ("${playerListTimes.jogo}" == "1") painterResource(id = R.drawable.iconlol)
+                                                            else if ("${playerListTimes.jogo}" == "2") painterResource(id = R.drawable.iconlol)
+                                                            else painter,
+                                                            contentDescription = "",
+                                                            modifier = Modifier.fillMaxSize(),
+                                                            alignment = Alignment.Center,
+                                                            colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                                                        )
+                                                    }
+
+                                                    Spacer(modifier = Modifier.height(5.dp))
 
 //                            Text(
 //                                text = "${playerListTimes.id}",
@@ -810,34 +825,39 @@ fun ListaDeTimesScreen (
 //                            Spacer(modifier = Modifier.width(5.dp))
 
 
-                                            Text(
-                                                text = "GERENCIADO POR ${nomeGerenciadorTime}",
-                                                color = Color.White,
-                                                modifier = Modifier.padding(5.dp),
-                                                fontWeight = FontWeight(600),
-                                                fontFamily = customFontFamilyText,
-                                                fontSize = 16.sp
-                                            )
+                                                    Text(
+                                                        text = "GERENCIADO POR ${nomeGerenciadorTime}",
+                                                        color = Color.White,
+                                                        modifier = Modifier.padding(5.dp),
+                                                        fontWeight = FontWeight(600),
+                                                        fontFamily = customFontFamilyText,
+                                                        fontSize = 16.sp
+                                                    )
+
+                                                }
+
+
+                                            }
+
 
                                         }
-
-
                                     }
 
-
+                                    Spacer(modifier = Modifier.height(25.dp))
                                 }
-                            }
 
-                            Spacer(modifier = Modifier.height(25.dp))
+
+                            }
                         }
-                    }
-                )
+                    )
+                }
+
             }
         }
     }
 }
 
-fun verificarIdDoTimeFilter(
+fun verificarIdDoTimeFilterMeusTimes(
     sharedGetTime: SharedGetTime,
     timeId: Int // Adicione um novo parâmetro para o ID do time
 ) {

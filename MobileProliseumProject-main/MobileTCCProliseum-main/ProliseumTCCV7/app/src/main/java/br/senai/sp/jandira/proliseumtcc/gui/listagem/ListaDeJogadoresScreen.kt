@@ -528,6 +528,10 @@ fun ListaDeJogadoresScreen(
             )
         }
 
+        Column {
+
+        }
+
         Spacer(modifier = Modifier.height(100.dp))
 
         val listaIdsPerfisJogadores = remember { mutableListOf<Int>() }

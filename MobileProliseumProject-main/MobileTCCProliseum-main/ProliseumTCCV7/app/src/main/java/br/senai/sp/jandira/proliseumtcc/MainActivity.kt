@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import br.senai.sp.jandira.proliseumtcc.filtragem.SharedFiltragemListaTimes
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelDataAndGenderCadastroUser
@@ -83,6 +84,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioJogadorScree
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroDadosPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroGeneroEDataNascimentoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.FinalizarCadastroUsuarioPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarFiltragemListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesListaPublicacoesJogadoresScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesMinhaPublicacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorListaTimesQueFoiEscolhidoScreen
@@ -109,6 +111,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.listagem.EscolherTimeParaCriarPostag
 import br.senai.sp.jandira.proliseumtcc.gui.listagem.EscolherTimeParaVisualizarPostagemTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDeInscricoesParaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDePropostasRecebidasParaJogadoresScreen
+import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDeTimesMeusTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.CriarHighLightScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.EditarHighLightScreen
 import br.senai.sp.jandira.proliseumtcc.gui.meus_highlights.ListaMeusHighLightsScreen
@@ -479,6 +482,10 @@ fun MainScreen() {
         val sharedEntrarNaPeneiraAceptedJogadoresTimeAtual = remember { SharedEntrarNaPeneiraAceptedJogadoresTimeAtual() }
         val sharedEntrarNaPeneiraAceptedJogadoresTimeAtualJogadores = remember { SharedEntrarNaPeneiraAceptedJogadoresTimeAtualJogadores() }
         val sharedEntrarNaPeneiraAceptedJogadoresTimeAtualPropostas = remember { SharedEntrarNaPeneiraAceptedJogadoresTimeAtualPropostas() }
+
+        // SharedViewModel FILTRAGEM LISTAGEM DE TIMES
+
+        val sharedFiltragemListaTimes = remember { SharedFiltragemListaTimes() }
 
 
 
@@ -1522,6 +1529,8 @@ fun MainScreen() {
                 sharedGetTimeTeamsJogadoresPerfilId,
                 sharedGetTimeDono,
                 sharedGetTimeTeamsPropostas,
+
+                sharedFiltragemListaTimes,
             ) {
                 currentScreen = it
             }
@@ -2758,6 +2767,78 @@ fun MainScreen() {
             }
         }
 
+        val carregarFiltragemListaTimesScreen: @Composable () -> Unit = {
+            CarregarFiltragemListaTimesScreen(
+                sharedViewModelTokenEId,
+                sharedFiltragemListaTimes,
+
+                ) {
+                currentScreen = it
+            }
+        }
+
+        val listaDeTimesMeusTimesScreen: @Composable () -> Unit = {
+            ListaDeTimesMeusTimesScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+                sharedViewModelPerfilEditarOutro,
+                sharedViewModelPerfilJogadorOutro,
+                sharedViewModelPerfilOrganizadorOutro,
+
+                // SharedViewModel GET MY TEAMS GERAL
+                sharedGetMyTeamsGeral,
+
+                // SharedViewModelGetMyTeams de USUARIO
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                // SharedViewModelGetMyTeams de TIME
+                sharedViewModelGetMyTeamsTime,
+                sharedViewModelGetMyTeamsTimeJogadores,
+                sharedViewModelGetMyTeamsTimeJogadoresAtivos,
+                sharedViewModelGetMyTeamsTimePropostas,
+
+                sharedViewModelNomeJogadorListaJogadores,
+                sharedViewModelGetListaJogadores,
+                sharedViewModelGetListaJogadoresList,
+                sharedViewModelGetListaJogadoresInfoPerfil,
+                sharedViewModelGetListaJogadoresTimeAtual,
+                sharedViewModelGetListaJogadoresDentroDeTime,
+                sharedViewModelGetListaJogadoresDentroDeTimeList,
+                sharedViewModelGetListaJogadoresPropostasList,
+                sharedViewModelGetListaJogadoresPropostasRecebidas,
+
+                // SharedViewModel GET TIME BY ID
+                sharedGetTime,
+                sharedGetTimeTeams,
+                sharedGetTimeTeamsJogadores,
+                sharedGetTimeTeamsJogadoresPerfilId,
+                sharedGetTimeDono,
+                sharedGetTimeTeamsPropostas,
+
+                sharedFiltragemListaTimes,
+
+                ) {
+                currentScreen = it
+            }
+        }
+
 
 
 
@@ -2853,6 +2934,8 @@ fun MainScreen() {
                     "lista_inscricoes_para_times" -> listaDeInscricoesParaTimesScreen()
                     "carregar_tela_inscritos_postagem_time" -> carregarTelaInscritosPostagemTimeScreen()
                     "carregar_tela_listagem_inscricoes" -> carregarTelaListagemDeInscricoesScreen()
+                    "carregar_filtragem_lista_times" -> carregarFiltragemListaTimesScreen()
+                    "lista_times_meus_times" -> listaDeTimesMeusTimesScreen()
 
 
                     else -> startScreen()

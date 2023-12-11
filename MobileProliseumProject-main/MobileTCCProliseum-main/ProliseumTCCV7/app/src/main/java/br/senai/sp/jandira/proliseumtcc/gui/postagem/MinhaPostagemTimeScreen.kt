@@ -205,7 +205,8 @@ fun MinhaPostagemTimeScreen(
     val prosMinhaPublicacao = sharedGetTimeListaPostagensPublicacao.pros
 
 
-    var idTimeEscolhido by remember { mutableStateOf(sharedGetTimeTeams.id) }
+    var
+            idTimeEscolhido by remember { mutableStateOf(sharedGetTimeTeams.id) }
 
     Log.e("ID DO TIME","ID DO TIME ESCOLHIDO: ${idTimeEscolhido}")
 
