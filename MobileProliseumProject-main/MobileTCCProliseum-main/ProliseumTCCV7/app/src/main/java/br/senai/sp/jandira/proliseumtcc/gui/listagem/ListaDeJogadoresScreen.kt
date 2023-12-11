@@ -21,12 +21,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,13 +46,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.filtragem.SharedFiltragemListaJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDe
@@ -111,6 +118,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaDeJogadoresScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
@@ -166,6 +174,8 @@ fun ListaDeJogadoresScreen(
 //    sharedGetProfileByIdPlayerProfileTimeAtual: SharedGetProfileByIdPlayerProfileTimeAtual,
 //    sharedGetProfileByIdPlayerProfileTimeAtualJogadores: SharedGetProfileByIdPlayerProfileTimeAtualJogadores,
 //    sharedGetProfileByIdPlayerProfileTimeAtualPropostas: SharedGetProfileByIdPlayerProfileTimeAtualPropostas,
+
+    sharedFiltragemListaJogadores: SharedFiltragemListaJogadores,
     onNavigate: (String) -> Unit
 ) {
     val token = sharedViewModelTokenEId.token
@@ -312,6 +322,16 @@ fun ListaDeJogadoresScreen(
     // Restante do seu código de validação do token
     Log.d("CarregarPerfilUsuarioScreen", "Token: $token")
 
+    var filtragemNomeJogadorState by remember { mutableStateOf(sharedFiltragemListaJogadores.name) }
+
+    LaunchedEffect(sharedFiltragemListaJogadores) {
+
+        // Esta parte só será executada quando o composable for inicializado
+        filtragemNomeJogadorState = sharedFiltragemListaJogadores.name
+
+        // Atribua outras variáveis de estado para outros campos da mesma maneira
+    }
+
     if(token != null && token.isNotEmpty()){
 
 //                val perPage by remember { mutableStateOf<Int?>(null) }
@@ -320,18 +340,18 @@ fun ListaDeJogadoresScreen(
 
         val perPage = 0
         val page = 0
-        val name = ""
+        val nomeJogadorFiltrado = sharedFiltragemListaJogadores.name
 
 
         sharedViewModelNomeJogadorListaJogadores.perPage = perPage
         sharedViewModelNomeJogadorListaJogadores.page = page
-        sharedViewModelNomeJogadorListaJogadores.name = name
+        sharedViewModelNomeJogadorListaJogadores.name = nomeJogadorFiltrado
 
 
 
         val getInfoJogadoresService = RetrofitFactoryCadastro().getJogadoresService()
 
-        getInfoJogadoresService.getListajogadores(perPage, page, name).enqueue(object :
+        getInfoJogadoresService.getListajogadores(perPage, page, nomeJogadorFiltrado).enqueue(object :
             Callback<ResponseGetListaJogadores> {
             override fun onResponse(call: Call<ResponseGetListaJogadores>, response: Response<ResponseGetListaJogadores>) {
                 if (response.isSuccessful) {
@@ -483,62 +503,110 @@ fun ListaDeJogadoresScreen(
                 )
             )
     ) {
-        ///////
-        // Imagem Capa
-//        Column(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(200.dp)
-//
-//        ) {
-//
-//            if (idUser != null && idUser != 0) {
-//                // Exiba a imagem se a URI estiver definida
-//                AsyncImage(
-//                    model = imageOrgCapaUri,
-//                    contentDescription = null,
-//                    contentScale = ContentScale.Crop
-//                )
-//            } else {
-//                // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
-//
-//            }
-//        }
-
-        Row(
-            modifier = Modifier.padding(start = 20.dp, top = 20.dp)
-        ) {
-            Icon(
-                modifier = Modifier.clickable {
-                    //rememberNavController.navigate("home")
-                    onNavigate("navigation_proliseum")
-                },
-                painter = painterResource(id = R.drawable.arrow_back_32),
-                contentDescription = stringResource(id = R.string.button_sair),
-                tint = Color.White
-            )
-            Spacer(modifier = Modifier.height(40.dp))
-
-            Text(
-                text = "JOGADORES",
-                fontFamily = customFontFamilyText,
-                fontSize = 25.sp,
-                fontWeight = FontWeight(900),
-                color = Color.White
-            )
-        }
 
         Column {
+            Row(
+                modifier = Modifier.padding(start = 20.dp, top = 20.dp)
+            ) {
+                Icon(
+                    modifier = Modifier.clickable {
+                        //rememberNavController.navigate("home")
+                        onNavigate("navigation_proliseum")
+                    },
+                    painter = painterResource(id = R.drawable.arrow_back_32),
+                    contentDescription = stringResource(id = R.string.button_sair),
+                    tint = Color.White
+                )
+                Spacer(modifier = Modifier.height(40.dp))
 
+                Text(
+                    text = "JOGADORES",
+                    fontFamily = customFontFamilyText,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight(900),
+                    color = Color.White
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+
+                Button(
+                    onClick = {
+
+                        sharedFiltragemListaJogadores.name = filtragemNomeJogadorState
+
+                        onNavigate("carregar_filtragem_lista_jogadores")
+
+                    },
+                    modifier = Modifier
+                        .width(390.dp)
+                        .height(50.dp)
+                        .padding(start = 0.dp, top = 0.dp),
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    colors = ButtonDefaults.buttonColors(RedProliseum),
+                ) {
+                    Text(
+                        text = "Filtrar",
+                        fontFamily = customFontFamilyText,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight(900),
+                        color = Color.White
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ){
+
+
+
+                filtragemNomeJogadorState?.let {
+                    OutlinedTextField(
+                        value = it,
+                        onValueChange = { filtragemNomeJogadorState = it },
+                        modifier = Modifier
+
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                        label = {
+                            Text(
+                                text = "FILTRAGEM DE TIME",
+                                color = Color.White,
+                                fontFamily = customFontFamilyText,
+                                fontWeight = FontWeight(600),
+                            )
+                        },
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            unfocusedBorderColor = Color(255, 255, 255, 255),
+                            focusedBorderColor = Color(255, 255, 255, 255),
+                            cursorColor = Color.White
+                        ),
+                        textStyle = TextStyle(color = Color.White)
+                    )
+                }
+
+
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
         }
 
-        Spacer(modifier = Modifier.height(100.dp))
+
 
         val listaIdsPerfisJogadores = remember { mutableListOf<Int>() }
 
         Column(
             modifier = Modifier
-                .padding(top = 20.dp)
+                .padding(top = 160.dp)
             ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center

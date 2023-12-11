@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import br.senai.sp.jandira.proliseumtcc.filtragem.SharedFiltragemListaJogadores
 import br.senai.sp.jandira.proliseumtcc.filtragem.SharedFiltragemListaTimes
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
@@ -84,6 +85,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioJogadorScree
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroDadosPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroGeneroEDataNascimentoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.FinalizarCadastroUsuarioPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarFiltragemListaJogadoresScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarFiltragemListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesListaPublicacoesJogadoresScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesMinhaPublicacaoScreen
@@ -486,6 +488,10 @@ fun MainScreen() {
         // SharedViewModel FILTRAGEM LISTAGEM DE TIMES
 
         val sharedFiltragemListaTimes = remember { SharedFiltragemListaTimes() }
+
+        // SharedViewModel FILTRAGEM LISTAGEM DE JOGADORES
+
+        val sharedFiltragemListaJogadores = remember {  SharedFiltragemListaJogadores() }
 
 
 
@@ -1064,6 +1070,8 @@ fun MainScreen() {
                 sharedViewModelGetListaJogadoresDentroDeTimeList,
                 sharedViewModelGetListaJogadoresPropostasList,
                 sharedViewModelGetListaJogadoresPropostasRecebidas,
+
+                sharedFiltragemListaJogadores,
             ) {
                 currentScreen = it
             }
@@ -2840,6 +2848,15 @@ fun MainScreen() {
         }
 
 
+        val carregarFiltragemListaJogadoresScreen: @Composable () -> Unit = {
+            CarregarFiltragemListaJogadoresScreen(
+                sharedViewModelTokenEId,
+                sharedFiltragemListaJogadores,
+
+                ) {
+                currentScreen = it
+            }
+        }
 
 
 
@@ -2936,6 +2953,7 @@ fun MainScreen() {
                     "carregar_tela_listagem_inscricoes" -> carregarTelaListagemDeInscricoesScreen()
                     "carregar_filtragem_lista_times" -> carregarFiltragemListaTimesScreen()
                     "lista_times_meus_times" -> listaDeTimesMeusTimesScreen()
+                    "carregar_filtragem_lista_jogadores" -> carregarFiltragemListaJogadoresScreen()
 
 
                     else -> startScreen()
