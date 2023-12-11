@@ -436,7 +436,92 @@ fun NavegacaoConfiguracoesMeuPerfilPrincipal(
             Spacer(modifier = Modifier.height(10.dp))
 
 
+            fun deletarPerfilJogador(
+                sharedViewModelTokenEId: SharedViewTokenEId
+            ){
+
+                val token = sharedViewModelTokenEId.token
+
+                // Obtenha o serviço Retrofit para editar o perfil do usuário
+                val deletarMeuPerfilJogadorService = RetrofitFactoryCadastro().deletarMeuPerfilDeJogadorService()
+
+                // Realize a chamada de API para editar o perfil
+                deletarMeuPerfilJogadorService.deletarPerfilJogador( "Bearer " + token )
+                    .enqueue(object : Callback<GenericResponse> {
+                        override fun onResponse(
+                            call: Call<GenericResponse>,
+                            response: Response<GenericResponse>
+                        ) {
+                            if (response.isSuccessful) {
+                                Log.d(
+                                    "apagarPerfilJogador",
+                                    "apagarPerfilJogador, Saiu do time com sucesso: ${response.code()}"
+                                )
+
+
+                                camposPreenchidosCorretamente = false
+                                mensagemSucessoInputsPerfil.value = "Perfil de jogador deletado!"
+
+
+                            } else {
+
+                                camposPreenchidosCorretamente = false
+                                mensagemSucessoInputsPerfil.value = "Falha ao tentar apagar perfil de jogador!"
+
+                                Log.d(
+                                    "apagarPerfilJogador",
+                                    "apagarPerfilJogador, Falha ao tentar sair  do time: ${response.code()}"
+                                )
+
+                                Log.d(
+                                    "apagarPerfilJogador",
+                                    "apagarPerfilJogador, Corpo da resposta: ${response.errorBody()?.string()}"
+                                )
+                            }
+                        }
+
+                        override fun onFailure(call: Call<GenericResponse>, t: Throwable) {
+                            // Trate o erro de falha na rede.
+                            Log.d("apagarPerfilJogador", "Erro de rede: ${t.message}")
+                        }
+                    })
+            }
+
+            Button(
+                onClick = {
+                    deletarPerfilJogador(
+                        sharedViewModelTokenEId
+                    )
+
+                },
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .height(48.dp),
+                shape = RoundedCornerShape(73.dp),
+                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
+
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.deletar_perfil_jogador),
+                    contentDescription = stringResource(id = R.string.button_proximo),
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.padding(start = 20.dp))
+                Text(
+                    text = "DELETAR PERFIL JOGADOR",
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = customFontFamilyText,
+                    fontWeight = FontWeight(900),
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+
         }
+
 
         LaunchedEffect(camposPreenchidosCorretamente) {
             if (!camposPreenchidosCorretamente) {

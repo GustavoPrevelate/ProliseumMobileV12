@@ -224,6 +224,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(EntrarNaPeneiraService::class.java)
     }
 
+    fun deletarMeuPerfilDeJogadorService(): DeletarMeuPerfilDeJogadorService {
+        return retrofitFactoryCadastro.create(DeletarMeuPerfilDeJogadorService::class.java)
+    }
+
 
 
 
