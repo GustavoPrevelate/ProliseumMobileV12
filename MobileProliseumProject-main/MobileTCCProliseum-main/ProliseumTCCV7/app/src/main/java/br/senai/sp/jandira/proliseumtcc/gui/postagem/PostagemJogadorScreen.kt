@@ -445,7 +445,7 @@ fun PostagemJogadorScreen(
         //PopUp
         LaunchedEffect(camposPreenchidosCorretamente) {
             if (!camposPreenchidosCorretamente) {
-                delay(15000)
+                delay(3000)
                 camposPreenchidosCorretamente = true
             }
         }

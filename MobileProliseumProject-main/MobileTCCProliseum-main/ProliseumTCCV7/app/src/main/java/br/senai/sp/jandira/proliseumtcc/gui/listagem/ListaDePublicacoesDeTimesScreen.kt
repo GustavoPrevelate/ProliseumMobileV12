@@ -4,6 +4,9 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,12 +28,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +51,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.model.EntrarNaPeneira
+import br.senai.sp.jandira.proliseumtcc.model.GenericResponse
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemList
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemListPublicacao
 import br.senai.sp.jandira.proliseumtcc.model.GetTimePostagemList
@@ -115,6 +122,7 @@ import coil.request.ImageRequest
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 import retrofit2.Call
 import retrofit2.Callback
@@ -313,6 +321,9 @@ fun ListaDePublicacoesDeTimesScreen(
             .data(photoUri)
             .build()
     )
+
+    var camposPreenchidosCorretamente by rememberSaveable { mutableStateOf(true) }
+    var mensagemErroInputsPerfil = rememberSaveable { mutableStateOf("") }
 
     var publicacoesTimes by remember {
         mutableStateOf(listOf<GetTimePostagemListPublicacao>())
@@ -942,6 +953,53 @@ fun ListaDePublicacoesDeTimesScreen(
 
                                         }
 
+                                        fun entrarNaPeneira(
+                                            sharedViewModelTokenEId: SharedViewTokenEId
+                                        ){
+
+                                            val token = sharedViewModelTokenEId.token
+
+                                            // Obtenha o serviço Retrofit para editar o perfil do usuário
+                                            val entrarNaPeneiraService = RetrofitFactoryCadastro().entrarNaPeneiraService()
+
+                                            // Realize a chamada de API para editar o perfil
+                                            entrarNaPeneiraService.entrarNaPeneira( "Bearer " + token, idTimePublicaoTime )
+                                                .enqueue(object : Callback<EntrarNaPeneira> {
+                                                    override fun onResponse(
+                                                        call: Call<EntrarNaPeneira>,
+                                                        response: Response<EntrarNaPeneira>
+                                                    ) {
+                                                        if (response.isSuccessful) {
+                                                            Log.d(
+                                                                "EntrarNaPeneira",
+                                                                "EntrarNaPeneira, Entrou na peneira com sucesso: ${response.code()}"
+                                                            )
+
+                                                            camposPreenchidosCorretamente = false
+                                                            mensagemErroInputsPerfil.value = "Entrou na peneira!"
+                                                            // Trate a resposta bem-sucedida, se necessário
+                                                        } else {
+
+                                                            // Trate a resposta não bem-sucedida
+                                                            Log.d(
+                                                                "EntrarNaPeneira",
+                                                                "EntrarNaPeneira, Falha ao tentar entrar na peneira: ${response.code()}"
+                                                            )
+                                                            // Log do corpo da resposta (se necessário)
+                                                            Log.d(
+                                                                "EntrarNaPeneira",
+                                                                "EntrarNaPeneira, Corpo da resposta: ${response.errorBody()?.string()}"
+                                                            )
+                                                        }
+                                                    }
+
+                                                    override fun onFailure(call: Call<EntrarNaPeneira>, t: Throwable) {
+                                                        // Trate o erro de falha na rede.
+                                                        Log.d("EntrarNaPeneira", "Erro de rede: ${t.message}")
+                                                    }
+                                                })
+                                        }
+
                                         Column(
                                             modifier = Modifier
                                                 .fillMaxSize(),
@@ -950,6 +1008,10 @@ fun ListaDePublicacoesDeTimesScreen(
                                         ) {
                                             Button(
                                                 onClick = {
+                                                    entrarNaPeneira(
+                                                        sharedViewModelTokenEId
+                                                    )
+
 
 
 
@@ -983,6 +1045,27 @@ fun ListaDePublicacoesDeTimesScreen(
                     }
                 }
             )
+        }
+        //PopUp
+        LaunchedEffect(camposPreenchidosCorretamente) {
+            if (!camposPreenchidosCorretamente) {
+                delay(5000)
+                camposPreenchidosCorretamente = true
+                onNavigate("home")
+            }
+        }
+
+        AnimatedVisibility(
+            visible = !camposPreenchidosCorretamente,
+            enter = slideInVertically(initialOffsetY = { it }),
+            exit = slideOutVertically(targetOffsetY = { it })
+        ) {
+            Snackbar(
+                modifier = Modifier.padding(top = 16.dp),
+                action = {}
+            ) {
+                Text(text = mensagemErroInputsPerfil.value)
+            }
         }
     }
 }
