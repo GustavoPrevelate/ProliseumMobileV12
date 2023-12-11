@@ -27,3 +27,5 @@ val blackProliseum = Color(0xFF1f1e31)
 val outroBlackTransparente = Color(0xDD1F1E31)
 
 val cinzaProliseumElos = Color(0xFF888888)
+
+val cinzaBemClaro = Color(0x27888888)

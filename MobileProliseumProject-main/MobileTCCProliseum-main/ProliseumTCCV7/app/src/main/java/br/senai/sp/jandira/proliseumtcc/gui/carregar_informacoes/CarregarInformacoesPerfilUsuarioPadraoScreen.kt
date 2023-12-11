@@ -14,12 +14,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import br.senai.sp.jandira.proliseumtcc.model.AGetMyTime
+import br.senai.sp.jandira.proliseumtcc.model.MeusTimes
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganizador
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.model.ProfileResponse
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeTimeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeTimePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserHighlights
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTimeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTimePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsUserPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDe
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilPropostasDeHighlights
@@ -56,8 +77,17 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
     sharedViewModelPlayerProfileTimeAtualJogadores: SharedViewModelPlayerProfileTimeAtualJogadores,
     sharedViewModelPlayerProfileTimeAtualPropostas: SharedViewModelPlayerProfileTimeAtualPropostas,
 
-    sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
-    sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
+    //SharedViewModel GET MY TIME ATUALIZADO
+    sharedAGetMyTime: SharedAGetMyTime,
+    sharedAGetMyTimeTime: SharedAGetMyTimeTime,
+    sharedAGetMyTimeTimeJogadores: SharedAGetMyTimeTimeJogadores,
+    sharedAGetMyTimeTimePropostas: SharedAGetMyTimeTimePropostas,
+
+    sharedAGetMyTimeUser: SharedAGetMyTimeUser,
+    sharedAGetMyTimeUserHighlights: SharedAGetMyTimeUserHighlights,
+    sharedAGetMyTimeUserPropostas: SharedAGetMyTimeUserPropostas,
+    sharedAGetMyTimeUserRedeSocial: SharedAGetMyTimeUserRedeSocial,
+
     onNavigate: (String) -> Unit
 ) {
 
@@ -105,6 +135,9 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
                 val token = sharedViewModelTokenEId.token
 
                 if(token != null && token.isNotEmpty()){
+
+
+
 
                     val profileService = RetrofitFactoryCadastro().getPerfilUsuarioService()
 
@@ -275,6 +308,10 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
                         }
 
                     })
+
+
+
+
 
                 } else{
                     Log.e("TOKEN NULO","o token esta nulo, carregando informaçoes")

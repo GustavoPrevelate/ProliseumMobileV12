@@ -212,6 +212,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(SairDoTimeService::class.java)
     }
 
+    fun aGetMyTimeService(): AGetMyTimeService {
+        return retrofitFactoryCadastro.create(AGetMyTimeService::class.java)
+    }
+
 
 
 

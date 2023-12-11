@@ -132,6 +132,14 @@ import br.senai.sp.jandira.proliseumtcc.gui.postagem.MinhaPostagemTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.postagem.PostagemJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.proposta.EnviarPropostaScreen
 import br.senai.sp.jandira.proliseumtcc.gui.proposta.EnviarPropostaSegundaParteScreen
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeTimeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeTimePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserHighlights
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTime
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeAdded
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeDono
@@ -432,6 +440,20 @@ fun MainScreen() {
         val sharedGetPeneiraAceptedTimeJogadores = remember { SharedGetPeneiraAceptedTimeJogadores() }
         val sharedGetPeneiraAceptedTimePropostas = remember { SharedGetPeneiraAceptedTimePropostas() }
 
+        // SharedViewModel GET MY TIME ATUALIZADO
+
+        val sharedAGetMyTime = remember { SharedAGetMyTime() }
+        val sharedAGetMyTimeTime = remember { SharedAGetMyTimeTime() }
+        val sharedAGetMyTimeTimeJogadores = remember { SharedAGetMyTimeTimeJogadores() }
+        val sharedAGetMyTimeTimePropostas = remember { SharedAGetMyTimeTimePropostas() }
+
+        val sharedAGetMyTimeUser = remember { SharedAGetMyTimeUser() }
+        val sharedAGetMyTimeUserHighlights = remember { SharedAGetMyTimeUserHighlights() }
+        val sharedAGetMyTimeUserPropostas = remember { SharedAGetMyTimeUserPropostas() }
+        val sharedAGetMyTimeUserRedeSocial = remember { SharedAGetMyTimeUserRedeSocial() }
+
+
+
 
         /**********************************************************************************************************************************/
 
@@ -484,7 +506,57 @@ fun MainScreen() {
 
         // TELA HOME
         val homeScreen: @Composable () -> Unit = {
-            HomeScreen(sharedViewModelTokenEId, sharedViewModelPerfil) {
+            HomeScreen(
+                sharedViewModelTokenEId,
+
+                sharedViewModelPerfil,
+                sharedViewModelUser,
+                sharedViewModelPerfilPropostas,
+                sharedViewModelPerfilPropostasDe,
+                sharedViewModelPerfilPropostasDeJogadores,
+                sharedViewModelPerfilPropostasDePropostas,
+                sharedViewModelPerfilPropostasDeRedeSocial,
+                sharedViewModelPerfilPropostasDeHighlights,
+
+                sharedViewModelPlayerProfile,
+                sharedViewModelPlayerProfileTimeAtual,
+                sharedViewModelPlayerProfileTimeAtualJogadores,
+                sharedViewModelPlayerProfileTimeAtualPropostas,
+
+                //SharedViewModel GET MY TIME ATUALIZADO
+                sharedAGetMyTime,
+                sharedAGetMyTimeTime,
+                sharedAGetMyTimeTimeJogadores,
+                sharedAGetMyTimeTimePropostas,
+
+                sharedAGetMyTimeUser,
+                sharedAGetMyTimeUserHighlights,
+                sharedAGetMyTimeUserPropostas,
+                sharedAGetMyTimeUserRedeSocial,
+
+                sharedViewModelListaPublicacaoTimes,
+
+                sharedGetTimeListaPostagens,
+                sharedGetTimeListaPostagensPublicacao,
+                sharedGetTimeListaPostagensPublicacaoDonoId,
+                sharedGetTimeListaPostagensPublicacaoTime,
+                sharedGetTimeListaPostagensPublicacaoTimeJogadores,
+                sharedGetTimeListaPostagensPublicacaoTimePropostas,
+
+                // SharedViewModel LISTA POSTAGEM JOGADORES
+
+                sharedViewModelListaPublicacaoJogadores,
+
+                sharedGetListaPostagens,
+                sharedGetListaPostagensPublicacao,
+                sharedGetListaPostagensPublicacaoDonoId,
+
+                //SharedViewModel GET MINHA POSTAGEM
+                sharedGetMinhaPostagem,
+                sharedGetMinhaPostagemUser,
+                sharedGetMinhaPostagemUserPropostas,
+                sharedGetMinhaPostagemPostProfile,
+            ) {
                 currentScreen = it
             }
         }
@@ -508,8 +580,16 @@ fun MainScreen() {
                 sharedViewModelPlayerProfileTimeAtualJogadores,
                 sharedViewModelPlayerProfileTimeAtualPropostas,
 
-                sharedViewModelPerfilJogador,
-                sharedViewModelPerfilOrganizador,
+                //SharedViewModel GET MY TIME ATUALIZADO
+                sharedAGetMyTime,
+                sharedAGetMyTimeTime,
+                sharedAGetMyTimeTimeJogadores,
+                sharedAGetMyTimeTimePropostas,
+
+                sharedAGetMyTimeUser,
+                sharedAGetMyTimeUserHighlights,
+                sharedAGetMyTimeUserPropostas,
+                sharedAGetMyTimeUserRedeSocial,
             ) {
                 currentScreen = it
             }
