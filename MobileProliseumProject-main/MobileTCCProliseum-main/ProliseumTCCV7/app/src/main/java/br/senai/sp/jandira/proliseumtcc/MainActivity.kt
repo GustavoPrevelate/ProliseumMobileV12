@@ -588,6 +588,16 @@ fun MainScreen() {
                 sharedAGetTimeFilterByUserTeams,
                 sharedAGetTimeFilterByUserTeamsJogadores,
                 sharedAGetTimeFilterByUserTeamsPropostas,
+
+                sharedGetProfileByIdDoUsuario,
+                sharedGetProfileByIdUser,
+                sharedGetProfileByIdUserRedeSocial,
+                sharedGetProfileByIdUserHighlights,
+
+                sharedGetProfileByIdPlayerProfile,
+                sharedGetProfileByIdPlayerProfileTimeAtual,
+                sharedGetProfileByIdPlayerProfileTimeAtualJogadores,
+                sharedGetProfileByIdPlayerProfileTimeAtualPropostas,
             ) {
                 currentScreen = it
             }

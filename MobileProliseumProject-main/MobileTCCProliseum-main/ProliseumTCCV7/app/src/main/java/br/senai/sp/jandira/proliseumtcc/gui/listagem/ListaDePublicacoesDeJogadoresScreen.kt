@@ -904,7 +904,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
                                                 onClick = {
                                                     sharedGetProfileByIdUser.id = idDonoPublicacaoJogador
 
-                                                          onNavigate("enviar_proposta")
+                                                    onNavigate("enviar_proposta")
                                                 },
                                                 modifier = Modifier
                                                     .width(260.dp)
