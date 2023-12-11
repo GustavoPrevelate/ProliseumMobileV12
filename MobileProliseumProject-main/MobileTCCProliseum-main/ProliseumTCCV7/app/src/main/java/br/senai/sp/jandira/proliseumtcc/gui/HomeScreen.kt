@@ -1208,38 +1208,44 @@ fun HomeScreen(
                                                                 })
                                                         }
 
-                                                        Column(
-                                                            modifier = Modifier
-                                                                .fillMaxSize(),
-                                                            horizontalAlignment = Alignment.End,
-                                                            verticalArrangement = Arrangement.Center
-                                                        ) {
-                                                            Button(
-                                                                onClick = {
-                                                                    entrarNaPeneira(
-                                                                        sharedViewModelTokenEId
-                                                                    )
 
-
-
-
-                                                                },
+                                                        if(verificarSeUsuarioTemPerfilDeJogador == null){
+                                                            Log.e("VERIFICANDO SE TEM PERFIL DE JOGADOR", "VERIFICANDO SE TEM PERFIL DE JOGADOR")
+                                                        } else if(verificarSeUsuarioTemPerfilDeJogador != null){
+                                                            Column(
                                                                 modifier = Modifier
-                                                                    .width(170.dp)
-                                                                    .height(50.dp)
-                                                                    .padding(start = 0.dp, top = 0.dp),
-                                                                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                                                                colors = ButtonDefaults.buttonColors(RedProliseum),
+                                                                    .fillMaxSize(),
+                                                                horizontalAlignment = Alignment.End,
+                                                                verticalArrangement = Arrangement.Center
                                                             ) {
-                                                                Text(
-                                                                    text = "INSCREVER-SE",
-                                                                    fontFamily = customFontFamilyText,
-                                                                    fontSize = 16.sp,
-                                                                    fontWeight = FontWeight(900),
-                                                                    color = Color.White
-                                                                )
+                                                                Button(
+                                                                    onClick = {
+                                                                        entrarNaPeneira(
+                                                                            sharedViewModelTokenEId
+                                                                        )
+
+
+
+
+                                                                    },
+                                                                    modifier = Modifier
+                                                                        .width(170.dp)
+                                                                        .height(50.dp)
+                                                                        .padding(start = 0.dp, top = 0.dp),
+                                                                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                                                                    colors = ButtonDefaults.buttonColors(RedProliseum),
+                                                                ) {
+                                                                    Text(
+                                                                        text = "INSCREVER-SE",
+                                                                        fontFamily = customFontFamilyText,
+                                                                        fontSize = 16.sp,
+                                                                        fontWeight = FontWeight(900),
+                                                                        color = Color.White
+                                                                    )
+                                                                }
                                                             }
                                                         }
+
 
 
                                                     }
@@ -1765,35 +1771,40 @@ fun HomeScreen(
 
                                                         }
 
-
-                                                        Column(
-                                                            modifier = Modifier
-                                                                .fillMaxSize(),
-                                                            horizontalAlignment = Alignment.End,
-                                                            verticalArrangement = Arrangement.Center
-                                                        ) {
-                                                            Button(
-                                                                onClick = {
-                                                                    sharedGetProfileByIdUser.id = idDonoPublicacaoJogador
-
-                                                                    onNavigate("enviar_proposta")
-                                                                },
+                                                        if(verificarSeUsuarioPossuiTimeAtualizado.isEmpty()){
+                                                            Log.e("SEM TIME PARA ENVIAR PROPOSTA","SEM TIME PARA ENVIAR PROPOSTA")
+                                                        } else if(verificarSeUsuarioPossuiTimeAtualizado.isNotEmpty()){
+                                                            Column(
                                                                 modifier = Modifier
-                                                                    .width(260.dp)
-                                                                    .height(50.dp)
-                                                                    .padding(start = 0.dp, top = 0.dp),
-                                                                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                                                                colors = ButtonDefaults.buttonColors(RedProliseum),
+                                                                    .fillMaxSize(),
+                                                                horizontalAlignment = Alignment.End,
+                                                                verticalArrangement = Arrangement.Center
                                                             ) {
-                                                                Text(
-                                                                    text = "ENVIAR PROPOSTA",
-                                                                    fontFamily = customFontFamilyText,
-                                                                    fontSize = 12.sp,
-                                                                    fontWeight = FontWeight(900),
-                                                                    color = Color.White
-                                                                )
+                                                                Button(
+                                                                    onClick = {
+                                                                        sharedGetProfileByIdUser.id = idDonoPublicacaoJogador
+
+                                                                        onNavigate("enviar_proposta")
+                                                                    },
+                                                                    modifier = Modifier
+                                                                        .width(260.dp)
+                                                                        .height(50.dp)
+                                                                        .padding(start = 0.dp, top = 0.dp),
+                                                                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                                                                    colors = ButtonDefaults.buttonColors(RedProliseum),
+                                                                ) {
+                                                                    Text(
+                                                                        text = "ENVIAR PROPOSTA",
+                                                                        fontFamily = customFontFamilyText,
+                                                                        fontSize = 12.sp,
+                                                                        fontWeight = FontWeight(900),
+                                                                        color = Color.White
+                                                                    )
+                                                                }
                                                             }
                                                         }
+
+
 
 
                                                     }

@@ -48,12 +48,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.model.AGetTimeFilterByUser
+import br.senai.sp.jandira.proliseumtcc.model.AGetTimeFilterByUserTeams
 import br.senai.sp.jandira.proliseumtcc.model.GetMinhaPostagem
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemList
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemListPublicacao
 import br.senai.sp.jandira.proliseumtcc.model.ResponseGetListaJogadores
 import br.senai.sp.jandira.proliseumtcc.model.ResponseGetListaJogadoresList
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeams
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeamsJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeamsPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagens
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacaoDonoId
@@ -185,6 +191,11 @@ fun ListaDePublicacoesDeJogadoresScreen(
     sharedGetProfileByIdPlayerProfileTimeAtual: SharedGetProfileByIdPlayerProfileTimeAtual,
     sharedGetProfileByIdPlayerProfileTimeAtualJogadores: SharedGetProfileByIdPlayerProfileTimeAtualJogadores,
     sharedGetProfileByIdPlayerProfileTimeAtualPropostas: SharedGetProfileByIdPlayerProfileTimeAtualPropostas,
+
+    sharedAGetTimeFilterByUser: SharedAGetTimeFilterByUser,
+    sharedAGetTimeFilterByUserTeams: SharedAGetTimeFilterByUserTeams,
+    sharedAGetTimeFilterByUserTeamsJogadores: SharedAGetTimeFilterByUserTeamsJogadores,
+    sharedAGetTimeFilterByUserTeamsPropostas: SharedAGetTimeFilterByUserTeamsPropostas,
     onNavigate: (String) -> Unit
 ) {
     val token = sharedViewModelTokenEId.token
@@ -321,14 +332,97 @@ fun ListaDePublicacoesDeJogadoresScreen(
             .build()
     )
 
+
+    var validacaoMyTimeFiltersByUser by remember {
+        mutableStateOf(listOf<AGetTimeFilterByUserTeams>())
+    }
+
+    val aGetFilterTimeByUserService = RetrofitFactoryCadastro().aGetFilterTimesByUserService()
+
+    aGetFilterTimeByUserService.getFilterTimesByUser("Bearer " + token, idUser).enqueue(object : Callback<AGetTimeFilterByUser> {
+        override fun onResponse(call: Call<AGetTimeFilterByUser>, response: Response<AGetTimeFilterByUser>) {
+            if (response.isSuccessful) {
+                val aGetTimeFilterByUser = response.body()
+
+                val teamsAGetTimeFilterByUser = aGetTimeFilterByUser?.teams
+
+                if(teamsAGetTimeFilterByUser != null){
+                    validacaoMyTimeFiltersByUser = teamsAGetTimeFilterByUser
+                }
+
+                sharedAGetTimeFilterByUser.teams = aGetTimeFilterByUser?.teams
+
+                if(teamsAGetTimeFilterByUser != null){
+                    for(listTeamsAGetTimeFilterByUser in teamsAGetTimeFilterByUser){
+                        val idListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.id
+                        val nomeTimeListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.nome_time
+                        val jogoListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.jogo
+                        val biografiaListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.biografia
+
+                        sharedAGetTimeFilterByUserTeams.id = listTeamsAGetTimeFilterByUser.id
+                        sharedAGetTimeFilterByUserTeams.nome_time = listTeamsAGetTimeFilterByUser.nome_time
+                        sharedAGetTimeFilterByUserTeams.jogo = listTeamsAGetTimeFilterByUser.jogo
+                        sharedAGetTimeFilterByUserTeams.biografia = listTeamsAGetTimeFilterByUser.biografia
+
+
+                        val jogadoresListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.jogadores
+                        val propostasListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.propostas
+
+                        sharedAGetTimeFilterByUserTeams.jogadores = listTeamsAGetTimeFilterByUser.jogadores
+                        sharedAGetTimeFilterByUserTeams.propostas = listTeamsAGetTimeFilterByUser.propostas
+
+                        if(jogadoresListTeamsAGetTimeFilterByUser != null){
+                            for (listJogadoresListTeamsAGetTimeFilterByUser in jogadoresListTeamsAGetTimeFilterByUser){
+                                val idListJogadoresListTeamsAGetTimeFilterByUser = listJogadoresListTeamsAGetTimeFilterByUser.id
+                                val nicknameListJogadoresListTeamsAGetTimeFilterByUser = listJogadoresListTeamsAGetTimeFilterByUser.nickname
+                                val jogoListJogadoresListTeamsAGetTimeFilterByUser = listJogadoresListTeamsAGetTimeFilterByUser.jogo
+                                val funcaoListJogadoresListTeamsAGetTimeFilterByUser = listJogadoresListTeamsAGetTimeFilterByUser.funcao
+                                val eloListJogadoresListTeamsAGetTimeFilterByUser = listJogadoresListTeamsAGetTimeFilterByUser.elo
+
+                                sharedAGetTimeFilterByUserTeamsJogadores.id = listJogadoresListTeamsAGetTimeFilterByUser.id
+                                sharedAGetTimeFilterByUserTeamsJogadores.nickname = listJogadoresListTeamsAGetTimeFilterByUser.nickname
+                                sharedAGetTimeFilterByUserTeamsJogadores.jogo = listJogadoresListTeamsAGetTimeFilterByUser.jogo
+                                sharedAGetTimeFilterByUserTeamsJogadores.funcao = listJogadoresListTeamsAGetTimeFilterByUser.funcao
+                                sharedAGetTimeFilterByUserTeamsJogadores.elo = listJogadoresListTeamsAGetTimeFilterByUser.elo
+                            }
+                        }
+
+                        if(propostasListTeamsAGetTimeFilterByUser != null){
+                            for(listPropostasListTeamsAGetTimeFilterByUser in propostasListTeamsAGetTimeFilterByUser){
+                                val idListPropostasListTeamsAGetTimeFilterByUser = listPropostasListTeamsAGetTimeFilterByUser.id
+                                val menssagemListPropostasListTeamsAGetTimeFilterByUser = listPropostasListTeamsAGetTimeFilterByUser.menssagem
+
+                                sharedAGetTimeFilterByUserTeamsPropostas.id = listPropostasListTeamsAGetTimeFilterByUser.id
+                                sharedAGetTimeFilterByUserTeamsPropostas.menssagem = listPropostasListTeamsAGetTimeFilterByUser.menssagem
+
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+        }
+
+        override fun onFailure(call: Call<AGetTimeFilterByUser>, t: Throwable) {
+            Log.e("CarregarInformacoesPerfilOrganizacaoScreen", "Erro na chamada da API: ${t.message}")
+        }
+
+
+    })
+
+
+
+    val verificarSeUsuarioPossuiTimeAtualizado = validacaoMyTimeFiltersByUser
+
+    Log.e("OLHA A VERIFICACAO","VERIFICACAO PARA VER SE O CARA POSSUI TIME ${verificarSeUsuarioPossuiTimeAtualizado}")
+
+
     var publicacoesJogadores by remember {
         mutableStateOf(listOf<GetPostagemListPublicacao>())
     }
 
-    // Se o tempo de espera terminou, continue com a validação do token
-    // Restante do código aqui
-//    val token = sharedViewModelTokenEId.token
-    // Restante do seu código de validação do token
     Log.d("CarregarPerfilUsuarioScreen", "Token: $token")
 
     if(token != null && token.isNotEmpty()){
@@ -894,32 +988,36 @@ fun ListaDePublicacoesDeJogadoresScreen(
                                         }
 
 
-                                        Column(
-                                            modifier = Modifier
-                                                .fillMaxSize(),
-                                            horizontalAlignment = Alignment.End,
-                                            verticalArrangement = Arrangement.Center
-                                        ) {
-                                            Button(
-                                                onClick = {
-                                                    sharedGetProfileByIdUser.id = idDonoPublicacaoJogador
-
-                                                    onNavigate("enviar_proposta")
-                                                },
+                                        if(verificarSeUsuarioPossuiTimeAtualizado.isEmpty()){
+                                            Log.e("SEM TIME PARA ENVIAR PROPOSTA","SEM TIME PARA ENVIAR PROPOSTA")
+                                        } else if(verificarSeUsuarioPossuiTimeAtualizado.isNotEmpty()){
+                                            Column(
                                                 modifier = Modifier
-                                                    .width(260.dp)
-                                                    .height(50.dp)
-                                                    .padding(start = 0.dp, top = 0.dp),
-                                                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                                                colors = ButtonDefaults.buttonColors(RedProliseum),
+                                                    .fillMaxSize(),
+                                                horizontalAlignment = Alignment.End,
+                                                verticalArrangement = Arrangement.Center
                                             ) {
-                                                Text(
-                                                    text = "ENVIAR PROPOSTA",
-                                                    fontFamily = customFontFamilyText,
-                                                    fontSize = 12.sp,
-                                                    fontWeight = FontWeight(900),
-                                                    color = Color.White
-                                                )
+                                                Button(
+                                                    onClick = {
+                                                        sharedGetProfileByIdUser.id = idDonoPublicacaoJogador
+
+                                                        onNavigate("enviar_proposta")
+                                                    },
+                                                    modifier = Modifier
+                                                        .width(260.dp)
+                                                        .height(50.dp)
+                                                        .padding(start = 0.dp, top = 0.dp),
+                                                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                                                    colors = ButtonDefaults.buttonColors(RedProliseum),
+                                                ) {
+                                                    Text(
+                                                        text = "ENVIAR PROPOSTA",
+                                                        fontFamily = customFontFamilyText,
+                                                        fontSize = 12.sp,
+                                                        fontWeight = FontWeight(900),
+                                                        color = Color.White
+                                                    )
+                                                }
                                             }
                                         }
 

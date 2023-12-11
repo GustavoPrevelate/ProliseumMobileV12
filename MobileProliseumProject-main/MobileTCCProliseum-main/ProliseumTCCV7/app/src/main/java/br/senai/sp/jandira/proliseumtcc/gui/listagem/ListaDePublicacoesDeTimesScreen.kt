@@ -322,6 +322,8 @@ fun ListaDePublicacoesDeTimesScreen(
             .build()
     )
 
+    val verificarSeUsuarioTemPerfilDeJogador = sharedViewModelPerfil.playerProfile
+
     var camposPreenchidosCorretamente by rememberSaveable { mutableStateOf(true) }
     var mensagemErroInputsPerfil = rememberSaveable { mutableStateOf("") }
 
@@ -329,10 +331,6 @@ fun ListaDePublicacoesDeTimesScreen(
         mutableStateOf(listOf<GetTimePostagemListPublicacao>())
     }
 
-    // Se o tempo de espera terminou, continue com a validação do token
-    // Restante do código aqui
-//    val token = sharedViewModelTokenEId.token
-    // Restante do seu código de validação do token
     Log.d("CarregarPerfilUsuarioScreen", "Token: $token")
 
     if(token != null && token.isNotEmpty()){
@@ -1000,36 +998,40 @@ fun ListaDePublicacoesDeTimesScreen(
                                                 })
                                         }
 
-                                        Column(
-                                            modifier = Modifier
-                                                .fillMaxSize(),
-                                            horizontalAlignment = Alignment.End,
-                                            verticalArrangement = Arrangement.Center
-                                        ) {
-                                            Button(
-                                                onClick = {
-                                                    entrarNaPeneira(
-                                                        sharedViewModelTokenEId
-                                                    )
-
-
-
-
-                                                },
+                                        if(verificarSeUsuarioTemPerfilDeJogador == null){
+                                            Log.e("VERIFICANDO SE TEM PERFIL DE JOGADOR", "VERIFICANDO SE TEM PERFIL DE JOGADOR")
+                                        } else if(verificarSeUsuarioTemPerfilDeJogador != null){
+                                            Column(
                                                 modifier = Modifier
-                                                    .width(170.dp)
-                                                    .height(50.dp)
-                                                    .padding(start = 0.dp, top = 0.dp),
-                                                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                                                colors = ButtonDefaults.buttonColors(RedProliseum),
+                                                    .fillMaxSize(),
+                                                horizontalAlignment = Alignment.End,
+                                                verticalArrangement = Arrangement.Center
                                             ) {
-                                                Text(
-                                                    text = "INSCREVER-SE",
-                                                    fontFamily = customFontFamilyText,
-                                                    fontSize = 16.sp,
-                                                    fontWeight = FontWeight(900),
-                                                    color = Color.White
-                                                )
+                                                Button(
+                                                    onClick = {
+                                                        entrarNaPeneira(
+                                                            sharedViewModelTokenEId
+                                                        )
+
+
+
+
+                                                    },
+                                                    modifier = Modifier
+                                                        .width(170.dp)
+                                                        .height(50.dp)
+                                                        .padding(start = 0.dp, top = 0.dp),
+                                                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                                                    colors = ButtonDefaults.buttonColors(RedProliseum),
+                                                ) {
+                                                    Text(
+                                                        text = "INSCREVER-SE",
+                                                        fontFamily = customFontFamilyText,
+                                                        fontSize = 16.sp,
+                                                        fontWeight = FontWeight(900),
+                                                        color = Color.White
+                                                    )
+                                                }
                                             }
                                         }
 

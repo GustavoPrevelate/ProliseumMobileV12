@@ -1136,6 +1136,11 @@ fun MainScreen() {
                 sharedGetProfileByIdPlayerProfileTimeAtual,
                 sharedGetProfileByIdPlayerProfileTimeAtualJogadores,
                 sharedGetProfileByIdPlayerProfileTimeAtualPropostas,
+
+                sharedAGetTimeFilterByUser,
+                sharedAGetTimeFilterByUserTeams,
+                sharedAGetTimeFilterByUserTeamsJogadores,
+                sharedAGetTimeFilterByUserTeamsPropostas,
             ) {
                 currentScreen = it
             }
