@@ -772,7 +772,7 @@ fun ListaDePublicacoesDeTimesScreen(
 
                                     Spacer(modifier = Modifier.height(10.dp))
 
-                                    Column(
+                                    Row(
                                         modifier = Modifier
                                             .height(80.dp)
                                             .fillMaxWidth()
@@ -787,6 +787,29 @@ fun ListaDePublicacoesDeTimesScreen(
                                             fontFamily = customFontFamilyText,
                                             fontSize = 14.sp
                                         )
+
+                                        Spacer(modifier = Modifier.width(20.dp))
+
+                                        Button(
+                                            onClick = {
+
+
+                                            },
+                                            modifier = Modifier
+                                                .width(170.dp)
+                                                .height(50.dp)
+                                                .padding(start = 0.dp, top = 0.dp),
+                                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                                            colors = ButtonDefaults.buttonColors(RedProliseum),
+                                        ) {
+                                            Text(
+                                                text = "INSCREVER-SE",
+                                                fontFamily = customFontFamilyText,
+                                                fontSize = 18.sp,
+                                                fontWeight = FontWeight(900),
+                                                color = Color.White
+                                            )
+                                        }
 
                                     }
 
@@ -921,8 +944,6 @@ fun ListaDePublicacoesDeTimesScreen(
                                         }
 
                                     }
-
-
 
 
                                 }
