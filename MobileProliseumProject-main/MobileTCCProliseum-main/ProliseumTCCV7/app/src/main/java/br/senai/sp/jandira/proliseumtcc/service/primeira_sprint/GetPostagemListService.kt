@@ -19,7 +19,7 @@ interface GetPostagemListService {
         @Query("page") page: Int?,
         @Query("perPage") perPage: Int?,
         @Query("hora") hora: String?,
-        @Query("elo") elo: Int?,
-        @Query("funcao") funcao: Int?,
+        @Query("elo") elo: String?,
+        @Query("funcao") funcao: String?,
     ): Call<GetPostagemList>
 }

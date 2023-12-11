@@ -48,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.filtragem.SharedFiltragemListaPostagensJogadores
 import br.senai.sp.jandira.proliseumtcc.model.AGetTimeFilterByUser
 import br.senai.sp.jandira.proliseumtcc.model.AGetTimeFilterByUserTeams
 import br.senai.sp.jandira.proliseumtcc.model.GetMinhaPostagem
@@ -196,6 +197,8 @@ fun ListaDePublicacoesDeJogadoresScreen(
     sharedAGetTimeFilterByUserTeams: SharedAGetTimeFilterByUserTeams,
     sharedAGetTimeFilterByUserTeamsJogadores: SharedAGetTimeFilterByUserTeamsJogadores,
     sharedAGetTimeFilterByUserTeamsPropostas: SharedAGetTimeFilterByUserTeamsPropostas,
+
+    sharedFiltragemListaPostagensJogadores: SharedFiltragemListaPostagensJogadores,
     onNavigate: (String) -> Unit
 ) {
     val token = sharedViewModelTokenEId.token
@@ -337,6 +340,8 @@ fun ListaDePublicacoesDeJogadoresScreen(
         mutableStateOf(listOf<AGetTimeFilterByUserTeams>())
     }
 
+
+
     val aGetFilterTimeByUserService = RetrofitFactoryCadastro().aGetFilterTimesByUserService()
 
     aGetFilterTimeByUserService.getFilterTimesByUser("Bearer " + token, idUser).enqueue(object : Callback<AGetTimeFilterByUser> {
@@ -423,6 +428,20 @@ fun ListaDePublicacoesDeJogadoresScreen(
         mutableStateOf(listOf<GetPostagemListPublicacao>())
     }
 
+    var filtragemFuncaoPostagemJogadorState by remember { mutableStateOf(sharedFiltragemListaPostagensJogadores.funcao) }
+    var filtragemEloPostagemJogadorState by remember { mutableStateOf(sharedFiltragemListaPostagensJogadores.elo) }
+    var filtragemHoraJogadorState by remember { mutableStateOf(sharedFiltragemListaPostagensJogadores.hora) }
+
+    LaunchedEffect(sharedFiltragemListaPostagensJogadores) {
+
+        // Esta parte só será executada quando o composable for inicializado
+        filtragemFuncaoPostagemJogadorState = sharedFiltragemListaPostagensJogadores.funcao
+        filtragemEloPostagemJogadorState = sharedFiltragemListaPostagensJogadores.elo
+        filtragemHoraJogadorState = sharedFiltragemListaPostagensJogadores.hora
+
+        // Atribua outras variáveis de estado para outros campos da mesma maneira
+    }
+
     Log.d("CarregarPerfilUsuarioScreen", "Token: $token")
 
     if(token != null && token.isNotEmpty()){
@@ -433,9 +452,9 @@ fun ListaDePublicacoesDeJogadoresScreen(
 
         val perPage = null
         val page = null
-        val hora = null
-        val elo = null
-        val funcao = null
+        val hora = sharedFiltragemListaPostagensJogadores.hora
+        val elo = sharedFiltragemListaPostagensJogadores.elo
+        val funcao = sharedFiltragemListaPostagensJogadores.funcao
         val tipo = 0
 
 
@@ -576,30 +595,36 @@ fun ListaDePublicacoesDeJogadoresScreen(
 //            }
 //        }
 
-        Row(
-            modifier = Modifier.padding(start = 20.dp, top = 20.dp)
-        ) {
-            Icon(
-                modifier = Modifier.clickable {
-                    //rememberNavController.navigate("home")
-                    onNavigate("navigation_proliseum")
-                },
-                painter = painterResource(id = R.drawable.arrow_back_32),
-                contentDescription = stringResource(id = R.string.button_sair),
-                tint = Color.White
-            )
-            Spacer(modifier = Modifier.height(40.dp))
+        Column {
+            Row(
+                modifier = Modifier.padding(start = 20.dp, top = 20.dp)
+            ) {
+                Icon(
+                    modifier = Modifier.clickable {
+                        //rememberNavController.navigate("home")
+                        onNavigate("navigation_proliseum")
+                    },
+                    painter = painterResource(id = R.drawable.arrow_back_32),
+                    contentDescription = stringResource(id = R.string.button_sair),
+                    tint = Color.White
+                )
+                Spacer(modifier = Modifier.height(40.dp))
 
-            Text(
-                text = "JOGADORES DISPONIVEIS",
-                fontFamily = customFontFamilyText,
-                fontSize = 25.sp,
-                fontWeight = FontWeight(900),
-                color = Color.White
-            )
+                Text(
+                    text = "JOGADORES DISPONIVEIS",
+                    fontFamily = customFontFamilyText,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight(900),
+                    color = Color.White
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+
         }
 
-        Spacer(modifier = Modifier.height(100.dp))
+
 
 
 
@@ -676,7 +701,41 @@ fun ListaDePublicacoesDeJogadoresScreen(
             } else if(verificarSeJogadorTemTime != null){
                 Log.e("JA TEM TIME","ESTE JOGADOR JA TEM TIME, PORTANTO NÃO PRECISA DE POSTAGEM!")
             }
+
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.Center
+//            ) {
+//
+//                Button(
+//                    onClick = {
+//
+//                        sharedFiltragemListaPostagensJogadores.funcao = filtragemFuncaoPostagemJogadorState
+//                        sharedFiltragemListaPostagensJogadores.elo = filtragemEloPostagemJogadorState
+//                        sharedFiltragemListaPostagensJogadores.hora = filtragemHoraJogadorState
+//
+//                        onNavigate("carregar_filtragem_lista_publicacoes_jogadores")
+//
+//                    },
+//                    modifier = Modifier
+//                        .width(390.dp)
+//                        .height(50.dp)
+//                        .padding(start = 0.dp, top = 0.dp),
+//                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+//                    colors = ButtonDefaults.buttonColors(RedProliseum),
+//                ) {
+//                    Text(
+//                        text = "Filtrar",
+//                        fontFamily = customFontFamilyText,
+//                        fontSize = 16.sp,
+//                        fontWeight = FontWeight(900),
+//                        color = Color.White
+//                    )
+//                }
+//            }
         }
+
+
 
 
         Column(

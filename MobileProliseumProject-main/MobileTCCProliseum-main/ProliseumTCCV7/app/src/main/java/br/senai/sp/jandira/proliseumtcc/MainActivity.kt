@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.proliseumtcc.filtragem.SharedFiltragemListaJogadores
+import br.senai.sp.jandira.proliseumtcc.filtragem.SharedFiltragemListaPostagensJogadores
 import br.senai.sp.jandira.proliseumtcc.filtragem.SharedFiltragemListaTimes
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
@@ -86,6 +87,8 @@ import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroDadosPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroGeneroEDataNascimentoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.FinalizarCadastroUsuarioPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarFiltragemListaJogadoresScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarFiltragemListaPublicacoesJogadoresScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarFiltragemListaPublicoesJogadoresCarregarScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarFiltragemListaTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesListaPublicacoesJogadoresScreen
 import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesMinhaPublicacaoScreen
@@ -492,6 +495,10 @@ fun MainScreen() {
         // SharedViewModel FILTRAGEM LISTAGEM DE JOGADORES
 
         val sharedFiltragemListaJogadores = remember {  SharedFiltragemListaJogadores() }
+
+        // SharedViewModel FILTRAGEM LISTAGEM DE PUBLICAÇÕES DE TIMES
+
+        val sharedFiltragemListaPostagensJogadores = remember { SharedFiltragemListaPostagensJogadores() }
 
 
 
@@ -1156,6 +1163,8 @@ fun MainScreen() {
                 sharedAGetTimeFilterByUserTeams,
                 sharedAGetTimeFilterByUserTeamsJogadores,
                 sharedAGetTimeFilterByUserTeamsPropostas,
+
+                sharedFiltragemListaPostagensJogadores
             ) {
                 currentScreen = it
             }
@@ -2859,6 +2868,38 @@ fun MainScreen() {
         }
 
 
+        val carregarFiltragemListaPublicoesJogadoresCarregarScreen: @Composable () -> Unit = {
+            CarregarFiltragemListaPublicoesJogadoresCarregarScreen(
+                sharedViewModelTokenEId,
+                sharedFiltragemListaPostagensJogadores,
+
+                ) {
+                currentScreen = it
+            }
+        }
+
+        val carregarFiltragemListaPublicacoesJogadoresScreen: @Composable () -> Unit = {
+            CarregarFiltragemListaPublicacoesJogadoresScreen(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfil,
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+
+                //SharedViewModel GET MINHA POSTAGEM
+                sharedGetMinhaPostagem,
+                sharedGetMinhaPostagemUser,
+                sharedGetMinhaPostagemUserPropostas,
+                sharedGetMinhaPostagemPostProfile,
+
+                sharedFiltragemListaPostagensJogadores,
+
+                ) {
+                currentScreen = it
+            }
+        }
+
+
+
 
 
         // NAVEGAÇÃO DO PROJETO
@@ -2954,6 +2995,8 @@ fun MainScreen() {
                     "carregar_filtragem_lista_times" -> carregarFiltragemListaTimesScreen()
                     "lista_times_meus_times" -> listaDeTimesMeusTimesScreen()
                     "carregar_filtragem_lista_jogadores" -> carregarFiltragemListaJogadoresScreen()
+                    "carregar_filtragem_lista_publicacoes_jogadores" -> carregarFiltragemListaPublicacoesJogadoresScreen()
+                    "carregar_filtragem_lista_publicacoes_jogadores_carregar" -> carregarFiltragemListaPublicoesJogadoresCarregarScreen()
 
 
                     else -> startScreen()

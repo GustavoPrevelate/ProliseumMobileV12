@@ -6,7 +6,7 @@ class SharedViewModelListaPublicacaoJogadores {
     var perPage: Int? = 0
     var page: Int? = 0
     var hora: String? = ""
-    var elo: Int? = 0
-    var funcao: Int? = 0
+    var elo: String? = ""
+    var funcao: String? = ""
     var tipo: Int? = 0
 }

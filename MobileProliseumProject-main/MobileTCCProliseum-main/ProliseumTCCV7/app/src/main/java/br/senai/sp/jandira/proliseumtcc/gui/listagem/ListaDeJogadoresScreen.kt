@@ -579,7 +579,7 @@ fun ListaDeJogadoresScreen(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         label = {
                             Text(
-                                text = "FILTRAGEM DE TIME",
+                                text = "FILTRAGEM DE JOGADORES",
                                 color = Color.White,
                                 fontFamily = customFontFamilyText,
                                 fontWeight = FontWeight(600),
