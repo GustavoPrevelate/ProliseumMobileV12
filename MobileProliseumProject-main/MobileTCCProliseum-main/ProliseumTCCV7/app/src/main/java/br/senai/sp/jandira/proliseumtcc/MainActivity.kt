@@ -140,6 +140,10 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserHighlights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeams
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeamsJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeamsPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTime
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeAdded
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeDono
@@ -452,6 +456,13 @@ fun MainScreen() {
         val sharedAGetMyTimeUserPropostas = remember { SharedAGetMyTimeUserPropostas() }
         val sharedAGetMyTimeUserRedeSocial = remember { SharedAGetMyTimeUserRedeSocial() }
 
+        // SharedViewModel GET FILTER TIMES BY USER
+
+        val sharedAGetTimeFilterByUser = remember { SharedAGetTimeFilterByUser() }
+        val sharedAGetTimeFilterByUserTeams = remember { SharedAGetTimeFilterByUserTeams() }
+        val sharedAGetTimeFilterByUserTeamsJogadores = remember { SharedAGetTimeFilterByUserTeamsJogadores() }
+        val sharedAGetTimeFilterByUserTeamsPropostas = remember { SharedAGetTimeFilterByUserTeamsPropostas() }
+
 
 
 
@@ -556,6 +567,11 @@ fun MainScreen() {
                 sharedGetMinhaPostagemUser,
                 sharedGetMinhaPostagemUserPropostas,
                 sharedGetMinhaPostagemPostProfile,
+
+                sharedAGetTimeFilterByUser,
+                sharedAGetTimeFilterByUserTeams,
+                sharedAGetTimeFilterByUserTeamsJogadores,
+                sharedAGetTimeFilterByUserTeamsPropostas,
             ) {
                 currentScreen = it
             }

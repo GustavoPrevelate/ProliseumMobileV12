@@ -30,6 +30,10 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserHighlights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeams
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeamsJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeamsPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDe
@@ -135,9 +139,6 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
                 val token = sharedViewModelTokenEId.token
 
                 if(token != null && token.isNotEmpty()){
-
-
-
 
                     val profileService = RetrofitFactoryCadastro().getPerfilUsuarioService()
 

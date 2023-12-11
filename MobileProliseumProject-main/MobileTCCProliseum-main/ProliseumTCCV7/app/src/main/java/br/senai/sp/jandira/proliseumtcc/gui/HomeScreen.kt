@@ -57,6 +57,8 @@ import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.BottomNavigationScreeen
 import br.senai.sp.jandira.proliseumtcc.model.AGetMyTime
 import br.senai.sp.jandira.proliseumtcc.model.AGetMyTimeTime
+import br.senai.sp.jandira.proliseumtcc.model.AGetTimeFilterByUser
+import br.senai.sp.jandira.proliseumtcc.model.AGetTimeFilterByUserTeams
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemList
 import br.senai.sp.jandira.proliseumtcc.model.GetPostagemListPublicacao
 import br.senai.sp.jandira.proliseumtcc.model.GetTimePostagemList
@@ -70,6 +72,10 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUser
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserHighlights
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetMyTimeUserRedeSocial
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeams
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeamsJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAGetTimeFilterByUserTeamsPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagens
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacaoDonoId
@@ -177,6 +183,11 @@ fun HomeScreen(
     sharedGetMinhaPostagemUser: SharedGetMinhaPostagemUser,
     sharedGetMinhaPostagemUserPropostas: SharedGetMinhaPostagemUserPropostas,
     sharedGetMinhaPostagemPostProfile: SharedGetMinhaPostagemPostProfile,
+
+    sharedAGetTimeFilterByUser: SharedAGetTimeFilterByUser,
+    sharedAGetTimeFilterByUserTeams: SharedAGetTimeFilterByUserTeams,
+    sharedAGetTimeFilterByUserTeamsJogadores: SharedAGetTimeFilterByUserTeamsJogadores,
+    sharedAGetTimeFilterByUserTeamsPropostas: SharedAGetTimeFilterByUserTeamsPropostas,
     onNavigate: (String) -> Unit
 ) {
 
@@ -239,162 +250,92 @@ fun HomeScreen(
             .build()
     )
 
-    var verificacaoTimeAtualizado by remember {
-        mutableStateOf(listOf<AGetMyTimeTime>())
+    var validacaoMyTimeFiltersByUser by remember {
+        mutableStateOf(listOf<AGetTimeFilterByUserTeams>())
     }
 
-    val aGetMyTimeService = RetrofitFactoryCadastro().aGetMyTimeService()
+    val aGetFilterTimeByUserService = RetrofitFactoryCadastro().aGetFilterTimesByUserService()
 
-    aGetMyTimeService.aGetMyTime("Bearer $token").enqueue(object : Callback<AGetMyTime> {
-        override fun onResponse(call: Call<AGetMyTime>, response: Response<AGetMyTime>) {
+    aGetFilterTimeByUserService.getFilterTimesByUser("Bearer " + token, idUser).enqueue(object : Callback<AGetTimeFilterByUser> {
+        override fun onResponse(call: Call<AGetTimeFilterByUser>, response: Response<AGetTimeFilterByUser>) {
             if (response.isSuccessful) {
-                val aGetMyTimeResponse = response.body()
+                val aGetTimeFilterByUser = response.body()
 
-                val userAGetMyTimeResponse = aGetMyTimeResponse?.user
-                val timeAGetMyTimeResponse = aGetMyTimeResponse?.time
+                val teamsAGetTimeFilterByUser = aGetTimeFilterByUser?.teams
 
-                if(timeAGetMyTimeResponse != null){
-                    verificacaoTimeAtualizado = timeAGetMyTimeResponse
+                if(teamsAGetTimeFilterByUser != null){
+                    validacaoMyTimeFiltersByUser = teamsAGetTimeFilterByUser
                 }
 
+                sharedAGetTimeFilterByUser.teams = aGetTimeFilterByUser?.teams
 
-                sharedAGetMyTime.time = aGetMyTimeResponse?.time
+                if(teamsAGetTimeFilterByUser != null){
+                    for(listTeamsAGetTimeFilterByUser in teamsAGetTimeFilterByUser){
+                        val idListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.id
+                        val nomeTimeListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.nome_time
+                        val jogoListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.jogo
+                        val biografiaListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.biografia
 
-                if(userAGetMyTimeResponse != null){
-                    val idUserAGetMyTimeResponse = userAGetMyTimeResponse.id
-                    val nomeUsuarioUserAGetMyTimeResponse = userAGetMyTimeResponse.nome_usuario
-                    val nomeCompletoUserAGetMyTimeResponse = userAGetMyTimeResponse.nome_completo
-                    val emailUserAGetMyTimeResponse = userAGetMyTimeResponse.email
-                    val dataNascimentoUserAGetMyTimeResponse = userAGetMyTimeResponse.data_nascimento
-                    val generoUserAGetMyTimeResponse = userAGetMyTimeResponse.genero
-                    val nicknameUserAGetMyTimeResponse = userAGetMyTimeResponse.nickname
-                    val biografiaUserAGetMyTimeResponse = userAGetMyTimeResponse.biografia
-
-                    sharedAGetMyTimeUser.id = userAGetMyTimeResponse.id
-                    sharedAGetMyTimeUser.nome_usuario = userAGetMyTimeResponse.nome_usuario
-                    sharedAGetMyTimeUser.nome_completo = userAGetMyTimeResponse.nome_completo
-                    sharedAGetMyTimeUser.email = userAGetMyTimeResponse.email
-                    sharedAGetMyTimeUser.data_nascimento = userAGetMyTimeResponse.data_nascimento
-                    sharedAGetMyTimeUser.genero = userAGetMyTimeResponse.genero
-                    sharedAGetMyTimeUser.nickname = userAGetMyTimeResponse.nickname
-                    sharedAGetMyTimeUser.biografia = userAGetMyTimeResponse.biografia
+                        sharedAGetTimeFilterByUserTeams.id = listTeamsAGetTimeFilterByUser.id
+                        sharedAGetTimeFilterByUserTeams.nome_time = listTeamsAGetTimeFilterByUser.nome_time
+                        sharedAGetTimeFilterByUserTeams.jogo = listTeamsAGetTimeFilterByUser.jogo
+                        sharedAGetTimeFilterByUserTeams.biografia = listTeamsAGetTimeFilterByUser.biografia
 
 
+                        val jogadoresListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.jogadores
+                        val propostasListTeamsAGetTimeFilterByUser = listTeamsAGetTimeFilterByUser.propostas
 
-                    val propostasUserAGetMyTimeResponse = userAGetMyTimeResponse.propostas
-                    val redeSocialUserAGetMyTimeResponse = userAGetMyTimeResponse.redeSocial
-                    val highlightsUserAGetMyTimeResponse = userAGetMyTimeResponse.highlights
+                        sharedAGetTimeFilterByUserTeams.jogadores = listTeamsAGetTimeFilterByUser.jogadores
+                        sharedAGetTimeFilterByUserTeams.propostas = listTeamsAGetTimeFilterByUser.propostas
 
-                    sharedAGetMyTimeUser.propostas = userAGetMyTimeResponse.propostas
-                    sharedAGetMyTimeUser.redeSocial = userAGetMyTimeResponse.redeSocial
-                    sharedAGetMyTimeUser.highlights = userAGetMyTimeResponse.highlights
+                        if(jogadoresListTeamsAGetTimeFilterByUser != null){
+                            for (listJogadoresListTeamsAGetTimeFilterByUser in jogadoresListTeamsAGetTimeFilterByUser){
+                                val idListJogadoresListTeamsAGetTimeFilterByUser = listJogadoresListTeamsAGetTimeFilterByUser.id
+                                val nicknameListJogadoresListTeamsAGetTimeFilterByUser = listJogadoresListTeamsAGetTimeFilterByUser.nickname
+                                val jogoListJogadoresListTeamsAGetTimeFilterByUser = listJogadoresListTeamsAGetTimeFilterByUser.jogo
+                                val funcaoListJogadoresListTeamsAGetTimeFilterByUser = listJogadoresListTeamsAGetTimeFilterByUser.funcao
+                                val eloListJogadoresListTeamsAGetTimeFilterByUser = listJogadoresListTeamsAGetTimeFilterByUser.elo
 
-                    if(propostasUserAGetMyTimeResponse != null){
-                        for(listPropostasUserAGetMyTimeResponse in propostasUserAGetMyTimeResponse){
-                            val idListPropostasUserAGetMyTimeResponse = listPropostasUserAGetMyTimeResponse.id
-                            val menssagemListPropostasUserAGetMyTimeResponse = listPropostasUserAGetMyTimeResponse.menssagem
-
-                            sharedAGetMyTimeUserPropostas.id = listPropostasUserAGetMyTimeResponse.id
-                            sharedAGetMyTimeUserPropostas.menssagem = listPropostasUserAGetMyTimeResponse.menssagem
-                        }
-                    }
-
-                    if(redeSocialUserAGetMyTimeResponse != null){
-                        for(listRedeSocialUserAGetMyTimeResponse in redeSocialUserAGetMyTimeResponse){
-                            val idListRedeSocialUserAGetMyTimeResponse = listRedeSocialUserAGetMyTimeResponse.id
-                            val linkListRedeSocialUserAGetMyTimeResponse = listRedeSocialUserAGetMyTimeResponse.link
-                            val tipoListRedeSocialUserAGetMyTimeResponse = listRedeSocialUserAGetMyTimeResponse.tipo
-
-                            sharedAGetMyTimeUserRedeSocial.id = listRedeSocialUserAGetMyTimeResponse.id
-                            sharedAGetMyTimeUserRedeSocial.link = listRedeSocialUserAGetMyTimeResponse.link
-                            sharedAGetMyTimeUserRedeSocial.tipo = listRedeSocialUserAGetMyTimeResponse.tipo
-
-                        }
-                    }
-
-                    if(highlightsUserAGetMyTimeResponse != null){
-                        for(listHighlightsUserAGetMyTimeResponse in highlightsUserAGetMyTimeResponse){
-                            val idListHighlightsUserAGetMyTimeResponse = listHighlightsUserAGetMyTimeResponse.id
-                            val tituloListHighlightsUserAGetMyTimeResponse = listHighlightsUserAGetMyTimeResponse.titulo
-
-                            sharedAGetMyTimeUserHighlights.id = listHighlightsUserAGetMyTimeResponse.id
-                            sharedAGetMyTimeUserHighlights.titulo = listHighlightsUserAGetMyTimeResponse.titulo
-                        }
-                    }
-                }
-
-
-
-
-                if(timeAGetMyTimeResponse != null){
-                    for(listTimeAGetMyTimeResponse in timeAGetMyTimeResponse){
-
-                        val idListTimeAGetMyTimeResponse = listTimeAGetMyTimeResponse.id
-                        val nomeTimeListTimeAGetMyTimeResponse = listTimeAGetMyTimeResponse.nome_time
-                        val jogoListTimeAGetMyTimeResponse = listTimeAGetMyTimeResponse.jogo
-                        val biografiaListTimeAGetMyTimeResponse = listTimeAGetMyTimeResponse.biografia
-
-                        sharedAGetMyTimeTime.id = listTimeAGetMyTimeResponse.id
-                        sharedAGetMyTimeTime.nome_time = listTimeAGetMyTimeResponse.nome_time
-                        sharedAGetMyTimeTime.jogo = listTimeAGetMyTimeResponse.jogo
-                        sharedAGetMyTimeTime.biografia = listTimeAGetMyTimeResponse.biografia
-
-
-                        val jogadoresListTimeAGetMyTimeResponse = listTimeAGetMyTimeResponse.jogadores
-                        val propostasListTimeAGetMyTimeResponse = listTimeAGetMyTimeResponse.propostas
-
-                        sharedAGetMyTimeTime.jogadores = listTimeAGetMyTimeResponse.jogadores
-                        sharedAGetMyTimeTime.propostas = listTimeAGetMyTimeResponse.propostas
-
-                        if(jogadoresListTimeAGetMyTimeResponse != null){
-                            for(listjogadoresListTimeAGetMyTimeResponse in jogadoresListTimeAGetMyTimeResponse){
-
-                                val idListjogadoresListTimeAGetMyTimeResponse = listjogadoresListTimeAGetMyTimeResponse.id
-                                val nicknameListjogadoresListTimeAGetMyTimeResponse = listjogadoresListTimeAGetMyTimeResponse.nickname
-                                val jogoListjogadoresListTimeAGetMyTimeResponse = listjogadoresListTimeAGetMyTimeResponse.jogo
-                                val funcaoListjogadoresListTimeAGetMyTimeResponse = listjogadoresListTimeAGetMyTimeResponse.funcao
-                                val eloListjogadoresListTimeAGetMyTimeResponse = listjogadoresListTimeAGetMyTimeResponse.elo
-
-                                sharedAGetMyTimeTimeJogadores.id = listjogadoresListTimeAGetMyTimeResponse.id
-                                sharedAGetMyTimeTimeJogadores.nickname = listjogadoresListTimeAGetMyTimeResponse.nickname
-                                sharedAGetMyTimeTimeJogadores.jogo = listjogadoresListTimeAGetMyTimeResponse.jogo
-                                sharedAGetMyTimeTimeJogadores.funcao = listjogadoresListTimeAGetMyTimeResponse.funcao
-                                sharedAGetMyTimeTimeJogadores.elo = listjogadoresListTimeAGetMyTimeResponse.elo
-
+                                sharedAGetTimeFilterByUserTeamsJogadores.id = listJogadoresListTeamsAGetTimeFilterByUser.id
+                                sharedAGetTimeFilterByUserTeamsJogadores.nickname = listJogadoresListTeamsAGetTimeFilterByUser.nickname
+                                sharedAGetTimeFilterByUserTeamsJogadores.jogo = listJogadoresListTeamsAGetTimeFilterByUser.jogo
+                                sharedAGetTimeFilterByUserTeamsJogadores.funcao = listJogadoresListTeamsAGetTimeFilterByUser.funcao
+                                sharedAGetTimeFilterByUserTeamsJogadores.elo = listJogadoresListTeamsAGetTimeFilterByUser.elo
                             }
                         }
 
-                        if(propostasListTimeAGetMyTimeResponse != null){
-                            for(listPropostasListTimeAGetMyTimeResponse in propostasListTimeAGetMyTimeResponse){
-                                val idListPropostasListTimeAGetMyTimeResponse = listPropostasListTimeAGetMyTimeResponse.id
-                                val menssagemListPropostasListTimeAGetMyTimeResponse = listPropostasListTimeAGetMyTimeResponse.menssagem
+                        if(propostasListTeamsAGetTimeFilterByUser != null){
+                            for(listPropostasListTeamsAGetTimeFilterByUser in propostasListTeamsAGetTimeFilterByUser){
+                                val idListPropostasListTeamsAGetTimeFilterByUser = listPropostasListTeamsAGetTimeFilterByUser.id
+                                val menssagemListPropostasListTeamsAGetTimeFilterByUser = listPropostasListTeamsAGetTimeFilterByUser.menssagem
 
-                                sharedAGetMyTimeTimePropostas.id = listPropostasListTimeAGetMyTimeResponse.id
-                                sharedAGetMyTimeTimePropostas.menssagem = listPropostasListTimeAGetMyTimeResponse.menssagem
+                                sharedAGetTimeFilterByUserTeamsPropostas.id = listPropostasListTeamsAGetTimeFilterByUser.id
+                                sharedAGetTimeFilterByUserTeamsPropostas.menssagem = listPropostasListTeamsAGetTimeFilterByUser.menssagem
+
                             }
                         }
                     }
-
                 }
+
 
             }
 
         }
 
-        override fun onFailure(call: Call<AGetMyTime>, t: Throwable) {
+        override fun onFailure(call: Call<AGetTimeFilterByUser>, t: Throwable) {
             Log.e("CarregarInformacoesPerfilOrganizacaoScreen", "Erro na chamada da API: ${t.message}")
         }
 
 
     })
 
-    val verificarSeUsuarioPossuiTime = sharedAGetMyTime.time
 
-    val verificarSeUsuarioPossuiTimeAtualizado = verificacaoTimeAtualizado
+
+    val verificarSeUsuarioPossuiTimeAtualizado = validacaoMyTimeFiltersByUser
 
     val verificarSeUsuarioTemPerfilDeJogador = sharedViewModelPerfil.playerProfile
 
-    Log.e("OLHA A VERIFICACAO","VERIFICACAO PARA VER SE O CARA POSSUI TIME ${verificarSeUsuarioPossuiTime}")
+    Log.e("OLHA A VERIFICACAO","VERIFICACAO PARA VER SE O CARA POSSUI TIME ${verificarSeUsuarioPossuiTimeAtualizado}")
 
 
 
@@ -472,7 +413,7 @@ fun HomeScreen(
 
         }
 
-        if(verificarSeUsuarioTemPerfilDeJogador == null && verificarSeUsuarioPossuiTimeAtualizado == null){
+        if(verificarSeUsuarioTemPerfilDeJogador == null && verificarSeUsuarioPossuiTimeAtualizado.isEmpty()){
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -1207,7 +1148,7 @@ fun HomeScreen(
             //////////////////////////////////////////////
             //////////////////////////////////////////////
 
-            if(verificarSeUsuarioPossuiTimeAtualizado != null){
+            if(verificarSeUsuarioPossuiTimeAtualizado.isNotEmpty()){
                 Column(
                     modifier = Modifier
                         .fillMaxSize()

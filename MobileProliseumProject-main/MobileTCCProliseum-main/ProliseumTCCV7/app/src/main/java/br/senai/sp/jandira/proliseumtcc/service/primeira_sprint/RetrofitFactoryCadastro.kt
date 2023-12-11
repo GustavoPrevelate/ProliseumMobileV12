@@ -216,6 +216,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(AGetMyTimeService::class.java)
     }
 
+    fun aGetFilterTimesByUserService(): AGetFilterTimesByUserService {
+        return retrofitFactoryCadastro.create(AGetFilterTimesByUserService::class.java)
+    }
+
 
 
 
