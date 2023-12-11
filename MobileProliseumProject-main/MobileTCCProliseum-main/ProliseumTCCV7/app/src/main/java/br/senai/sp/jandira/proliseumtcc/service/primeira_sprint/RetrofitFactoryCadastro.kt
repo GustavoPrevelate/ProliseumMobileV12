@@ -220,6 +220,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(AGetFilterTimesByUserService::class.java)
     }
 
+    fun entrarNaPeneiraService(): EntrarNaPeneiraService {
+        return retrofitFactoryCadastro.create(EntrarNaPeneiraService::class.java)
+    }
+
 
 
 

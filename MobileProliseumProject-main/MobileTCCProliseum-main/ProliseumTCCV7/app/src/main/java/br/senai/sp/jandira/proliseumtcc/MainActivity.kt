@@ -153,6 +153,13 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeJ
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeJogadoresTimeAtualJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimeJogadoresTimeAtualJogadoresPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedAdicionarJogadorAoTimePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedEntrarNaPeneira
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedEntrarNaPeneiraAcepted
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedEntrarNaPeneiraAceptedJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedEntrarNaPeneiraAceptedJogadoresPerfilId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedEntrarNaPeneiraAceptedJogadoresTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedEntrarNaPeneiraAceptedJogadoresTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedEntrarNaPeneiraAceptedJogadoresTimeAtualPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagens
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacao
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetListaPostagensPublicacaoDonoId
@@ -463,6 +470,15 @@ fun MainScreen() {
         val sharedAGetTimeFilterByUserTeamsJogadores = remember { SharedAGetTimeFilterByUserTeamsJogadores() }
         val sharedAGetTimeFilterByUserTeamsPropostas = remember { SharedAGetTimeFilterByUserTeamsPropostas() }
 
+        // SharedViewModel PUT PENEIRA OU ENTRAR NA PENEIRA
+
+        val sharedEntrarNaPeneira = remember { SharedEntrarNaPeneira() }
+        val sharedEntrarNaPeneiraAcepted = remember { SharedEntrarNaPeneiraAcepted() }
+        val sharedEntrarNaPeneiraAceptedJogadores = remember { SharedEntrarNaPeneiraAceptedJogadores() }
+        val sharedEntrarNaPeneiraAceptedJogadoresPerfilId = remember { SharedEntrarNaPeneiraAceptedJogadoresPerfilId() }
+        val sharedEntrarNaPeneiraAceptedJogadoresTimeAtual = remember { SharedEntrarNaPeneiraAceptedJogadoresTimeAtual() }
+        val sharedEntrarNaPeneiraAceptedJogadoresTimeAtualJogadores = remember { SharedEntrarNaPeneiraAceptedJogadoresTimeAtualJogadores() }
+        val sharedEntrarNaPeneiraAceptedJogadoresTimeAtualPropostas = remember { SharedEntrarNaPeneiraAceptedJogadoresTimeAtualPropostas() }
 
 
 
@@ -1165,6 +1181,14 @@ fun MainScreen() {
                 sharedGetMinhaPostagemUser,
                 sharedGetMinhaPostagemUserPropostas,
                 sharedGetMinhaPostagemPostProfile,
+
+                sharedEntrarNaPeneira,
+                sharedEntrarNaPeneiraAcepted,
+                sharedEntrarNaPeneiraAceptedJogadores,
+                sharedEntrarNaPeneiraAceptedJogadoresPerfilId,
+                sharedEntrarNaPeneiraAceptedJogadoresTimeAtual,
+                sharedEntrarNaPeneiraAceptedJogadoresTimeAtualJogadores,
+                sharedEntrarNaPeneiraAceptedJogadoresTimeAtualPropostas,
             ) {
                 currentScreen = it
             }
