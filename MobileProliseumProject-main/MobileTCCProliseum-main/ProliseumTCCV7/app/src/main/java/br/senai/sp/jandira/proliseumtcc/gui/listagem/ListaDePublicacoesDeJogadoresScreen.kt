@@ -67,6 +67,14 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdDoUsuario
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdPlayerProfile
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdPlayerProfileTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdPlayerProfileTimeAtualJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdPlayerProfileTimeAtualPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUserHighlights
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetProfileByIdUserRedeSocial
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresDentroDeTime
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresDentroDeTimeList
@@ -167,6 +175,16 @@ fun ListaDePublicacoesDeJogadoresScreen(
     sharedGetMinhaPostagemUser: SharedGetMinhaPostagemUser,
     sharedGetMinhaPostagemUserPropostas: SharedGetMinhaPostagemUserPropostas,
     sharedGetMinhaPostagemPostProfile: SharedGetMinhaPostagemPostProfile,
+
+    sharedGetProfileByIdDoUsuario: SharedGetProfileByIdDoUsuario,
+    sharedGetProfileByIdUser: SharedGetProfileByIdUser,
+    sharedGetProfileByIdUserRedeSocial: SharedGetProfileByIdUserRedeSocial,
+    sharedGetProfileByIdUserHighlights: SharedGetProfileByIdUserHighlights,
+
+    sharedGetProfileByIdPlayerProfile: SharedGetProfileByIdPlayerProfile,
+    sharedGetProfileByIdPlayerProfileTimeAtual: SharedGetProfileByIdPlayerProfileTimeAtual,
+    sharedGetProfileByIdPlayerProfileTimeAtualJogadores: SharedGetProfileByIdPlayerProfileTimeAtualJogadores,
+    sharedGetProfileByIdPlayerProfileTimeAtualPropostas: SharedGetProfileByIdPlayerProfileTimeAtualPropostas,
     onNavigate: (String) -> Unit
 ) {
     val token = sharedViewModelTokenEId.token
@@ -659,7 +677,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .height(450.dp)
+                                .height(550.dp)
                                 .padding(top = 20.dp),
                         ) {
                             Button(
@@ -678,7 +696,7 @@ fun ListaDePublicacoesDeJogadoresScreen(
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(550.dp)
+                                    .height(650.dp)
                                     .padding(start = 0.dp, top = 0.dp),
                                 shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
                                 colors = ButtonDefaults.buttonColors(BlackTransparentProliseum),
@@ -745,140 +763,170 @@ fun ListaDePublicacoesDeJogadoresScreen(
                                     Spacer(modifier = Modifier.height(10.dp))
 
 
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(200.dp),
-                                    ) {
-                                        Column {
+                                    Column {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(150.dp),
+                                        ) {
+                                            Column {
 
-                                            Text(
-                                                text = "ELO",
-                                                color = Color.White,
-                                                modifier = Modifier.padding(5.dp),
-                                                fontWeight = FontWeight(600),
-                                                fontFamily = customFontFamilyText,
-                                                fontSize = 14.sp
-                                            )
+                                                Text(
+                                                    text = "ELO",
+                                                    color = Color.White,
+                                                    modifier = Modifier.padding(5.dp),
+                                                    fontWeight = FontWeight(600),
+                                                    fontFamily = customFontFamilyText,
+                                                    fontSize = 14.sp
+                                                )
 
-                                            Card(
-                                                modifier = Modifier
-                                                    .height(55.dp)
-                                                    .width(55.dp),
-                                                colors = CardDefaults.cardColors(RedProliseum)
+                                                Card(
+                                                    modifier = Modifier
+                                                        .height(55.dp)
+                                                        .width(55.dp),
+                                                    colors = CardDefaults.cardColors(RedProliseum)
+                                                ) {
+                                                    Image(
+                                                        painter =
+                                                        if ("${infoPublicacao.elo}" == "0") painterResource(id = R.drawable.unranked_proliseum_elo)
+                                                        else if ("${infoPublicacao.elo}" == "1") painterResource(id = R.drawable.iron_proliseum_elo)
+                                                        else if ("${infoPublicacao.elo}" == "2") painterResource(id = R.drawable.bronze_proliseum_elo)
+                                                        else if ("${infoPublicacao.elo}" == "3") painterResource(id = R.drawable.silver_proliseum_elo)
+                                                        else if ("${infoPublicacao.elo}" == "4") painterResource(id = R.drawable.gold_proliseum_elo)
+                                                        else if ("${infoPublicacao.elo}" == "5") painterResource(id = R.drawable.platinum_proliseum_elo)
+                                                        else if ("${infoPublicacao.elo}" == "6") painterResource(id = R.drawable.emerald_proliseum_elo)
+                                                        else if ("${infoPublicacao.elo}" == "7") painterResource(id = R.drawable.diamond_proliseum_elo)
+                                                        else if ("${infoPublicacao.elo}" == "8") painterResource(id = R.drawable.master_proliseum_elo)
+                                                        else if ("${infoPublicacao.elo}" == "9") painterResource(id = R.drawable.grandmaster_proliseum_elo)
+                                                        else if ("${infoPublicacao.elo}" == "10") painterResource(id = R.drawable.challenger_proliseum_elo)
+                                                        else painter,
+                                                        contentDescription = "",
+                                                        modifier = Modifier.fillMaxSize(),
+                                                    )
+                                                }
+                                            }
+
+                                            Spacer(modifier = Modifier.width(25.dp))
+
+                                            Column {
+
+                                                Text(
+                                                    text = "FUNÇÃO",
+                                                    color = Color.White,
+                                                    modifier = Modifier.padding(5.dp),
+                                                    fontWeight = FontWeight(600),
+                                                    fontFamily = customFontFamilyText,
+                                                    fontSize = 14.sp
+                                                )
+
+
+                                                Card(
+                                                    modifier = Modifier
+                                                        .height(55.dp)
+                                                        .width(55.dp),
+                                                    colors = CardDefaults.cardColors(RedProliseum)
+                                                ) {
+                                                    Image(
+                                                        painter =
+                                                        if ("${infoPublicacao.funcao}" == "0") painterResource(
+                                                            id = R.drawable.icontoplane
+                                                        )
+                                                        else if ("${infoPublicacao.funcao}" == "1") painterResource(id = R.drawable.iconjungle)
+                                                        else if ("${infoPublicacao.funcao}" == "2") painterResource(id = R.drawable.iconmidlane)
+                                                        else if ("${infoPublicacao.funcao}" == "3") painterResource(id = R.drawable.iconsupport)
+                                                        else if ("${infoPublicacao.funcao}" == "4") painterResource(id = R.drawable.iconadc)
+                                                        else painter,
+                                                        contentDescription = "",
+                                                        modifier = Modifier.fillMaxSize(),
+
+                                                        )
+                                                }
+                                            }
+
+                                            Spacer(modifier = Modifier.width(25.dp))
+
+                                            Column(
+                                                horizontalAlignment = Alignment.CenterHorizontally,
+                                                verticalArrangement = Arrangement.Center
+                                            ){
+                                                Text(
+                                                    text = "HORARIO",
+                                                    color = Color.White,
+                                                    modifier = Modifier.padding(5.dp),
+                                                    fontWeight = FontWeight(600),
+                                                    fontFamily = customFontFamilyText,
+                                                    fontSize = 14.sp
+                                                )
+
+                                                Text(
+                                                    text = "${infoPublicacao.hora}",
+                                                    color = Color.White,
+                                                    modifier = Modifier.padding(5.dp),
+                                                    fontWeight = FontWeight(600),
+                                                    fontFamily = customFontFamilyText,
+                                                    fontSize = 16.sp
+                                                )
+                                            }
+
+                                            Spacer(modifier = Modifier.width(25.dp))
+
+                                            Column(
                                             ) {
-                                                Image(
-                                                    painter =
-                                                    if ("${infoPublicacao.elo}" == "0") painterResource(id = R.drawable.unranked_proliseum_elo)
-                                                    else if ("${infoPublicacao.elo}" == "1") painterResource(id = R.drawable.iron_proliseum_elo)
-                                                    else if ("${infoPublicacao.elo}" == "2") painterResource(id = R.drawable.bronze_proliseum_elo)
-                                                    else if ("${infoPublicacao.elo}" == "3") painterResource(id = R.drawable.silver_proliseum_elo)
-                                                    else if ("${infoPublicacao.elo}" == "4") painterResource(id = R.drawable.gold_proliseum_elo)
-                                                    else if ("${infoPublicacao.elo}" == "5") painterResource(id = R.drawable.platinum_proliseum_elo)
-                                                    else if ("${infoPublicacao.elo}" == "6") painterResource(id = R.drawable.emerald_proliseum_elo)
-                                                    else if ("${infoPublicacao.elo}" == "7") painterResource(id = R.drawable.diamond_proliseum_elo)
-                                                    else if ("${infoPublicacao.elo}" == "8") painterResource(id = R.drawable.master_proliseum_elo)
-                                                    else if ("${infoPublicacao.elo}" == "9") painterResource(id = R.drawable.grandmaster_proliseum_elo)
-                                                    else if ("${infoPublicacao.elo}" == "10") painterResource(id = R.drawable.challenger_proliseum_elo)
-                                                    else painter,
-                                                    contentDescription = "",
-                                                    modifier = Modifier.fillMaxSize(),
+                                                Text(
+                                                    text = "PROS",
+                                                    color = Color.White,
+                                                    modifier = Modifier.padding(5.dp),
+                                                    fontWeight = FontWeight(600),
+                                                    fontFamily = customFontFamilyText,
+                                                    fontSize = 14.sp
+                                                )
+
+                                                Text(
+                                                    text = "${infoPublicacao.pros}",
+                                                    color = Color.White,
+                                                    modifier = Modifier.padding(5.dp),
+                                                    fontWeight = FontWeight(600),
+                                                    fontFamily = customFontFamilyText,
+                                                    fontSize = 14.sp
+                                                )
+                                            }
+
+                                        }
+
+
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxSize(),
+                                            horizontalAlignment = Alignment.End,
+                                            verticalArrangement = Arrangement.Center
+                                        ) {
+                                            Button(
+                                                onClick = {
+                                                    sharedGetProfileByIdUser.id = idDonoPublicacaoJogador
+
+                                                          onNavigate("enviar_proposta")
+                                                },
+                                                modifier = Modifier
+                                                    .width(260.dp)
+                                                    .height(50.dp)
+                                                    .padding(start = 0.dp, top = 0.dp),
+                                                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                                                colors = ButtonDefaults.buttonColors(RedProliseum),
+                                            ) {
+                                                Text(
+                                                    text = "ENVIAR PROPOSTA",
+                                                    fontFamily = customFontFamilyText,
+                                                    fontSize = 12.sp,
+                                                    fontWeight = FontWeight(900),
+                                                    color = Color.White
                                                 )
                                             }
                                         }
 
-                                        Spacer(modifier = Modifier.width(25.dp))
-
-                                        Column {
-
-                                            Text(
-                                                text = "FUNÇÃO",
-                                                color = Color.White,
-                                                modifier = Modifier.padding(5.dp),
-                                                fontWeight = FontWeight(600),
-                                                fontFamily = customFontFamilyText,
-                                                fontSize = 14.sp
-                                            )
-
-
-                                            Card(
-                                                modifier = Modifier
-                                                    .height(55.dp)
-                                                    .width(55.dp),
-                                                colors = CardDefaults.cardColors(RedProliseum)
-                                            ) {
-                                                Image(
-                                                    painter =
-                                                    if ("${infoPublicacao.funcao}" == "0") painterResource(
-                                                        id = R.drawable.icontoplane
-                                                    )
-                                                    else if ("${infoPublicacao.funcao}" == "1") painterResource(id = R.drawable.iconjungle)
-                                                    else if ("${infoPublicacao.funcao}" == "2") painterResource(id = R.drawable.iconmidlane)
-                                                    else if ("${infoPublicacao.funcao}" == "3") painterResource(id = R.drawable.iconsupport)
-                                                    else if ("${infoPublicacao.funcao}" == "4") painterResource(id = R.drawable.iconadc)
-                                                    else painter,
-                                                    contentDescription = "",
-                                                    modifier = Modifier.fillMaxSize(),
-
-                                                    )
-                                            }
-                                        }
-
-                                        Spacer(modifier = Modifier.width(25.dp))
-
-                                        Column(
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                            verticalArrangement = Arrangement.Center
-                                        ){
-                                            Text(
-                                                text = "HORARIO",
-                                                color = Color.White,
-                                                modifier = Modifier.padding(5.dp),
-                                                fontWeight = FontWeight(600),
-                                                fontFamily = customFontFamilyText,
-                                                fontSize = 14.sp
-                                            )
-
-                                            Text(
-                                                text = "${infoPublicacao.hora}",
-                                                color = Color.White,
-                                                modifier = Modifier.padding(5.dp),
-                                                fontWeight = FontWeight(600),
-                                                fontFamily = customFontFamilyText,
-                                                fontSize = 16.sp
-                                            )
-                                        }
-
-                                        Spacer(modifier = Modifier.width(25.dp))
-
-                                        Column(
-                                        ) {
-                                            Text(
-                                                text = "PROS",
-                                                color = Color.White,
-                                                modifier = Modifier.padding(5.dp),
-                                                fontWeight = FontWeight(600),
-                                                fontFamily = customFontFamilyText,
-                                                fontSize = 14.sp
-                                            )
-
-                                            Text(
-                                                text = "${infoPublicacao.pros}",
-                                                color = Color.White,
-                                                modifier = Modifier.padding(5.dp),
-                                                fontWeight = FontWeight(600),
-                                                fontFamily = customFontFamilyText,
-                                                fontSize = 14.sp
-                                            )
-                                        }
 
                                     }
 
-
-
-
                                 }
-
                             }
                         }
                     }

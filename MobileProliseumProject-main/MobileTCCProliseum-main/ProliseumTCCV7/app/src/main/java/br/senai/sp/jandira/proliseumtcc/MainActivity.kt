@@ -1116,6 +1116,16 @@ fun MainScreen() {
                 sharedGetMinhaPostagemUser,
                 sharedGetMinhaPostagemUserPropostas,
                 sharedGetMinhaPostagemPostProfile,
+
+                sharedGetProfileByIdDoUsuario,
+                sharedGetProfileByIdUser,
+                sharedGetProfileByIdUserRedeSocial,
+                sharedGetProfileByIdUserHighlights,
+
+                sharedGetProfileByIdPlayerProfile,
+                sharedGetProfileByIdPlayerProfileTimeAtual,
+                sharedGetProfileByIdPlayerProfileTimeAtualJogadores,
+                sharedGetProfileByIdPlayerProfileTimeAtualPropostas,
             ) {
                 currentScreen = it
             }
