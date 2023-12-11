@@ -59,7 +59,6 @@ import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.Genero
 import br.senai.sp.jandira.proliseumtcc.filtragem.SharedFiltragemListaTimes
-import br.senai.sp.jandira.proliseumtcc.gui.api_filtragem_data_class.filtragemTimes
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDe

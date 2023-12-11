@@ -2,6 +2,7 @@ package br.senai.sp.jandira.proliseumtcc
 
 import CarregarInformacoesOutroTimeListaJogadoresScreen
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
@@ -241,7 +242,7 @@ class MainActivity : ComponentActivity() {
 
 
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-//        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
 
         setContent {
